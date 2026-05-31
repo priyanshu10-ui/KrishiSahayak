@@ -1,5 +1,4 @@
 ﻿# KrishiSahayak
- # KrishiSahayak
 
 ## About
 Agriculture support platform for farmers.
