@@ -82,8 +82,8 @@
       </div>
       <button class="p-2 text-stone-500 hover:bg-stone-50 rounded-full transition-colors"><span
           class="material-symbols-outlined">notifications</span></button>
-      <button class="p-2 text-stone-500 hover:bg-stone-50 rounded-full transition-colors"><span
-          class="material-symbols-outlined">account_circle</span></button>
+      <button onclick="signInWithGoogle()"
+          class="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800">Login</button>
     </div>
   </header>
 
@@ -171,20 +171,29 @@
       Krishak AI</span>
   </button>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
-  <!-- Config (API Keys go here) -->
-  <script src="config.js"></script>
+<!-- Firebase Configuration -->
+<script src="config.js"></script>
 
-  <!-- Page content scripts -->
-  <script src="pages/dashboard.js"></script>
-  <script src="pages/crop-health.js"></script>
-  <script src="pages/market.js"></script>
-  <script src="pages/ai-assistant.js"></script>
-  <script src="pages/calculator.js"></script>
-  <script src="app.js"></script>
+<!-- Firebase Initialization -->
+<script src="js/firebase.js"></script>
+
+<!-- Authentication -->
+<script src="js/auth.js"></script>
+
+<!-- Existing Pages -->
+<script src="pages/dashboard.js"></script>
+<script src="pages/crop-health.js"></script>
+<script src="pages/market.js"></script>
+<script src="pages/ai-assistant.js"></script>
+<script src="pages/calculator.js"></script>
+
+<!-- Main App -->
+<script src="app.js"></script>
 </body>
 
 </html>
