@@ -128,21 +128,45 @@
     <main class="flex-1 w-full">
 
       <!-- PAGE: Dashboard -->
-      <div id="page-dashboard" class="page-content active p-4 md:p-8 max-w-7xl mx-auto w-full"></div>
+<div id="page-dashboard" class="page-content"></div>
 
-      <!-- PAGE: Crop Health -->
-      <div id="page-crop-health" class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full"></div>
+<!-- PAGE: Crop Health -->
+<div id="page-crop-health" class="page-content"></div>
 
-      <!-- PAGE: Market Trends -->
-      <div id="page-market" class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full"></div>
+<!-- PAGE: Market -->
+<div id="page-market" class="page-content"></div>
 
-      <!-- PAGE: AI Assistant -->
-      <div id="page-ai-assistant" class="page-content"></div>
+<!-- PAGE: AI -->
+<div id="page-ai-assistant" class="page-content"></div>
 
-      <!-- PAGE: Pesticide Calculator -->
-      <div id="page-calculator" class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full"></div>
+<!-- PAGE: Calculator -->
+<div id="page-calculator" class="page-content"></div>
 
-      <div id="page-profile" class="page-content p-4 md:p-8 max-w-4xl mx-auto w-full"></div>
+<!-- PAGE: Profile -->
+<div id="page-profile" class="page-content"></div>
+
+<!-- PAGE: Loading -->
+<div id="page-loading"
+     class="page-content flex items-center justify-center min-h-[80vh]">
+
+    <div class="text-center">
+
+        <h2 class="text-3xl font-bold text-green-700">
+            Loading...
+        </h2>
+
+        <p class="text-gray-500 mt-2">
+            Please wait
+        </p>
+
+    </div>
+
+</div>
+
+<!-- PAGE: Login -->
+<div id="page-login"
+     class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full">
+</div>
 
     </main>
   </div>
@@ -194,6 +218,7 @@
 <script src="pages/ai-assistant.js"></script>
 <script src="pages/calculator.js"></script>
 <script src="pages/profile.js"></script>
+<script src="pages/login.js"></script>
 
 <!-- Main App -->
 <script src="app.js"></script>

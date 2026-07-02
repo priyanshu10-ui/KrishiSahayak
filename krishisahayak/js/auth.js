@@ -18,7 +18,7 @@ async function signInWithGoogle() {
 
         }, { merge: true });
 
-        alert("Welcome " + user.displayName);
+        console.log("Welcome " + user.displayName);
 
     }
 
@@ -31,20 +31,69 @@ async function signInWithGoogle() {
     }
 
 }
-auth.onAuthStateChanged((user) => {
+auth.onAuthStateChanged(async (user) => {
 
-    if(user){
+    if (!user) {
 
-        console.log("Logged In");
+        navigateTo("login");
 
-        console.log(user);
-
-    }
-
-    else{
-
-        console.log("Not Logged In");
+        return;
 
     }
+
+    await checkUserProfile(user);
 
 });
+async function checkUserProfile(user) {
+
+    try {
+
+        const doc = await db.collection("users")
+                            .doc(user.uid)
+                            .get();
+
+        if (!doc.exists) {
+
+            navigateTo("profile");
+            return;
+
+        }
+
+        const data = doc.data();
+
+        if (!data.phone) {
+
+            navigateTo("profile");
+
+        } else {
+
+            navigateTo("dashboard");
+
+        }
+
+    }
+
+    catch(error){
+
+        console.error(error);
+
+        alert("Unable to load your profile.");
+
+    }
+
+}
+function logout() {
+
+    auth.signOut()
+        .then(() => {
+
+            navigateTo("login");
+
+        })
+        .catch((error) => {
+
+            console.error(error);
+
+        });
+
+}

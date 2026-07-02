@@ -3,14 +3,21 @@
 // Initialize all pages
 function initApp() {
 
-  renderDashboard();
-  renderCropHealth();
-  renderMarket();
-  renderAIAssistant();
-  renderCalculator();
-  renderProfile();
+    renderDashboard();
 
-  navigateTo('profile');
+    renderCropHealth();
+
+    renderMarket();
+
+    renderAIAssistant();
+
+    renderCalculator();
+
+    renderProfile();
+
+    renderLogin();
+
+    navigateTo("loading");
 
 }
 
