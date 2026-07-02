@@ -1,28 +1,17 @@
 // Krishi Sahayak - Main App Controller
 
-// Initialize Firebase (if configured)
-function initFirebase() {
-  try {
-    if (typeof firebase !== 'undefined' && FIREBASE_CONFIG && FIREBASE_CONFIG.apiKey !== "PASTE_YOUR_FIREBASE_API_KEY_HERE") {
-      firebase.initializeApp(FIREBASE_CONFIG);
-      console.log('✅ Firebase initialized successfully');
-    } else {
-      console.log('ℹ️ Firebase not configured yet. App works fine without it.');
-    }
-  } catch (e) {
-    console.log('ℹ️ Firebase setup skipped:', e.message);
-  }
-}
-
 // Initialize all pages
 function initApp() {
-  initFirebase();
+
   renderDashboard();
   renderCropHealth();
   renderMarket();
   renderAIAssistant();
   renderCalculator();
-  navigateTo('dashboard');
+  renderProfile();
+
+  navigateTo('profile');
+
 }
 
 // Page Navigation
