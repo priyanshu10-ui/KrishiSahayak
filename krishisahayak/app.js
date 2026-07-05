@@ -17,6 +17,8 @@ function initApp() {
 
     renderLogin();
 
+    renderLanguage();
+
     navigateTo("loading");
 
 }

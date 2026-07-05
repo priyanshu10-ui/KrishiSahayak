@@ -9,6 +9,7 @@ async function signInWithGoogle() {
         const user = result.user;
 
         await db.collection("users").doc(user.uid).set({
+            language: localStorage.getItem("language"),
 
             uid: user.uid,
             name: user.displayName,
@@ -33,9 +34,14 @@ async function signInWithGoogle() {
 }
 auth.onAuthStateChanged(async (user) => {
 
-    if (!user) {
+    if (!user){
+        const language = localStorage.getItem("language");
 
-        navigateTo("login");
+        if(language){
+            navigateTo("login");
+        }else{
+            navigateTo("language");
+        }
 
         return;
 
