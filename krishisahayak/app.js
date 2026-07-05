@@ -19,7 +19,17 @@ function initApp() {
 
     renderLanguage();
 
+    const savedLanguage = localStorage.getItem("language");
+
+if (savedLanguage) {
     navigateTo("loading");
+
+    setTimeout(() => {
+        navigateTo("dashboard");
+    }, 2000);
+} else {
+    navigateTo("language");
+}
 
 }
 

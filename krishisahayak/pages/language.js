@@ -1,63 +1,48 @@
 function renderLanguage() {
+    document.getElementById("page-language").innerHTML = `
+        <div class="flex flex-col items-center justify-center min-h-[80vh]">
 
-    const page = document.getElementById("page-language");
-
-    page.innerHTML = `
-
-    <div class="max-w-xl mx-auto bg-white rounded-xl shadow-lg p-8 mt-10">
-
-        <div class="text-center">
-
-            <h1 class="text-3xl font-bold text-green-700">
-
-                🌾 Krishi Sahayak
-
+            <h1 class="text-4xl font-bold text-green-700 mb-3">
+                Welcome to Krishi Sahayak
             </h1>
 
-            <p class="mt-3 text-gray-600">
-
-                Select Your Language
-
+            <p class="text-gray-600 mb-8">
+                Please select your language
             </p>
 
-            <p class="text-gray-500">
+            <div class="grid gap-4 w-72">
 
-                अपनी भाषा चुनें
+                <button onclick="selectLanguage('English')"
+                    class="bg-green-700 text-white py-3 rounded-lg">
+                    English
+                </button>
 
-            </p>
+                <button onclick="selectLanguage('Hindi')"
+                    class="bg-green-700 text-white py-3 rounded-lg">
+                    हिन्दी
+                </button>
 
-        </div>
+                <button onclick="selectLanguage('Marathi')"
+                    class="bg-green-700 text-white py-3 rounded-lg">
+                    मराठी
+                </button>
 
-        <div class="grid gap-4 mt-8">
-
-            <button onclick="selectLanguage('English')" class="border rounded-lg p-4 hover:bg-green-50">
-                🇬🇧 English
-            </button>
-
-            <button onclick="selectLanguage('Hindi')" class="border rounded-lg p-4 hover:bg-green-50">
-                🇮🇳 हिन्दी
-            </button>
-
-            <button onclick="selectLanguage('Marathi')" class="border rounded-lg p-4 hover:bg-green-50">
-                🇮🇳 मराठी
-            </button>
-
-            <button onclick="selectLanguage('Gujarati')" class="border rounded-lg p-4 hover:bg-green-50">
-                🇮🇳 ગુજરાતી
-            </button>
+            </div>
 
         </div>
-
-    </div>
-
     `;
-
 }
 
-function selectLanguage(language){
+function selectLanguage(language) {
 
     localStorage.setItem("language", language);
 
-    navigateTo("login");
+    navigateTo("loading");
+
+    setTimeout(() => {
+
+        navigateTo("dashboard");
+
+    }, 2000);
 
 }
