@@ -26,6 +26,20 @@ function renderLanguage() {
                     class="bg-green-700 text-white py-3 rounded-lg">
                     मराठी
                 </button>
+                <button onclick="selectLanguage('Punjabi')"
+                    class="bg-green-700 text-white py-3 rounded-lg">
+                    ਪੰਜਾਬੀ
+                </button>
+
+                <button onclick="selectLanguage('Gujarati')"
+                    class="bg-green-700 text-white py-3 rounded-lg">
+                    ગુજરાતી
+                </button>
+
+                <button onclick="selectLanguage('Telugu')"
+                    class="bg-green-700 text-white py-3 rounded-lg">
+                    తెలుగు
+                </button>
 
             </div>
 
