@@ -33,7 +33,7 @@ async function signInWithGoogle() {
 
 }
 auth.onAuthStateChanged(async (user) => {
-
+    updateUserUI(user);
     if (!user){
         const language = localStorage.getItem("language");
 
