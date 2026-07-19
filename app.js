@@ -21,17 +21,17 @@ function initApp() {
 
     const savedLanguage = localStorage.getItem("language");
 
-if (savedLanguage) {
-    navigateTo("loading");
+    if (savedLanguage) {
 
-    setTimeout(() => {
-        navigateTo("dashboard");
-    }, 2000);
-} else {
-    navigateTo("language");
-}
+         navigateTo("login");
 
-}
+    } else {
+
+        navigateTo("language");
+
+    }
+
+    }
 
 // Page Navigation
 function navigateTo(page) {
