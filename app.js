@@ -1,66 +1,189 @@
+// ==========================================
 // Krishi Sahayak - Main App Controller
+// ==========================================
 
-// Initialize all pages
+
+// ==========================================
+// 1. INITIALIZE ALL PAGES
+// ==========================================
+
 function initApp() {
 
+    // Render all pages
     renderDashboard();
-
     renderCropHealth();
-
     renderMarket();
-
     renderAIAssistant();
-
     renderCalculator();
-
     renderProfile();
-
     renderLogin();
-
     renderLanguage();
 
-    const savedLanguage = localStorage.getItem("language");
-
-if (savedLanguage) {
+    // Show loading screen first.
+    // Firebase auth.js will decide where to go next.
     navigateTo("loading");
-
-    setTimeout(() => {
-        navigateTo("dashboard");
-    }, 2000);
-} else {
-    navigateTo("language");
 }
 
-}
 
-// Page Navigation
+// ==========================================
+// 2. PAGE NAVIGATION
+// ==========================================
+
 function navigateTo(page) {
-  document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
-  const target = document.getElementById('page-' + page);
-  if (target) target.classList.add('active');
 
-  document.querySelectorAll('.nav-top-link').forEach(l => {
-    l.classList.toggle('active', l.dataset.page === page);
-  });
+    // --------------------------------------
+    // Hide all pages
+    // --------------------------------------
 
-  document.querySelectorAll('.side-nav-link').forEach(l => {
-    if (l.dataset.page) {
-      l.classList.toggle('active', l.dataset.page === page);
-      const icon = l.querySelector('.material-symbols-outlined');
-      if (icon) icon.style.fontVariationSettings = l.dataset.page === page ? "'FILL' 1" : "'FILL' 0";
+    document.querySelectorAll(".page-content").forEach((p) => {
+        p.classList.remove("active");
+    });
+
+
+    // --------------------------------------
+    // Show requested page
+    // --------------------------------------
+
+    const target = document.getElementById("page-" + page);
+
+    if (target) {
+
+        target.classList.add("active");
+
+    } else {
+
+        console.error("Page not found:", page);
+        return;
     }
-  });
 
-  document.querySelectorAll('.bottom-nav-link').forEach(l => {
-    l.classList.toggle('active', l.dataset.page === page);
-    const icon = l.querySelector('.material-symbols-outlined');
-    if (icon) icon.style.fontVariationSettings = l.dataset.page === page ? "'FILL' 1" : "'FILL' 0";
-  });
 
-  const fab = document.getElementById('fab-ai');
-  if (fab) fab.style.display = page === 'ai-assistant' ? 'none' : 'flex';
+    // --------------------------------------
+    // Top Navigation Active State
+    // --------------------------------------
 
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+    document.querySelectorAll(".nav-top-link").forEach((link) => {
+
+        link.classList.toggle(
+            "active",
+            link.dataset.page === page
+        );
+
+    });
+
+
+    // --------------------------------------
+    // Side Navigation Active State
+    // --------------------------------------
+
+    document.querySelectorAll(".side-nav-link").forEach((link) => {
+
+        if (link.dataset.page) {
+
+            const isActive =
+                link.dataset.page === page;
+
+            link.classList.toggle(
+                "active",
+                isActive
+            );
+
+            const icon =
+                link.querySelector(
+                    ".material-symbols-outlined"
+                );
+
+            if (icon) {
+
+                icon.style.fontVariationSettings =
+                    isActive
+                        ? "'FILL' 1"
+                        : "'FILL' 0";
+            }
+        }
+
+    });
+
+
+    // --------------------------------------
+    // Bottom Navigation Active State
+    // --------------------------------------
+
+    document.querySelectorAll(".bottom-nav-link").forEach((link) => {
+
+        const isActive =
+            link.dataset.page === page;
+
+        link.classList.toggle(
+            "active",
+            isActive
+        );
+
+        const icon =
+            link.querySelector(
+                ".material-symbols-outlined"
+            );
+
+        if (icon) {
+
+            icon.style.fontVariationSettings =
+                isActive
+                    ? "'FILL' 1"
+                    : "'FILL' 0";
+        }
+
+    });
+
+
+    // ======================================
+    // 3. FLOATING AI BUTTON
+    // ======================================
+
+    const fab =
+        document.getElementById("fab-ai");
+
+    if (fab) {
+
+        // Pages where AI button must NOT appear
+        const hiddenPages = [
+            "loading",
+            "language",
+            "login",
+            "profile"
+        ];
+
+        if (hiddenPages.includes(page)) {
+
+            fab.style.display = "none";
+
+        } else if (page === "ai-assistant") {
+
+            // Don't show AI button while already
+            // on AI Assistant page
+            fab.style.display = "none";
+
+        } else {
+
+            fab.style.display = "flex";
+        }
+    }
+
+
+    // ======================================
+    // 4. SCROLL TO TOP
+    // ======================================
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 }
 
-document.addEventListener('DOMContentLoaded', initApp);
+
+// ==========================================
+// 5. START APPLICATION
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initApp
+);

@@ -84,19 +84,15 @@
           class="material-symbols-outlined">notifications</span></button>
       <div id="user-area">
 
-      <button id="loginBtn"
-          onclick="signInWithGoogle()"
-          class="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800">
+      <div id="user-menu"></div>
 
-          Login
-
-    </button>
 
 </div>
     </div>
   </header>
 
-  <div class="flex pt-16 pb-20 lg:pb-0 min-h-screen">
+  <div id="app-layout"
+     class="flex pt-16 pb-20 lg:pb-0 min-h-screen">
 
     <!-- ===== SIDE NAV BAR (Desktop) ===== -->
 
@@ -105,7 +101,9 @@
       class="hidden lg:flex flex-col h-[calc(100vh-64px)] w-64 border-r border-stone-200 bg-stone-50 py-6 px-4 space-y-2 sticky top-16 font-[Lexend] text-sm flex-shrink-0">
       <div class="mb-8 px-3">
         <p class="text-stone-500 font-medium">Hello,</p>
-        <h2 class="text-lg font-bold text-green-800">Farmer Rajesh</h2>
+        <h2 id="sidebar-user-name"
+    class="text-lg font-bold text-green-800">
+    Farmer</h2>
         <p class="text-[10px] text-stone-400 uppercase tracking-widest mt-1">Modern Farming Partner</p>
       </div>
       <nav class="flex-1 space-y-1">
@@ -227,10 +225,10 @@
 <!-- Firebase Initialization -->
 <script src="js/firebase.js"></script>
 
-<!-- Authentication -->
+<script src="js/session.js"></script>
+
 <script src="js/auth.js"></script>
 
-<!-- Existing Pages -->
 <script src="pages/dashboard.js"></script>
 <script src="pages/crop-health.js"></script>
 <script src="pages/market.js"></script>
@@ -240,8 +238,6 @@
 <script src="pages/login.js"></script>
 <script src="pages/language.js"></script>
 
-<!-- Main App -->
- 
 <script src="app.js"></script>
 </body>
 

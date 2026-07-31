@@ -51,12 +51,5 @@ function selectLanguage(language) {
 
     localStorage.setItem("language", language);
 
-    navigateTo("loading");
-
-    setTimeout(() => {
-
-        navigateTo("dashboard");
-
-    }, 2000);
-
+    navigateTo("login");
 }

@@ -82,6 +82,8 @@ async function saveProfile() {
 
     alert("Profile saved successfully!");
 
+    showAppNavigation();
+
     navigateTo("dashboard");
 
 }
