@@ -1,44 +1,71 @@
+// ==========================================
+// Krishi Sahayak Authentication
+// ==========================================
+
 const provider = new firebase.auth.GoogleAuthProvider();
 
+
+// ==========================================
+// GOOGLE LOGIN
+// ==========================================
 
 async function signInWithGoogle() {
 
     try {
 
+        // Show loading screen
+        navigateTo("loading");
+
         const result = await auth.signInWithPopup(provider);
 
         const user = result.user;
 
+        // Save basic user information
         await db.collection("users").doc(user.uid).set({
-
-            language: localStorage.getItem("language"),
 
             uid: user.uid,
             name: user.displayName,
             email: user.email,
             photo: user.photoURL,
+            language: localStorage.getItem("language"),
 
             createdAt:
                 firebase.firestore.FieldValue.serverTimestamp()
 
         }, { merge: true });
 
-        console.log("Welcome " + user.displayName);
+        console.log("Welcome:", user.displayName);
 
-        await checkUserProfile(user);
+        // DON'T call checkUserProfile() here.
+        // auth.onAuthStateChanged() will do it automatically.
 
     } catch (error) {
 
-        console.error(error);
+        console.error("Login Error:", error);
+
         alert(error.message);
 
+        navigateTo("login");
     }
+
 }
 
 
+
+// ==========================================
+// AUTH STATE
+// ==========================================
+
 auth.onAuthStateChanged(async (user) => {
 
+    console.log("Auth State Changed");
+    console.log(user);
+
     updateUserUI(user);
+
+    // ------------------------
+    // NOT LOGGED IN
+    // ------------------------
 
     if (!user) {
 
@@ -47,20 +74,39 @@ auth.onAuthStateChanged(async (user) => {
         const language = localStorage.getItem("language");
 
         if (language) {
+
             navigateTo("login");
+
         } else {
+
             navigateTo("language");
+
         }
 
         return;
     }
+
+    // ------------------------
+    // USER LOGGED IN
+    // ------------------------
+
+    hideAppNavigation();
+
+    navigateTo("loading");
 
     await checkUserProfile(user);
 
 });
 
 
+
+// ==========================================
+// CHECK PROFILE
+// ==========================================
+
 async function checkUserProfile(user) {
+
+    console.log("Checking profile...");
 
     try {
 
@@ -68,17 +114,26 @@ async function checkUserProfile(user) {
                             .doc(user.uid)
                             .get();
 
+        console.log("Firestore Document Exists:", doc.exists);
+
+        // New User
         if (!doc.exists) {
 
-            hideAppNavigation();
-            navigateTo("profile");
-            return;
+            console.log("New user");
 
+            hideAppNavigation();
+
+            navigateTo("profile");
+
+            return;
         }
 
         const data = doc.data();
 
+        console.log("User Data:", data);
+
         const profileComplete =
+
             data.phone &&
             data.state &&
             data.district &&
@@ -87,39 +142,62 @@ async function checkUserProfile(user) {
 
         if (!profileComplete) {
 
-        console.log("Profile incomplete");
+            console.log("Profile Incomplete");
 
-        hideAppNavigation();
+            hideAppNavigation();
 
-        navigateTo("profile");
-
-        } else {
-
-        console.log("Profile complete");
-
-        showAppNavigation();
-
-        navigateTo("dashboard");
+            navigateTo("profile");
 
         }
 
-    } catch (error) {
+        else {
 
-        console.error("Profile check error:", error);
+            console.log("Profile Complete");
 
-        alert("Unable to load your profile.");
+            showAppNavigation();
+
+            navigateTo("dashboard");
+
+        }
 
     }
+
+    catch (error) {
+
+        console.error("Firestore Error:", error);
+
+        alert(error.message);
+
+        navigateTo("login");
+
+    }
+
 }
 
 
+
+// ==========================================
+// LOGOUT
+// ==========================================
+
 function logout() {
+
     auth.signOut()
+
         .then(() => {
-            console.log("User logged out successfully");
+
+            console.log("Logged Out");
+
+            navigateTo("login");
+
         })
+
         .catch((error) => {
-            console.error("Logout error:", error);
-            alert("Unable to logout.");
+
+            console.error(error);
+
+            alert(error.message);
+
         });
+
 }
