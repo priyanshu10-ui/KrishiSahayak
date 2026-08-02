@@ -14,7 +14,7 @@ function renderDashboard() {
             <h3 class="font-[Lexend] text-xl font-medium text-green-900 flex items-center gap-2">
               <span class="material-symbols-outlined">cloud_sync</span> Weather Forecast
             </h3>
-            <p class="text-stone-500 text-sm font-semibold">Punjab, North Region</p>
+            <p class="text-stone-500 text-sm font-semibold">Jhansi, Uttar Pradesh</p>
           </div>
           <div class="flex items-center gap-4 bg-stone-50 px-4 py-2 rounded-full border border-stone-100">
             <div class="flex items-center gap-2">
