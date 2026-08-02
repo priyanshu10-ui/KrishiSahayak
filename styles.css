@@ -6,7 +6,7 @@
 }
 
 /* Page visibility */
-.page-content { display: none; }
+.page-content { display: none; animation: fadeIn 0.3s ease; }
 .page-content.active { display: block; }
 
 /* Top nav links */
