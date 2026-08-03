@@ -75,7 +75,7 @@ async function saveProfile() {
         state: document.getElementById("state").value,
         district: document.getElementById("district").value,
         village: document.getElementById("village").value,
-        language: document.getElementById("language").value,
+        language: localStorage.getItem("language"),
         crops: document.getElementById("crops").value
 
     }, { merge: true });

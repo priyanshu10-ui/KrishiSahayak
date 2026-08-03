@@ -53,3 +53,11 @@ function selectLanguage(language) {
 
     navigateTo("login");
 }
+
+function changeLanguage(language){
+
+    localStorage.setItem("language", language);
+
+    renderLogin();
+
+}

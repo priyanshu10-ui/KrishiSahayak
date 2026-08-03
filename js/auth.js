@@ -50,6 +50,31 @@ async function signInWithGoogle() {
 
 }
 
+async function signInAsGuest() {
+
+    try {
+
+        navigateTo("loading");
+
+        await auth.signInAnonymously();
+
+        console.log("Guest login successful");
+
+        // Don't navigate here.
+        // auth.onAuthStateChanged() will handle it.
+
+    } catch (error) {
+
+        console.error(error);
+
+        alert(error.message);
+
+        navigateTo("login");
+
+    }
+
+}
+
 
 
 // ==========================================
@@ -109,6 +134,18 @@ async function checkUserProfile(user) {
     console.log("Checking profile...");
 
     try {
+
+        // Guest Login
+        if (user.isAnonymous) {
+
+            console.log("Guest User");
+
+            showAppNavigation();
+
+            navigateTo("dashboard");
+
+            return;
+        }
 
         const doc = await db.collection("users")
                             .doc(user.uid)
@@ -187,8 +224,6 @@ function logout() {
         .then(() => {
 
             console.log("Logged Out");
-
-            navigateTo("login");
 
         })
 

@@ -1,43 +1,166 @@
+// ==========================================
+// LOGIN PAGE
+// ==========================================
+
 function renderLogin() {
 
-    const page = document.getElementById("page-login");
+    document.getElementById("page-login").innerHTML = `
 
-    if (!page) {
-        console.error("Login page container not found.");
-        return;
-    }
+    <div class="flex justify-center items-center min-h-[80vh]">
 
-    page.innerHTML = `
-        <div class="flex items-center justify-center min-h-[80vh]">
+        <div class="bg-white shadow-2xl rounded-3xl p-10 w-full max-w-md">
 
-            <div class="bg-white rounded-xl shadow-lg p-8 w-full max-w-md">
+            <!-- Logo -->
+            <div class="text-center">
 
-                <div class="text-center">
+                <div class="text-6xl mb-4">🌾</div>
 
-                    <h1 class="text-3xl font-bold text-green-700">
-                        🌾 Krishi Sahayak
-                    </h1>
+                <h1 class="text-4xl font-bold text-green-700">
+                    Krishi Sahayak
+                </h1>
 
-                    <p class="text-gray-500 mt-3">
-                        AI Powered Farming Assistant
-                    </p>
-
-                    <p class="text-gray-600 mt-6">
-                        Sign in to continue
-                    </p>
-
-                </div>
-
-                <button
-                    onclick="signInWithGoogle()"
-                    class="mt-8 w-full bg-green-700 hover:bg-green-800 text-white py-3 px-4 rounded-lg font-semibold">
-
-                    Continue with Google
-
-                </button>
+                <p class="text-gray-500 mt-2">
+                    Get expert farming advice in your own language
+                </p>
 
             </div>
 
-        </div>
+            <!-- Heading -->
+            <div class="mt-10 text-center">
+
+                <h2 class="text-2xl font-semibold">
+                    Welcome 👋
+                </h2>
+
+                <p class="text-gray-500 mt-2">
+                    Choose a login method
+                </p>
+
+            </div>
+
+            <!-- Google Login -->
+            <button
+                onclick="signInWithGoogle()"
+                class="w-full mt-8 bg-white border border-gray-300 rounded-xl px-5 py-4 flex items-center justify-center gap-4 hover:shadow-lg transition">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="w-6 h-6">
+                
+                <span class="font-semibold">
+                Continue with Google
+
+                </span>
+
+            </button>
+
+            <!-- Phone Login -->
+            <button
+            disabled
+            class="w-full mt-4 bg-gray-100 text-gray-500 rounded-xl py-4 border">
+
+            📱 Continue with Phone Number
+
+            <div class="text-xs">
+
+            Coming Soon
+
+            </div>
+
+            </button>
+
+            <!-- Guest Login -->
+            <button
+                onclick="signInAsGuest()"
+                class="w-full mt-4 bg-green-700 text-white rounded-xl py-4 hover:bg-green-800 transition">
+
+                👤 Continue as Guest
+            </button>
+
+            <div class="mt-8">
+
+    <label class="block text-sm font-semibold text-gray-700 mb-2">
+
+        🌐 Language
+
+    </label>
+
+    <select
+
+id="languageSelector"
+
+onchange="changeLanguage(this.value)"
+
+class="w-full border rounded-xl p-3">
+
+<option value="English"
+${localStorage.getItem("language")=="English"?"selected":""}>
+
+English
+
+</option>
+
+<option value="Hindi"
+${localStorage.getItem("language")=="Hindi"?"selected":""}>
+
+हिन्दी
+
+</option>
+
+<option value="Marathi"
+${localStorage.getItem("language")=="Marathi"?"selected":""}>
+
+मराठी
+
+</option>
+
+<option value="Punjabi"
+${localStorage.getItem("language")=="Punjabi"?"selected":""}>
+
+ਪੰਜਾਬੀ
+
+</option>
+
+<option value="Gujarati"
+${localStorage.getItem("language")=="Gujarati"?"selected":""}>
+
+ગુજરાતી
+
+</option>
+
+<option value="Telugu"
+${localStorage.getItem("language")=="Telugu"?"selected":""}>
+
+తెలుగు
+
+</option>
+
+</select>
+
+<div class="mt-10 text-center">
+
+<p class="text-xs text-gray-400">
+
+By continuing you agree to our
+
+</p>
+
+<p class="text-xs">
+
+<a href="#" class="text-green-700">
+
+Terms of Service
+
+</a>
+
+•
+
+<a href="#" class="text-green-700">
+
+Privacy Policy
+
+</a>
+
+</p>
+
+</div>
+
     `;
 }
