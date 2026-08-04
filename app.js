@@ -21,7 +21,12 @@ function initApp() {
 
     // Show loading screen first.
     // Firebase auth.js will decide where to go next.
+    navigateTo("splash");
+
+setTimeout(() => {
+    splashFinished = true;
     navigateTo("loading");
+}, 2000); // Show splash for 2 seconds
 }
 
 
@@ -56,7 +61,13 @@ function navigateTo(page) {
         return;
     }
 
+const splash = document.getElementById("page-splash");
 
+if (page === "splash") {
+    splash.style.display = "flex";
+} else {
+    splash.style.display = "none";
+}
     // --------------------------------------
     // Top Navigation Active State
     // --------------------------------------
@@ -145,6 +156,7 @@ function navigateTo(page) {
 
         // Pages where AI button must NOT appear
         const hiddenPages = [
+            "splash",
             "loading",
             "language",
             "login",

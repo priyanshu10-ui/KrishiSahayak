@@ -4,7 +4,7 @@
 
 const provider = new firebase.auth.GoogleAuthProvider();
 
-
+let splashFinished = false;
 // ==========================================
 // GOOGLE LOGIN
 // ==========================================
@@ -82,6 +82,9 @@ async function signInAsGuest() {
 // ==========================================
 
 auth.onAuthStateChanged(async (user) => {
+    if (!splashFinished) {
+    await new Promise(resolve => setTimeout(resolve, 2000));
+}
 
     console.log("Auth State Changed");
     console.log(user);
