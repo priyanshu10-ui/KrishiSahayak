@@ -17,9 +17,9 @@ function renderCropHealth() {
 
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
       <!-- Upload Zone -->
-      <div class="lg:col-span-8 group relative overflow-hidden bg-white border border-stone-100 rounded-[2rem] shadow-sm transition-all hover:shadow-md h-[400px]">
+      <div class="lg:col-span-8 group relative overflow-hidden bg-white border border-stone-100 rounded-[2rem] shadow-sm transition-all hover:shadow-md min-h-[400px]">
         <div class="absolute inset-0 bg-gradient-to-br from-green-50/50 to-transparent"></div>
-        <div id="upload-zone" class="relative h-full flex flex-col items-center justify-center p-8 border-4 border-dashed border-stone-100 m-4 rounded-[1.5rem] group-hover:border-[#2d5a27]/20 transition-colors">
+       <div id="upload-zone" class="relative flex flex-col items-center justify-center p-8 border-4 border-dashed border-stone-100 m-4 rounded-[1.5rem] group-hover:border-[#2d5a27]/20 transition-colors">
           <div class="w-24 h-24 bg-[#bcf0ae] rounded-full flex items-center justify-center text-[#154212] mb-6 shadow-inner">
             <span class="material-symbols-outlined text-5xl">add_a_photo</span>
           </div>
@@ -41,20 +41,120 @@ function renderCropHealth() {
 
           </div>
           <input id="file-input" type="file" accept="image/*" class="hidden" onchange="handleImageUpload(event)"/>
+        
           
 
-<video
-    id="camera-preview"
-    autoplay
-    playsinline
-    class="hidden w-full mt-4 rounded-xl">
-</video>
 
 
 
 
-        </div>
-      </div>
+
+<!-- CAMERA SECTION -->
+<div id="camera-area" class="hidden mt-4 w-full">
+
+    <!-- LIVE CAMERA -->
+    <video
+        id="camera-preview"
+        autoplay
+        playsinline
+        muted
+        class="w-full rounded-xl bg-black">
+    </video>
+
+    <!-- CAPTURED PHOTO -->
+    <img
+        id="captured-photo"
+        class="hidden w-full max-h-[350px] object-contain rounded-xl bg-black"
+        alt="Captured crop">
+
+    <!-- RECORDED VIDEO -->
+    <video
+        id="recorded-video"
+        controls
+        class="hidden w-full max-h-[350px] rounded-xl bg-black">
+    </video>
+
+    <canvas id="camera-canvas" class="hidden"></canvas>
+
+
+    <!-- CAMERA BUTTONS -->
+    <div
+        id="camera-controls"
+        class="flex flex-wrap justify-center gap-3 mt-4">
+
+        <!-- PHOTO -->
+        <button
+            id="click-photo-btn"
+            onclick="capturePhoto()"
+            class="bg-[#2d5a27] text-white px-6 py-3 rounded-xl font-bold">
+            📸 Click Photo
+        </button>
+
+
+        <!-- START VIDEO -->
+        <button
+            id="start-recording-btn"
+            onclick="startRecording()"
+            class="bg-red-600 text-white px-6 py-3 rounded-xl font-bold">
+            🎥 Start Video
+        </button>
+
+
+        <!-- STOP VIDEO -->
+        <button
+            id="stop-recording-btn"
+            onclick="stopRecording()"
+            class="hidden bg-gray-700 text-white px-6 py-3 rounded-xl font-bold">
+            ⏹ Stop Video
+        </button>
+
+
+        <!-- CLOSE CAMERA -->
+        <button
+            id="close-camera-btn"
+            onclick="closeCamera()"
+            class="bg-white border-2 border-[#2d5a27] text-[#2d5a27] px-6 py-3 rounded-xl font-bold">
+            ✕ Close
+        </button>
+
+    </div>
+
+
+    <!-- SAVE + ONE COMMON UPLOAD BUTTON -->
+    <div
+        id="media-actions"
+        class="hidden flex flex-wrap justify-center gap-3 mt-4">
+
+        <!-- SAVE -->
+        <a
+            id="save-media-btn"
+            href="#"
+            download
+            class="bg-blue-600 text-white px-6 py-3 rounded-xl font-bold">
+            💾 Save
+        </a>
+
+
+        <!-- SAME UPLOAD BUTTON FOR PHOTO + VIDEO -->
+        <button
+            id="upload-media-btn"
+            onclick="uploadCapturedMedia()"
+            class="bg-[#2d5a27] text-white px-6 py-3 rounded-xl font-bold">
+            ⬆️ Upload
+        </button>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
 
       <!-- Health Stats -->
       <div class="lg:col-span-4 flex flex-col gap-6">
@@ -91,13 +191,19 @@ function renderCropHealth() {
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         ${[
-          {name:'Tomato (Roma)',disease:'Early Blight (Fungal)',time:'2h ago',badge:'Critical',badgeColor:'bg-[#ba1a1a]',diseaseColor:'text-[#ba1a1a]',desc:'Affects foliage and fruit. Spreads quickly in warm, humid weather. Immediate treatment required.',btn:'View Solution',icon:'medical_services',
-           img:'https://lh3.googleusercontent.com/aida-public/AB6AXuD08YZk0mgAvvRiMF5GmyFxFYJhip8f4eNlQWGIg_z23nXBmk5R8hdJaM1sWNSIaly1vV25pWEEYZkvoNw8S15StZKeF7j7Avg_vIWSTUhwsmUHzAUWqS1kSFVsCR33YIhMMULRngZ5-TeleDjda54Wi3uuHQewINfAhav5KtlOwGvJkj4k4lzj0j8W7tMTsApmaBr7Yzgf-ijax4nm4DD3Lo7wD2KMlng30Qtlw4UKDFl5fS8cT7_ojuMYhYVw8N7fflOg_W1ajnJS'},
-          {name:'Maize (Sweet Corn)',disease:'No Pathogens Detected',time:'Yesterday',badge:'Healthy',badgeColor:'bg-[#2d5a27]',diseaseColor:'text-[#2d5a27]',desc:'Crop shows optimal nitrogen levels and strong vigor. Continue current irrigation schedule.',btn:'Detailed Report',icon:'description',
-           img:'https://lh3.googleusercontent.com/aida-public/AB6AXuBizTY3Ni0nLs6Nd_58ktaEORKIzB4gt_FNBmXTNAmnyZN0uMSK5Bg-wG7S8uUR4AHdQyj0Wn9rKGLIith9GT4JmNB4Zum9lJw4hYWamkB5z7ChycziOBwsGQclcxt9sRM8Nn6s_bmEz9xZg4FkUvEkSbXcROM9ytgt7b4QWfEjIrL-fe-N5tDHhFKkAIKuOhAOPnLGobuDHgpyO6ryTcqrtF-sPSw7bry6NS-g_PejFDvB9rQBq1Q0e5CExoA46FNUeKVLTFvPMFOQ'},
-          {name:'Wheat (Durum)',disease:'Leaf Rust (Moderate)',time:'3 days ago',badge:'Warning',badgeColor:'bg-[#ffa536]',diseaseColor:'text-[#895100]',desc:'Signs of P. triticina found on lower leaves. Monitor spreading to upper canopy.',btn:'View Solution',icon:'medical_services',
-           img:'https://lh3.googleusercontent.com/aida-public/AB6AXuB1O2tD8jWF7wptZo0fwlmx1okmwa8iT3AntGFRV32dgh53fmRrnu0QRbXkN8htQo4QD6Gr7UQ2RARjTc8B5NVSzHbKIJH-LYUQGNVnXi2Y25fuN2eYHTnp80GCLwiiSpj1vCORxPsMlx4ww0AJ3Wq4NglRnkIjoDUwzyPY6urv4fjmTrT4-7yWB9po8dOXZcEsGE3LKtxh2XOVro8IFBUNuYO9yHGXuNXE9vE1zZsjEmJrHAXceN-Z8N_siGHk3lQccOgPaRiMgVrU'}
-        ].map(d => `
+      {
+        name: 'Tomato (Roma)', disease: 'Early Blight (Fungal)', time: '2h ago', badge: 'Critical', badgeColor: 'bg-[#ba1a1a]', diseaseColor: 'text-[#ba1a1a]', desc: 'Affects foliage and fruit. Spreads quickly in warm, humid weather. Immediate treatment required.', btn: 'View Solution', icon: 'medical_services',
+        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD08YZk0mgAvvRiMF5GmyFxFYJhip8f4eNlQWGIg_z23nXBmk5R8hdJaM1sWNSIaly1vV25pWEEYZkvoNw8S15StZKeF7j7Avg_vIWSTUhwsmUHzAUWqS1kSFVsCR33YIhMMULRngZ5-TeleDjda54Wi3uuHQewINfAhav5KtlOwGvJkj4k4lzj0j8W7tMTsApmaBr7Yzgf-ijax4nm4DD3Lo7wD2KMlng30Qtlw4UKDFl5fS8cT7_ojuMYhYVw8N7fflOg_W1ajnJS'
+      },
+      {
+        name: 'Maize (Sweet Corn)', disease: 'No Pathogens Detected', time: 'Yesterday', badge: 'Healthy', badgeColor: 'bg-[#2d5a27]', diseaseColor: 'text-[#2d5a27]', desc: 'Crop shows optimal nitrogen levels and strong vigor. Continue current irrigation schedule.', btn: 'Detailed Report', icon: 'description',
+        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBizTY3Ni0nLs6Nd_58ktaEORKIzB4gt_FNBmXTNAmnyZN0uMSK5Bg-wG7S8uUR4AHdQyj0Wn9rKGLIith9GT4JmNB4Zum9lJw4hYWamkB5z7ChycziOBwsGQclcxt9sRM8Nn6s_bmEz9xZg4FkUvEkSbXcROM9ytgt7b4QWfEjIrL-fe-N5tDHhFKkAIKuOhAOPnLGobuDHgpyO6ryTcqrtF-sPSw7bry6NS-g_PejFDvB9rQBq1Q0e5CExoA46FNUeKVLTFvPMFOQ'
+      },
+      {
+        name: 'Wheat (Durum)', disease: 'Leaf Rust (Moderate)', time: '3 days ago', badge: 'Warning', badgeColor: 'bg-[#ffa536]', diseaseColor: 'text-[#895100]', desc: 'Signs of P. triticina found on lower leaves. Monitor spreading to upper canopy.', btn: 'View Solution', icon: 'medical_services',
+        img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB1O2tD8jWF7wptZo0fwlmx1okmwa8iT3AntGFRV32dgh53fmRrnu0QRbXkN8htQo4QD6Gr7UQ2RARjTc8B5NVSzHbKIJH-LYUQGNVnXi2Y25fuN2eYHTnp80GCLwiiSpj1vCORxPsMlx4ww0AJ3Wq4NglRnkIjoDUwzyPY6urv4fjmTrT4-7yWB9po8dOXZcEsGE3LKtxh2XOVro8IFBUNuYO9yHGXuNXE9vE1zZsjEmJrHAXceN-Z8N_siGHk3lQccOgPaRiMgVrU'
+      }
+    ].map(d => `
           <div class="bg-white border border-stone-100 rounded-[1.5rem] overflow-hidden shadow-sm hover:shadow-md transition-all group">
             <div class="relative h-48">
               <img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" src="${d.img}" alt="${d.name}"/>
@@ -140,7 +246,7 @@ function handleImageUpload(event) {
   if (!file) return;
   const zone = document.getElementById('upload-zone');
   const reader = new FileReader();
-  reader.onload = function(e) {
+  reader.onload = function (e) {
     zone.innerHTML = `
       <img src="${e.target.result}" class="max-h-64 rounded-xl shadow-lg mb-4" alt="Uploaded crop"/>
       <p class="text-green-800 font-bold text-lg mb-2">Image Uploaded Successfully!</p>
@@ -162,30 +268,491 @@ function handleImageUpload(event) {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let cameraStream = null;
+let mediaRecorder = null;
+let recordedChunks = [];
+
+let capturedFile = null;
+let capturedURL = null;
+
+
+// ===============================
+// OPEN CAMERA
+// ===============================
+
 window.openCamera = async function () {
 
-    try {
+  try {
 
-        const stream =
-            await navigator.mediaDevices.getUserMedia({
-                video: {
-                    facingMode: "environment"
-                }
-            });
-
-        const video =
-            document.getElementById("camera-preview");
-
-        video.srcObject = stream;
-
-        video.classList.remove("hidden");
-
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      alert("Camera is not supported by this browser.");
+      return;
     }
-    catch (err) {
 
-        console.log(err);
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode: "environment",
+        width: { ideal: 1280 },
+        height: { ideal: 720 }
+      },
+      audio: true
+    });
 
-        alert("Camera permission denied");
+    const video = document.getElementById("camera-preview");
+    const container = document.getElementById("camera-area");
 
+    video.srcObject = cameraStream;
+
+    container.classList.remove("hidden");
+
+    await video.play();
+
+  } catch (error) {
+
+    console.error("Camera Error:", error);
+
+    if (error.name === "NotAllowedError") {
+      alert("Camera permission denied. Please allow camera access.");
     }
+    else if (error.name === "NotFoundError") {
+      alert("No camera found on this device.");
+    }
+    else {
+      alert("Unable to open camera.");
+    }
+  }
+};
+
+
+// ===============================
+// CLICK PHOTO
+// ===============================
+
+window.capturePhoto = function () {
+
+  const video = document.getElementById("camera-preview");
+  const canvas = document.getElementById("camera-canvas");
+
+  if (!video.videoWidth || !video.videoHeight) {
+    alert("Camera is not ready yet.");
+    return;
+  }
+
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+
+  const context = canvas.getContext("2d");
+
+  context.drawImage(
+    video,
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+  canvas.toBlob(function (blob) {
+
+    if (!blob) {
+      alert("Unable to capture photo.");
+      return;
+    }
+
+    capturedFile = new File(
+      [blob],
+      `crop-photo-${Date.now()}.jpg`,
+      {
+        type: "image/jpeg"
+      }
+    );
+
+    // Create URL for captured photo
+    if (capturedURL) {
+      URL.revokeObjectURL(capturedURL);
+    }
+
+    capturedURL = URL.createObjectURL(blob);
+
+    const photo =
+      document.getElementById("captured-photo");
+
+    const liveCamera =
+      document.getElementById("camera-preview");
+
+    const controls =
+      document.getElementById("camera-controls");
+
+    const mediaActions =
+      document.getElementById("media-actions");
+
+    const saveButton =
+      document.getElementById("save-media-btn");
+
+
+    // Show clicked photo
+    photo.src = capturedURL;
+    photo.classList.remove("hidden");
+
+
+    // Hide live camera
+    liveCamera.classList.add("hidden");
+
+
+    // Hide Click Photo + Start Video buttons
+    controls.classList.add("hidden");
+
+
+    // Show separate Save + Upload buttons
+    mediaActions.classList.remove("hidden");
+
+
+    // Save Photo button
+    saveButton.href = capturedURL;
+    saveButton.download =
+      `crop-photo-${Date.now()}.jpg`;
+
+    saveButton.textContent = "💾 Save Photo";
+
+
+    // STOP CAMERA
+    if (cameraStream) {
+
+      cameraStream
+        .getTracks()
+        .forEach(track => track.stop());
+
+      cameraStream = null;
+    }
+
+    liveCamera.srcObject = null;
+
+  }, "image/jpeg", 0.95);
+};
+
+// ===============================
+// SHOW CAPTURED PHOTO / VIDEO
+// ===============================
+function showCapturedMedia(blob, type) {
+
+  const liveCamera =
+    document.getElementById("camera-preview");
+
+  const photo =
+    document.getElementById("captured-photo");
+
+  const recordedVideo =
+    document.getElementById("recorded-video");
+
+  const controls =
+    document.getElementById("camera-controls");
+
+  const mediaActions =
+    document.getElementById("media-actions");
+
+  const saveButton =
+    document.getElementById("save-media-btn");
+
+
+  // Remove previous URL
+  if (capturedURL) {
+    URL.revokeObjectURL(capturedURL);
+  }
+
+  // Create new URL
+  capturedURL =
+    URL.createObjectURL(blob);
+
+
+  // =========================
+  // PHOTO
+  // =========================
+
+  if (type === "photo") {
+
+    // Put captured image on screen
+    photo.src = capturedURL;
+
+    // Show image
+    photo.classList.remove("hidden");
+
+    // Hide recorded video
+    recordedVideo.classList.add("hidden");
+
+    // Save Photo
+    saveButton.href = capturedURL;
+
+    saveButton.download =
+      `crop-photo-${Date.now()}.jpg`;
+
+    saveButton.textContent =
+      "💾 Save Photo";
+  }
+
+
+  // =========================
+  // VIDEO
+  // =========================
+
+  if (type === "video") {
+
+    // Put recorded video on screen
+    recordedVideo.src = capturedURL;
+
+    recordedVideo.controls = true;
+
+    // Show video
+    recordedVideo.classList.remove("hidden");
+
+    // Hide photo
+    photo.classList.add("hidden");
+
+    // Save Video
+    saveButton.href = capturedURL;
+
+    saveButton.download =
+      `crop-video-${Date.now()}.webm`;
+
+    saveButton.textContent =
+      "💾 Save Video";
+  }
+
+
+  // =========================
+  // HIDE LIVE CAMERA
+  // =========================
+
+  liveCamera.classList.add("hidden");
+
+
+  // =========================
+  // HIDE CAMERA BUTTONS
+  // =========================
+
+  controls.classList.add("hidden");
+
+
+  // =========================
+  // SHOW SAVE + UPLOAD
+  // =========================
+
+  mediaActions.classList.remove("hidden");
+
+
+  // =========================
+  // STOP CAMERA
+  // =========================
+
+  if (cameraStream) {
+
+    cameraStream
+      .getTracks()
+      .forEach(track => track.stop());
+
+    cameraStream = null;
+  }
+
+  liveCamera.srcObject = null;
 }
+
+
+// ===============================
+// START VIDEO RECORDING
+// ===============================
+
+window.startRecording = function () {
+
+  if (!cameraStream) {
+    alert("Please open the camera first.");
+    return;
+  }
+
+  recordedChunks = [];
+
+  try {
+
+    mediaRecorder = new MediaRecorder(
+      cameraStream,
+      {
+        mimeType: "video/webm"
+      }
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    try {
+      mediaRecorder = new MediaRecorder(cameraStream);
+    } catch (err) {
+      alert("Video recording is not supported by this browser.");
+      return;
+    }
+  }
+
+  mediaRecorder.ondataavailable = function (event) {
+
+    if (event.data && event.data.size > 0) {
+      recordedChunks.push(event.data);
+    }
+  };
+
+
+  mediaRecorder.onstop = function () {
+
+    const videoBlob = new Blob(
+      recordedChunks,
+      {
+        type: "video/webm"
+      }
+    );
+
+    capturedFile = new File(
+      [videoBlob],
+      `crop-video-${Date.now()}.webm`,
+      {
+        type: "video/webm"
+      }
+    );
+
+    showCapturedMedia(videoBlob, "video");
+  };
+
+
+  mediaRecorder.start();
+
+  document
+    .getElementById("start-recording-btn")
+    .classList.add("hidden");
+
+  document
+    .getElementById("stop-recording-btn")
+    .classList.remove("hidden");
+
+  console.log("Video recording started");
+};
+
+
+// ===============================
+// STOP VIDEO RECORDING
+// ===============================
+
+window.stopRecording = function () {
+
+  if (
+    mediaRecorder &&
+    mediaRecorder.state !== "inactive"
+  ) {
+
+    mediaRecorder.stop();
+
+    document
+      .getElementById("start-recording-btn")
+      .classList.remove("hidden");
+
+    document
+      .getElementById("stop-recording-btn")
+      .classList.add("hidden");
+
+    console.log("Video recording stopped");
+  }
+};
+
+
+// ===============================
+// UPLOAD CAPTURED MEDIA
+// ===============================
+
+window.uploadCapturedMedia = function () {
+
+  if (!capturedFile) {
+    alert("Please capture a photo or video first.");
+    return;
+  }
+
+  // Photo
+  if (capturedFile.type.startsWith("image/")) {
+
+    const input = document.getElementById("file-input");
+
+    const dataTransfer = new DataTransfer();
+
+    dataTransfer.items.add(capturedFile);
+
+    input.files = dataTransfer.files;
+
+    // Use your existing upload function
+    handleImageUpload({
+      target: input
+    });
+
+    return;
+  }
+
+  // Video
+  if (capturedFile.type.startsWith("video/")) {
+
+    alert(
+      "Video captured successfully! 🎥\n\n" +
+      "Video is ready for upload."
+    );
+
+    /*
+     * Later you can send capturedFile
+     * to Firebase Storage / backend.
+     */
+
+    console.log("Video ready for upload:", capturedFile);
+  }
+};
+
+
+// ===============================
+// CLOSE CAMERA
+// ===============================
+
+window.closeCamera = function () {
+
+  if (cameraStream) {
+
+    cameraStream
+      .getTracks()
+      .forEach(track => track.stop());
+
+    cameraStream = null;
+  }
+
+  const video = document.getElementById("camera-preview");
+  const container = document.getElementById("camera-area");
+
+  if (video) {
+    video.srcObject = null;
+  }
+
+  if (container) {
+    container.classList.add("hidden");
+  }
+
+  document
+    .getElementById("media-actions")
+    ?.classList.add("hidden");
+
+  console.log("Camera closed");
+};
