@@ -51,28 +51,16 @@ function renderLogin() {
 
             </button>
 
-            <!-- Phone Login -->
-            <button
-            disabled
-            class="w-full mt-4 bg-gray-100 text-gray-500 rounded-xl py-4 border">
+<!-- Phone Login -->
+<button
+    onclick="signInWithPhone()"
+    class="w-full mt-4 bg-green-50 text-green-700 border border-green-600 rounded-xl py-4 hover:bg-green-100 transition">
 
-            📱 Continue with Phone Number
+    📱 Continue with Phone Number
 
-            <div class="text-xs">
-
-            Coming Soon
-
-            </div>
-
-            </button>
-
-            <!-- Guest Login -->
-            <button
-                onclick="signInAsGuest()"
-                class="w-full mt-4 bg-green-700 text-white rounded-xl py-4 hover:bg-green-800 transition">
-
-                👤 Continue as Guest
-            </button>
+</button>
+<!-- Firebase reCAPTCHA -->
+<div id="recaptcha-container" class="mt-4"></div>
 
             <div class="mt-8">
 

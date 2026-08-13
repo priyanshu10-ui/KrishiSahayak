@@ -50,29 +50,112 @@ async function signInWithGoogle() {
 
 }
 
-async function signInAsGuest() {
+// ==========================================
+// PHONE NUMBER LOGIN
+// ==========================================
+
+let confirmationResult = null;
+let recaptchaVerifier = null;
+
+async function signInWithPhone() {
 
     try {
 
-        navigateTo("loading");
+        // Get phone number
+        const phoneNumber = prompt(
+            "Enter your mobile number with country code:\nExample: +919876543210"
+        );
 
-        await auth.signInAnonymously();
+        if (!phoneNumber) {
+            return;
+        }
 
-        console.log("Guest login successful");
+        // Create reCAPTCHA
+        if (!recaptchaVerifier) {
 
-        // Don't navigate here.
+            recaptchaVerifier =
+                new firebase.auth.RecaptchaVerifier(
+                    "recaptcha-container",
+                    {
+                        size: "normal"
+                    }
+                );
+
+            await recaptchaVerifier.render();
+        }
+
+        // Send OTP
+        confirmationResult =
+            await auth.signInWithPhoneNumber(
+                phoneNumber,
+                recaptchaVerifier
+            );
+
+        console.log("OTP sent successfully");
+
+        // Ask user for OTP
+        const otp = prompt(
+            "Enter the OTP sent to your mobile number:"
+        );
+
+        if (!otp) {
+            return;
+        }
+
+        // Verify OTP
+        const result =
+            await confirmationResult.confirm(otp);
+
+        const user = result.user;
+
+        console.log(
+            "Phone Login Successful:",
+            user.phoneNumber
+        );
+
+        // Save user information in Firestore
+        await db.collection("users")
+            .doc(user.uid)
+            .set({
+
+                uid: user.uid,
+
+                phone: user.phoneNumber,
+
+                language:
+                    localStorage.getItem("language"),
+
+                createdAt:
+                    firebase.firestore.FieldValue.serverTimestamp()
+
+            }, { merge: true });
+
+        console.log("Phone user saved to Firestore");
+
+        // DON'T call checkUserProfile() here.
         // auth.onAuthStateChanged() will handle it.
-
-    } catch (error) {
-
-        console.error(error);
-
-        alert(error.message);
-
-        navigateTo("login");
 
     }
 
+    catch (error) {
+
+        console.error(
+            "Phone Login Error:",
+            error
+        );
+
+        alert(error.message);
+
+        // Clear reCAPTCHA
+        if (recaptchaVerifier) {
+
+            recaptchaVerifier.clear();
+
+            recaptchaVerifier = null;
+        }
+
+        navigateTo("login");
+    }
 }
 
 
@@ -137,19 +220,6 @@ async function checkUserProfile(user) {
     console.log("Checking profile...");
 
     try {
-
-        // Guest Login
-        if (user.isAnonymous) {
-
-            console.log("Guest User");
-
-            showAppNavigation();
-
-            navigateTo("dashboard");
-
-            return;
-        }
-
         const doc = await db.collection("users")
                             .doc(user.uid)
                             .get();
