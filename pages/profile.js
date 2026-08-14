@@ -113,31 +113,31 @@ function renderProfile() {
                 id="language"
                 onchange="this.style.color = '#374151'"
                 class="w-full border rounded-lg p-3 bg-white text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-700">
-                placeholder="English"
                 <option value="" disabled selected>Select Preferred Language *</option>
-                <option value="en" class="text-gray-700">English</option>
-                <option value="hi" class="text-gray-700">हिन्दी (Hindi)</option>
-                <option value="te" class="text-gray-700">తెలుగు (Telugu)</option>
-                <option value="ta" class="text-gray-700">தமிழ் (Tamil)</option>
-                <option value="mr" class="text-gray-700">मराठी (Marathi)</option>
-                <option value="bn" class="text-gray-700">বাংলা (Bengali)</option>
-                <option value="pa" class="text-gray-700">ਪੰਜਾਬੀ (Punjabi)</option>
-                <option value="gu" class="text-gray-700">ગુજરાતી (Gujarati)</option>
+                <option value="English" class="text-gray-700">English</option>
+                <option value="Hindi" class="text-gray-700">हिन्दी (Hindi)</option>
+                <option value="Telugu" class="text-gray-700">తెలుగు (Telugu)</option>
+                <option value="Tamil" class="text-gray-700">தமிழ் (Tamil)</option>
+                <option value="Marathi" class="text-gray-700">मराठी (Marathi)</option>
+                <option value="Bengali" class="text-gray-700">বাংলা (Bengali)</option>
+                <option value="Punjabi" class="text-gray-700">ਪੰਜਾਬੀ (Punjabi)</option>
+                <option value="Gujarati" class="text-gray-700">ગુજરાતી (Gujarati)</option>
             </select>
         </div>
 
-        <!-- Main Crops Input (Mandatory) -->
+        <!-- Main Crops Input -->
         <div>
             <input
                 id="crops"
                 type="text"
-                placeholder="Main Crops (e.g. Wheat, Rice) *"
+                placeholder="Main Crops (e.g. Wheat, Rice) "
                 class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700">
         </div>
 
         <button
+            id="save-profile-btn"
             onclick="saveProfile()"
-            class="w-full bg-green-700 text-white py-3 rounded-lg hover:bg-green-800 transition">
+            class="w-full bg-green-700 text-white py-3 rounded-lg hover:bg-green-800 transition font-bold">
             Save Profile
         </button>
 
@@ -237,6 +237,7 @@ function handleOutsideClick(event) {
 function loadSavedPreferences() {
   const savedState = localStorage.getItem("state");
   const savedDistrict = localStorage.getItem("district");
+  const savedVillage = localStorage.getItem("village");
   const savedLang = localStorage.getItem("language");
 
   if (savedState) {
@@ -251,6 +252,11 @@ function loadSavedPreferences() {
   if (savedDistrict) {
     const districtInput = document.getElementById("district");
     if (districtInput) districtInput.value = savedDistrict;
+  }
+
+  if (savedVillage) {
+    const villageInput = document.getElementById("village");
+    if (villageInput) villageInput.value = savedVillage;
   }
 
   if (savedLang) {
@@ -287,7 +293,7 @@ function clearErrors() {
   });
 }
 
-// Complete Validation logic inside saveProfile
+// Complete Validation and Save logic
 async function saveProfile() {
   clearErrors();
 
@@ -351,34 +357,38 @@ async function saveProfile() {
     return;
   }
 
-  // 6. Validate Main Crops Field (Mandatory)
-  if (!crops) {
-    markInvalid("crops");
-    errorMsg.innerText = "Please enter your Main Crops (e.g., Wheat, Rice).";
+
+  const btn = document.getElementById("save-profile-btn");
+  if (btn) btn.disabled = true;
+
+  try {
+    // ✅ Overwrite all location fields in localStorage immediately
+    localStorage.setItem("village", village);
+    localStorage.setItem("district", district);
+    localStorage.setItem("state", state);
+    localStorage.setItem("language", language);
+
+    // Save full document to Firestore
+    await db.collection("users").doc(user.uid).set(
+      {
+        uid: user.uid,
+        phone: phone,
+        state: state,
+        district: district,
+        village: village,
+        language: language,
+        crops: crops,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      },
+      { merge: true }
+    );
+
+    showAppNavigation();
+    navigateTo("dashboard");
+  } catch (error) {
+    console.error("Firestore Save Error:", error);
+    errorMsg.innerText = "Failed to save profile: " + error.message;
     errorMsg.classList.remove("hidden");
-    document.getElementById("crops").focus();
-    return;
+    if (btn) btn.disabled = false;
   }
-
-  // If all fields are valid, proceed to save data
-  localStorage.setItem("state", state);
-  localStorage.setItem("district", district);
-  localStorage.setItem("language", language);
-
-  await db.collection("users").doc(user.uid).set(
-    {
-      phone: phone,
-      state: state,
-      district: district,
-      village: village,
-      language: language,
-      crops: crops
-    },
-    { merge: true }
-  );
-
-  alert("Profile saved successfully!");
-
-  showAppNavigation();
-  navigateTo("dashboard");
 }

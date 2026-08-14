@@ -1,6 +1,21 @@
 // Dashboard Page Content
 function renderDashboard() {
   const el = document.getElementById('page-dashboard');
+
+  const savedVillage = localStorage.getItem("village");
+  const savedDistrict = localStorage.getItem("district");
+  const savedState = localStorage.getItem("state");
+
+  let userAddress = "Jhansi, Uttar Pradesh";
+
+  if (savedVillage && savedDistrict && savedState) {
+    userAddress = `${savedVillage}, ${savedDistrict}, ${savedState}`;
+  } else if (savedDistrict && savedState) {
+    userAddress = `${savedDistrict}, ${savedState}`;
+  } else if (savedState) {
+    userAddress = savedState;
+  }
+
   el.innerHTML = `
     <div class="mb-8">
       <h2 class="font-[Lexend] text-2xl font-medium text-[#191c1c] mb-1">Field Overview</h2>
@@ -14,7 +29,8 @@ function renderDashboard() {
             <h3 class="font-[Lexend] text-xl font-medium text-green-900 flex items-center gap-2">
               <span class="material-symbols-outlined">cloud_sync</span> Weather Forecast
             </h3>
-            <p class="text-stone-500 text-sm font-semibold">Jhansi, Uttar Pradesh</p>
+            <!-- Dynamic User Address -->
+            <p class="text-stone-500 text-sm font-semibold">${userAddress}</p>
           </div>
           <div class="flex items-center gap-4 bg-stone-50 px-4 py-2 rounded-full border border-stone-100">
             <div class="flex items-center gap-2">
