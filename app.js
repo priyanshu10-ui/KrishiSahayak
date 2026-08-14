@@ -15,7 +15,6 @@ function initApp() {
     renderCalculator();
     renderProfile();
     renderLogin();
-    renderLanguage();
 
     // Show loading screen first.
     // Firebase auth.js will handle authentication routing.
@@ -119,7 +118,6 @@ function navigateTo(page) {
         const hiddenPages = [
             "splash",
             "loading",
-            "language",
             "login",
             "profile"
         ];

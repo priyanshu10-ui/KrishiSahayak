@@ -85,10 +85,10 @@ function renderCalculator() {
                   </div>`;
                 }).join('')}
               </div>
-              <div class="bg-[#ffdad6]/30 p-4 rounded-lg border-l-4 border-[#ba1a1a] mt-4">
+              <div class="bg-[#f0f4c5]/30 p-4 rounded-lg border-l-4 border-[#EBC106] mt-4">
                 <div class="flex gap-3">
-                  <span class="material-symbols-outlined text-[#ba1a1a]">warning</span>
-                  <p class="text-[#93000a] text-sm">Do not spray against the wind direction. Keep children and livestock away from the treated area for 48 hours.</p>
+                  <span class="material-symbols-outlined text-[#EBC106]">warning</span>
+                  <p class="text-[#EBC106] text-sm">Do not spray against the wind direction. Keep children and livestock away from the treated area for 48 hours.</p>
                 </div>
               </div>
             </div>
