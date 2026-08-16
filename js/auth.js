@@ -1,268 +1,386 @@
-// ==========================================
-// Krishi Sahayak Authentication
-// ==========================================
+    // ==========================================
+    // Krishi Sahayak Authentication
+    // ==========================================
 
-const provider = new firebase.auth.GoogleAuthProvider();
+    const provider = new firebase.auth.GoogleAuthProvider();
 
-let splashFinished = false;
-// ==========================================
-// GOOGLE LOGIN
-// ==========================================
+    let splashFinished = false;
 
-async function signInWithGoogle() {
 
-    try {
+    // ==========================================
+    // GOOGLE LOGIN
+    // ==========================================
 
-        // Show loading screen
-        navigateTo("loading");
+    async function signInWithGoogle() {
 
-        const result = await auth.signInWithPopup(provider);
+        try {
 
-        const user = result.user;
+            console.log("🔐 Starting Google Login...");
 
-        // Save basic user information
-        await db.collection("users").doc(user.uid).set({
+            const result =
+                await auth.signInWithPopup(provider);
 
-            uid: user.uid,
-            name: user.displayName,
-            email: user.email,
-            photo: user.photoURL,
-            language: localStorage.getItem("language"),
+            const user = result.user;
 
-            createdAt:
-                firebase.firestore.FieldValue.serverTimestamp()
+            console.log("✅ Google Login Successful");
+            console.log("User:", user.displayName);
 
-        }, { merge: true });
+            // Save basic user information
+            await db
+                .collection("users")
+                .doc(user.uid)
+                .set({
 
-        console.log("Welcome:", user.displayName);
+                    uid: user.uid,
 
-        // DON'T call checkUserProfile() here.
-        // auth.onAuthStateChanged() will do it automatically.
+                    name: user.displayName,
 
-    } catch (error) {
+                    email: user.email,
 
-        console.error("Login Error:", error);
+                    photo: user.photoURL,
 
-        alert(error.message);
+                    language:
+                        localStorage.getItem("language"),
 
-        navigateTo("login");
-    }
+                    createdAt:
+                        firebase.firestore.FieldValue.serverTimestamp()
 
-}
+                }, {
+                    merge: true
+                });
 
-// ==========================================
-// PHONE NUMBER LOGIN
-// ==========================================
+            console.log("✅ User saved to Firestore");
 
-let confirmationResult = null;
-let recaptchaVerifier = null;
+            /*
+            * DO NOT navigate here.
+            *
+            * Firebase automatically triggers
+            * onAuthStateChanged().
+            */
 
-async function signInWithPhone() {
-
-    try {
-
-        // Get phone number
-        const phoneNumber = prompt(
-            "Enter your mobile number with country code:\nExample: +919876543210"
-        );
-
-        if (!phoneNumber) {
-            return;
         }
 
-        // Create reCAPTCHA
-        if (!recaptchaVerifier) {
+        catch (error) {
 
-            recaptchaVerifier =
-                new firebase.auth.RecaptchaVerifier(
-                    "recaptcha-container",
-                    {
-                        size: "normal"
-                    }
-                );
-
-            await recaptchaVerifier.render();
-        }
-
-        // Send OTP
-        confirmationResult =
-            await auth.signInWithPhoneNumber(
-                phoneNumber,
-                recaptchaVerifier
+            console.error(
+                "❌ Google Login Error:",
+                error
             );
 
-        console.log("OTP sent successfully");
+            alert(error.message);
 
-        // Ask user for OTP
-        const otp = prompt(
-            "Enter the OTP sent to your mobile number:"
-        );
-
-        if (!otp) {
-            return;
+            navigateTo("login");
         }
-
-        // Verify OTP
-        const result =
-            await confirmationResult.confirm(otp);
-
-        const user = result.user;
-
-        console.log(
-            "Phone Login Successful:",
-            user.phoneNumber
-        );
-
-        // Save user information in Firestore
-        await db.collection("users")
-            .doc(user.uid)
-            .set({
-
-                uid: user.uid,
-
-                phone: user.phoneNumber,
-
-                language:
-                    localStorage.getItem("language"),
-
-                createdAt:
-                    firebase.firestore.FieldValue.serverTimestamp()
-
-            }, { merge: true });
-
-        console.log("Phone user saved to Firestore");
-
-        // DON'T call checkUserProfile() here.
-        // auth.onAuthStateChanged() will handle it.
-
     }
 
-    catch (error) {
 
-        console.error(
-            "Phone Login Error:",
-            error
-        );
+    // ==========================================
+    // PHONE NUMBER LOGIN
+    // ==========================================
 
-        alert(error.message);
+    let confirmationResult = null;
+    let recaptchaVerifier = null;
 
-        // Clear reCAPTCHA
-        if (recaptchaVerifier) {
+    async function signInWithPhone() {
 
-            recaptchaVerifier.clear();
+        try {
 
-            recaptchaVerifier = null;
+            // --------------------------------------
+            // Get phone number
+            // --------------------------------------
+
+            const phoneNumber = prompt(
+                "Enter your mobile number with country code:\nExample: +919876543210"
+            );
+
+            if (!phoneNumber) {
+                return;
+            }
+
+
+            // --------------------------------------
+            // Create reCAPTCHA
+            // --------------------------------------
+
+            if (!recaptchaVerifier) {
+
+                recaptchaVerifier =
+                    new firebase.auth.RecaptchaVerifier(
+                        "recaptcha-container",
+                        {
+                            size: "normal"
+                        }
+                    );
+
+                await recaptchaVerifier.render();
+            }
+
+
+            // --------------------------------------
+            // Send OTP
+            // --------------------------------------
+
+            confirmationResult =
+                await auth.signInWithPhoneNumber(
+                    phoneNumber,
+                    recaptchaVerifier
+                );
+
+            console.log("OTP sent successfully");
+
+
+            // --------------------------------------
+            // Ask for OTP
+            // --------------------------------------
+
+            const otp = prompt(
+                "Enter the OTP sent to your mobile number:"
+            );
+
+            if (!otp) {
+                return;
+            }
+
+
+            // --------------------------------------
+            // Verify OTP
+            // --------------------------------------
+
+            const result =
+                await confirmationResult.confirm(otp);
+
+            const user = result.user;
+
+            console.log(
+                "✅ Phone Login Successful:",
+                user.phoneNumber
+            );
+
+
+            // --------------------------------------
+            // Save user information
+            // --------------------------------------
+
+            await db
+                .collection("users")
+                .doc(user.uid)
+                .set({
+
+                    uid: user.uid,
+
+                    phone: user.phoneNumber,
+
+                    language:
+                        localStorage.getItem("language"),
+
+                    createdAt:
+                        firebase.firestore.FieldValue.serverTimestamp()
+
+                }, {
+                    merge: true
+                });
+
+            console.log("✅ Phone user saved");
+
+            /*
+            * DO NOT navigate here.
+            *
+            * Firebase automatically triggers
+            * onAuthStateChanged().
+            */
+
         }
 
-        navigateTo("login");
+        // ==========================================
+        // PHONE LOGIN ERROR
+        // ==========================================
+
+        catch (error) {
+
+            console.error(
+                "❌ Phone Login Error:",
+                error
+            );
+
+            alert(error.message);
+
+
+            // Clear reCAPTCHA
+            if (recaptchaVerifier) {
+
+                recaptchaVerifier.clear();
+
+                recaptchaVerifier = null;
+            }
+
+            navigateTo("login");
+        }
     }
-}
 
 
+    // ==========================================
+    // AUTH STATE
+    // ==========================================
 
-// ==========================================
+    // ==========================================
 // AUTH STATE
 // ==========================================
 
 auth.onAuthStateChanged(async (user) => {
-    if (!splashFinished) {
-    await new Promise(resolve => setTimeout(resolve, 2000));
-}
 
-    console.log("Auth State Changed");
-    console.log(user);
+    console.log(
+        "🔄 Firebase Auth State Changed"
+    );
+
+    console.log(
+        "User:",
+        user
+    );
 
     updateUserUI(user);
 
-    // ------------------------
-    // NOT LOGGED IN
-    // ------------------------
 
-    if (!user) {
+    // --------------------------------------
+    // Splash still active
+    // --------------------------------------
 
-        hideAppNavigation();
+    if (!splashFinished) {
 
-        const language = localStorage.getItem("language");
-
-        if (language) {
-
-            navigateTo("login");
-
-        } else {
-
-            navigateTo("language");
-
-        }
+        console.log(
+            "⏳ Splash active - waiting for startup"
+        );
 
         return;
     }
 
-    // ------------------------
-    // USER LOGGED IN
-    // ------------------------
+
+    // --------------------------------------
+    // NOT LOGGED IN
+    // --------------------------------------
+
+    if (!user) {
+
+        console.log(
+            "🔐 No user → Login"
+        );
+
+        hideAppNavigation();
+
+        navigateTo("login");
+
+        return;
+    }
+
+
+    // --------------------------------------
+    // LOGGED IN
+    // --------------------------------------
+
+    console.log(
+        "👤 User logged in → Checking profile"
+    );
 
     hideAppNavigation();
-
-    navigateTo("loading");
 
     await checkUserProfile(user);
 
 });
 
 
+    // ==========================================
+    // CHECK PROFILE
+    // ==========================================
 
-// ==========================================
-// CHECK PROFILE
-// ==========================================
+    async function checkUserProfile(user) {
 
-async function checkUserProfile(user) {
+        console.log(
+            "🔍 Checking profile..."
+        );
 
-    console.log("Checking profile...");
+        try {
 
-    try {
-        const doc = await db.collection("users")
-                            .doc(user.uid)
-                            .get();
+            const doc =
+                await db
+                    .collection("users")
+                    .doc(user.uid)
+                    .get();
 
-        console.log("Firestore Document Exists:", doc.exists);
 
-        // New User
-        if (!doc.exists) {
+            console.log(
+                "Firestore Document Exists:",
+                doc.exists
+            );
 
-            console.log("New user");
 
-            hideAppNavigation();
+            // --------------------------------------
+            // NEW USER
+            // --------------------------------------
 
-            navigateTo("profile");
+            if (!doc.exists) {
 
-            return;
-        }
+                console.log(
+                    "🆕 New user"
+                );
 
-        const data = doc.data();
+                hideAppNavigation();
 
-        console.log("User Data:", data);
+                navigateTo("profile");
 
-        const profileComplete =
+                return;
+            }
 
-            data.phone &&
-            data.state &&
-            data.district &&
-            data.village &&
-            data.crops;
 
-        if (!profileComplete) {
+            // --------------------------------------
+            // EXISTING USER
+            // --------------------------------------
 
-            console.log("Profile Incomplete");
+            const data = doc.data();
 
-            hideAppNavigation();
+            console.log(
+                "📄 User Data:",
+                data
+            );
 
-            navigateTo("profile");
 
-        }
+            // --------------------------------------
+            // CHECK PROFILE COMPLETION
+            // --------------------------------------
 
-        else {
+            const profileComplete =
+                !!(
+                    data.phone &&
+                    data.state &&
+                    data.district &&
+                    data.village &&
+                    data.crops
+                );
 
-            console.log("Profile Complete");
+
+            // --------------------------------------
+            // PROFILE INCOMPLETE
+            // --------------------------------------
+
+            if (!profileComplete) {
+
+                console.log(
+                    "⚠️ Profile Incomplete"
+                );
+
+                hideAppNavigation();
+
+                navigateTo("profile");
+
+                return;
+            }
+
+
+            // --------------------------------------
+            // PROFILE COMPLETE
+            // --------------------------------------
+
+            console.log(
+                "✅ Profile Complete"
+            );
 
             showAppNavigation();
 
@@ -270,42 +388,48 @@ async function checkUserProfile(user) {
 
         }
 
-    }
+        catch (error) {
 
-    catch (error) {
-
-        console.error("Firestore Error:", error);
-
-        alert(error.message);
-
-        navigateTo("login");
-
-    }
-
-}
-
-
-
-// ==========================================
-// LOGOUT
-// ==========================================
-
-function logout() {
-
-    auth.signOut()
-
-        .then(() => {
-
-            console.log("Logged Out");
-
-        })
-
-        .catch((error) => {
-
-            console.error(error);
+            console.error(
+                "❌ Firestore Error:",
+                error
+            );
 
             alert(error.message);
 
-        });
+            hideAppNavigation();
 
-}
+            navigateTo("login");
+        }
+    }
+
+
+    // ==========================================
+    // LOGOUT
+    // ==========================================
+
+    function logout() {
+
+        auth.signOut()
+
+            .then(() => {
+
+                console.log(
+                    "✅ Logged Out"
+                );
+
+                navigateTo("login");
+
+            })
+
+            .catch((error) => {
+
+                console.error(
+                    "❌ Logout Error:",
+                    error
+                );
+
+                alert(error.message);
+
+            });
+    }

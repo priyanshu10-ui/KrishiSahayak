@@ -6,61 +6,190 @@
 // 1. INITIALIZE ALL PAGES
 // ==========================================
 
-function initApp() {
-    // Render static and initial pages
-    renderDashboard();
-    renderCropHealth();
-    renderMarket();
-    renderAIAssistant();
-    renderCalculator();
-    renderProfile();
-    renderLogin();
+// ==========================================
+// KRISHI SAHAYAK - APP STARTUP
+// ==========================================
 
-    // Show loading screen first.
-    // Firebase auth.js will handle authentication routing.
+function initApp() {
+
+    console.log("🚀 Krishi Sahayak starting...");
+
+    // --------------------------------------
+    // STEP 1: Show splash immediately
+    // --------------------------------------
+
     navigateTo("splash");
 
+    console.log("🌱 Splash screen displayed");
+
+
+    // --------------------------------------
+    // STEP 2: Render application pages
+    // --------------------------------------
+
+    try {
+
+        renderDashboard();
+        console.log("✅ Dashboard rendered");
+
+        renderCropHealth();
+        console.log("✅ Crop Health rendered");
+
+        renderMarket();
+        console.log("✅ Market rendered");
+
+        renderAIAssistant();
+        console.log("✅ AI Assistant rendered");
+
+        renderCalculator();
+        console.log("✅ Calculator rendered");
+
+        renderProfile();
+        console.log("✅ Profile rendered");
+
+        renderLogin();
+        console.log("✅ Login rendered");
+
+        renderLanguage();
+        console.log("✅ Language rendered");
+
+    } catch (error) {
+
+        console.error(
+            "❌ Page rendering error:",
+            error
+        );
+
+        // Even if another page has an error,
+        // don't let the app get stuck on splash.
+    }
+
+
+    // --------------------------------------
+    // STEP 3: Finish splash after 2 seconds
+    // --------------------------------------
+
     setTimeout(() => {
+
+        console.log("⏰ Splash timer finished");
+
         splashFinished = true;
-        navigateTo("loading");
-    }, 2000); // Show splash for 2 seconds
+
+        console.log(
+            "splashFinished =",
+            splashFinished
+        );
+
+
+        // ----------------------------------
+        // Check Firebase user
+        // ----------------------------------
+
+        const user = auth.currentUser;
+
+        console.log(
+            "👤 Current Firebase user:",
+            user
+        );
+
+
+        // ----------------------------------
+        // USER LOGGED IN
+        // ----------------------------------
+
+        if (user) {
+
+            console.log(
+                "👤 Existing user found"
+            );
+
+            checkUserProfile(user);
+
+        }
+
+
+        // ----------------------------------
+        // USER NOT LOGGED IN
+        // ----------------------------------
+
+        else {
+
+            console.log(
+                "🔐 No user found → Login"
+            );
+
+            hideAppNavigation();
+
+            navigateTo("login");
+
+        }
+
+    }, 2000);
 }
+
+
+// ==========================================
+// START APP
+// ==========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    initApp
+);
+
+// ==========================================
+// 2. PAGE NAVIGATION
+// ==========================================
 
 // ==========================================
 // 2. PAGE NAVIGATION
 // ==========================================
 
 function navigateTo(page) {
+
+    console.log("Navigating to:", page);
+
     // --------------------------------------
-    // Dynamic Re-render on Page Switch
-    // (Ensures fresh localStorage and Firestore data are shown)
+    // Dynamic re-render
     // --------------------------------------
+
     if (page === "dashboard") {
         renderDashboard();
-    } else if (page === "profile") {
+    }
+
+    if (page === "profile") {
         renderProfile();
     }
 
     // --------------------------------------
-    // Hide all pages
+    // Hide ALL pages
     // --------------------------------------
+
     document.querySelectorAll(".page-content").forEach((p) => {
         p.classList.remove("active");
+        p.style.display = "none";
     });
 
     // --------------------------------------
     // Show requested page
     // --------------------------------------
+
     const target = document.getElementById("page-" + page);
 
-    if (target) {
-        target.classList.add("active");
-    } else {
-        console.error("Page not found:", page);
+    if (!target) {
+        console.error("❌ Page not found:", "page-" + page);
         return;
     }
 
+    target.classList.add("active");
+    target.style.display = "block";
+
+    // --------------------------------------
+    // Splash screen
+    // --------------------------------------
+
     const splash = document.getElementById("page-splash");
+
     if (splash) {
         if (page === "splash") {
             splash.style.display = "flex";
@@ -70,68 +199,98 @@ function navigateTo(page) {
     }
 
     // --------------------------------------
-    // Top Navigation Active State
+    // Top Navigation
     // --------------------------------------
+
     document.querySelectorAll(".nav-top-link").forEach((link) => {
-        link.classList.toggle("active", link.dataset.page === page);
+
+        link.classList.toggle(
+            "active",
+            link.dataset.page === page
+        );
+
     });
 
     // --------------------------------------
-    // Side Navigation Active State
+    // Side Navigation
     // --------------------------------------
+
     document.querySelectorAll(".side-nav-link").forEach((link) => {
+
         if (link.dataset.page) {
+
             const isActive = link.dataset.page === page;
+
             link.classList.toggle("active", isActive);
 
-            const icon = link.querySelector(".material-symbols-outlined");
+            const icon = link.querySelector(
+                ".material-symbols-outlined"
+            );
+
             if (icon) {
-                icon.style.fontVariationSettings = isActive
-                    ? "'FILL' 1"
-                    : "'FILL' 0";
+                icon.style.fontVariationSettings =
+                    isActive
+                        ? "'FILL' 1"
+                        : "'FILL' 0";
             }
         }
+
     });
 
     // --------------------------------------
-    // Bottom Navigation Active State
+    // Bottom Navigation
     // --------------------------------------
+
     document.querySelectorAll(".bottom-nav-link").forEach((link) => {
+
         const isActive = link.dataset.page === page;
+
         link.classList.toggle("active", isActive);
 
-        const icon = link.querySelector(".material-symbols-outlined");
+        const icon = link.querySelector(
+            ".material-symbols-outlined"
+        );
+
         if (icon) {
-            icon.style.fontVariationSettings = isActive
-                ? "'FILL' 1"
-                : "'FILL' 0";
+            icon.style.fontVariationSettings =
+                isActive
+                    ? "'FILL' 1"
+                    : "'FILL' 0";
         }
+
     });
 
     // ======================================
-    // 3. FLOATING AI BUTTON
+    // FLOATING AI BUTTON
     // ======================================
+
     const fab = document.getElementById("fab-ai");
 
     if (fab) {
-        // Pages where AI button must NOT appear
+
         const hiddenPages = [
             "splash",
             "loading",
+            "language",
             "login",
             "profile"
         ];
 
-        if (hiddenPages.includes(page) || page === "ai-assistant") {
+        if (
+            hiddenPages.includes(page) ||
+            page === "ai-assistant"
+        ) {
             fab.style.display = "none";
         } else {
             fab.style.display = "flex";
         }
+
     }
 
-    // ======================================
-    // 4. SCROLL TO TOP
-    // ======================================
+    // --------------------------------------
+    // Scroll to top
+    // --------------------------------------
+
     window.scrollTo({
         top: 0,
         behavior: "smooth"
