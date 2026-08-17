@@ -5,8 +5,26 @@ let chatMessages = [
 let chatHistory = []; // Stores conversation for Gemini context
 
 function renderAIAssistant() {
-  const el = document.getElementById('page-ai-assistant');
-  el.innerHTML = `
+
+    const activeLanguage =
+      localStorage.getItem("selectedLanguage") || "en";
+
+    const t =
+      translations[activeLanguage] || translations.en;
+
+    if (chatMessages.length === 1 && chatMessages[0].role === "ai") {
+    chatMessages[0].text = t.aiWelcome.replace(
+        "Krishak",
+        "<strong>Krishak</strong>"
+    );
+}
+
+
+
+
+    const el = document.getElementById('page-ai-assistant');
+    el.innerHTML = `
+    <div>
     <div class="flex flex-col md:flex-row h-[calc(100vh-64px)]">
       <section class="flex-1 flex flex-col border-r border-stone-100 bg-white shadow-sm overflow-hidden">
         <div class="px-6 py-4 border-b border-stone-50 flex items-center justify-between">
@@ -15,8 +33,13 @@ function renderAIAssistant() {
               <span class="material-symbols-outlined text-white">smart_toy</span>
             </div>
             <div>
-              <h2 class="font-[Lexend] text-xl font-medium text-green-900">Krishak AI</h2>
-              <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-green-500"></span><p class="text-xs text-stone-500">Online | Powered by AI</p></div>
+              <h2 class="font-[Lexend] text-xl font-medium text-green-900">
+                ${t.aiAssistantTitle}
+              </h2>
+              <div class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-green-500"></span>
+              <p class="text-xs text-stone-500">
+                ${t.aiOnline}
+              </p>
             </div>
           </div>
         </div>
@@ -25,7 +48,7 @@ function renderAIAssistant() {
           <div id="chat-status" class="hidden text-xs text-stone-400 mb-2 px-2"></div>
           <div class="flex items-center gap-3 bg-white p-2 rounded-2xl border border-stone-200 shadow-sm focus-within:ring-2 focus-within:ring-[#2d5a27]/20 transition-all">
             <button class="p-2 text-stone-400 hover:text-[#154212] transition-colors"><span class="material-symbols-outlined">add_circle</span></button>
-            <input id="chat-input" class="flex-1 border-none focus:ring-0 py-2 bg-transparent outline-none" placeholder="Type your query or use voice..." type="text" onkeypress="if(event.key==='Enter')sendMessage()"/>
+            <input id="chat-input" class="flex-1 border-none focus:ring-0 py-2 bg-transparent outline-none" placeholder="${t.chatPlaceholder}" type="text" onkeypress="if(event.key==='Enter')sendMessage()"/>
             <div class="flex items-center gap-1">
               <button onclick="toggleVoice()" id="voice-btn" class="p-2.5 rounded-xl bg-stone-50 text-stone-600 hover:bg-[#ffa536] hover:text-white transition-all active:scale-95">
                 <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">mic</span>
@@ -38,9 +61,16 @@ function renderAIAssistant() {
         </div>
       </section>
       <section class="w-full md:w-80 lg:w-96 p-6 space-y-6 overflow-y-auto bg-stone-50/30 hidden md:block">
-        <h3 class="font-[Lexend] text-xl font-medium text-green-900 mb-4">Quick Support</h3>
+        <h3 class="font-[Lexend] text-xl font-medium text-green-900 mb-4">
+          ${t.quickSupport}
+        </h3>
         <div class="space-y-4">
-          ${[{icon:'chat',title:'WhatsApp Support',desc:'Immediate help from our agents',color:'green',ext:true},{icon:'groups',title:'Community Forums',desc:'Connect with 10k+ farmers',color:'amber'},{icon:'person_search',title:'Expert Contacts',desc:'Soil scientists & agronomists',color:'blue'}].map(c => `
+          ${[{icon:'chat',
+            title: t.whatsappSupport,
+            desc: t.immediateHelp, 
+            color:'green',ext:true},{icon:'groups',title: t.communityForums,
+            desc: t.connectFarmers,color:'amber'},{icon:'person_search',title: t.expertContacts,
+            desc: t.soilScientists,color:'blue'}].map(c => `
             <a class="group block bg-white p-4 rounded-2xl border border-stone-100 shadow-sm hover:shadow-md hover:border-[#2d5a27]/20 transition-all cursor-pointer">
               <div class="flex items-center gap-4">
                 <div class="w-12 h-12 rounded-xl bg-${c.color}-50 flex items-center justify-center text-${c.color}-600 group-hover:bg-${c.color}-600 group-hover:text-white transition-colors"><span class="material-symbols-outlined">${c.icon}</span></div>
@@ -51,12 +81,12 @@ function renderAIAssistant() {
         </div>
         <div class="bg-[#2d5a27] rounded-2xl p-5 text-white shadow-lg overflow-hidden relative">
           <div class="relative z-10">
-            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] uppercase tracking-wider font-bold mb-4">Featured Specialist</div>
+            <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[10px] uppercase tracking-wider font-bold mb-4">${t.featuredSpecialist}</div>
             <div class="flex items-center gap-3 mb-4">
               <img class="w-12 h-12 rounded-full border-2 border-white/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAsjNBqhjZMQvN2NwztMxZjS_kjvtiOydT2-8Hj9bhLfTZSr1g0pjsooCJaSmt2qJqCFeGSY5z_f210vPsv2p3ILbv8bJnCAx5vJWnphKwC8WbXSxkZyCjMayDns4Tq--N0pD9FbInVvTKZqI_uZPdtq1g66gmKdVXwBJNt7Q8NdU1MeRGeqf4gJzEMMrPz0esLKcU2yW1tveCQb0FetwdZOhHwH-NSyxIr8tegdL6S2AvFHUtA9EMqbvhY3hz5RKnUt13J7cLk2j0v" alt="Expert"/>
-              <div><h4 class="font-[Lexend] font-medium">Dr. Sarah Verma</h4><p class="text-xs text-white/70">Pest Control Expert</p></div>
+              <div><h4 class="font-[Lexend] font-medium">${t.expertName}</h4><p class="text-xs text-white/70">${t.pestControlExpert}</p></div>
             </div>
-            <button class="w-full py-2.5 bg-white text-[#154212] rounded-xl font-bold text-sm shadow-md active:scale-95 transition-transform">Book Consultation</button>
+            <button class="w-full py-2.5 bg-white text-[#154212] rounded-xl font-bold text-sm shadow-md active:scale-95 transition-transform"></button>
           </div>
           <div class="absolute -right-4 -bottom-4 w-32 h-32 bg-white/5 rounded-full blur-2xl"></div>
         </div>
@@ -132,6 +162,12 @@ function removeTyping() {
 
 // ======= GEMINI AI INTEGRATION =======
 async function callGeminiAPI(userMessage) {
+  const activeLanguage =
+    localStorage.getItem("selectedLanguage") || "en";
+
+  const selectedLanguage =
+    translations[activeLanguage]?.aiLanguageName || "English";
+
   // Check if API key is configured
   if (!GEMINI_API_KEY || GEMINI_API_KEY === "PASTE_YOUR_GEMINI_API_KEY_HERE") {
     return getFallbackResponse(userMessage);
@@ -144,7 +180,13 @@ async function callGeminiAPI(userMessage) {
     // Add system instruction as first user message
     contents.push({
       role: "user",
-      parts: [{ text: KRISHAK_SYSTEM_PROMPT + "\n\nPlease acknowledge and respond as Krishak from now on." }]
+      parts: [{
+        text: KRISHAK_SYSTEM_PROMPT +
+          `\n\nPlease respond as Krishak from now on.
+    Always answer the farmer in ${selectedLanguage}.
+    Use simple, easy-to-understand language suitable for farmers.
+    Do not switch to English unless the selected language is English.`
+      }]
     });
     contents.push({
       role: "model",

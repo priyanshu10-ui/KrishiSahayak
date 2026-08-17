@@ -53,6 +53,18 @@ function initApp() {
         renderLanguage();
         console.log("✅ Language rendered");
 
+
+
+        // Apply saved language after all pages are rendered
+        const savedLanguage =
+            localStorage.getItem("selectedLanguage") || "en";
+
+        console.log("🌐 Applying saved language:", savedLanguage);
+
+        if (typeof applyLanguage === "function") {
+            applyLanguage(savedLanguage);
+        }
+
     } catch (error) {
 
         console.error(

@@ -1,16 +1,30 @@
 // Crop Health & Diagnosis Page
 function renderCropHealth() {
+
+  const lang = localStorage.getItem("selectedLanguage") || "en";
+  const t = translations[lang];
+
   const el = document.getElementById('page-crop-health');
+
   el.innerHTML = `
     <section class="mb-10">
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
-          <h2 class="font-[Lexend] text-2xl font-medium text-[#154212] mb-2">Crop Management & Diagnosis</h2>
-          <p class="text-[#42493e] max-w-xl">Identify plant diseases instantly with AI-powered diagnostics. Upload a photo or search for known symptoms.</p>
+          <h2 id="crop-management-title" class="font-[Lexend] text-2xl font-medium text-[#154212] mb-2">
+            Crop Management & Diagnosis
+          </h2>
+          <p id="crop-management-description" class="text-[#42493e] max-w-xl">
+            Identify plant diseases instantly with AI-powered diagnostics. Upload a photo or search for known symptoms.
+          </p>
         </div>
         <div class="relative w-full md:w-80">
           <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#72796e]">search</span>
-          <input class="w-full pl-10 pr-4 py-3 bg-white border border-[#c2c9bb] rounded-xl focus:ring-2 focus:ring-[#154212] outline-none transition-all shadow-sm" placeholder="Search crop diseases..." type="text"/>
+          <input
+            id="crop-disease-search"
+            class="w-full pl-10 pr-4 py-3 bg-white border border-[#c2c9bb] rounded-xl focus:ring-2 focus:ring-[#154212] outline-none transition-all shadow-sm"
+            placeholder="${t.searchCropDiseases}"
+            type="text"
+          />
         </div>
       </div>
     </section>
@@ -23,19 +37,29 @@ function renderCropHealth() {
           <div class="w-24 h-24 bg-[#bcf0ae] rounded-full flex items-center justify-center text-[#154212] mb-6 shadow-inner">
             <span class="material-symbols-outlined text-5xl">add_a_photo</span>
           </div>
-          <h3 class="font-[Lexend] text-xl font-medium text-[#191c1c] mb-2">Upload Crop Photo</h3>
-          <p class="text-[#42493e] text-center max-w-sm mb-8">Drag and drop your image here, or browse from your device. For best results, use high-quality close-ups of leaves.</p>
+          <h3 id="upload-crop-title" class="font-[Lexend] text-xl font-medium text-[#191c1c] mb-2">
+            Upload Crop Photo
+          </h3>
+          <p id="upload-crop-description" class="text-[#42493e] text-center max-w-sm mb-8">
+            Drag and drop your image here, or browse from your device. For best results, use high-quality close-ups of leaves.
+          </p>
           <div class="flex gap-4">
-            <button onclick="document.getElementById('file-input').click()" class="bg-[#2d5a27] text-white px-8 py-3 rounded-xl font-semibold shadow-lg shadow-[#2d5a27]/20 active:scale-95 transition-transform">Browse Gallery</button>
+          <button
+            id="browse-gallery-btn"
+            onclick="document.getElementById('file-input').click()"
+            class="bg-[#2d5a27] text-white px-8 py-3 rounded-xl font-semibold shadow-lg shadow-[#2d5a27]/20 active:scale-95 transition-transform">
+            ${t.browseGallery}
+          </button>
 
 
 
 
-            <button
-    onclick="openCamera()"
-    class="bg-white border-2 border-[#2d5a27] text-[#2d5a27] px-8 py-3 rounded-xl font-semibold active:scale-95 transition-transform">
-    Open Camera
-</button>
+          <button
+              id="open-camera-btn"
+              onclick="openCamera()"
+              class="bg-white border-2 border-[#2d5a27] text-[#2d5a27] px-8 py-3 rounded-xl font-semibold active:scale-95 transition-transform">
+              ${t.openCamera}
+          </button>
 
 
 
@@ -87,7 +111,7 @@ function renderCropHealth() {
             id="click-photo-btn"
             onclick="capturePhoto()"
             class="bg-[#2d5a27] text-white px-6 py-3 rounded-xl font-bold">
-            📸 Click Photo
+            📸 ${t.clickPhoto}
         </button>
 
 
@@ -96,7 +120,7 @@ function renderCropHealth() {
             id="start-recording-btn"
             onclick="startRecording()"
             class="bg-red-600 text-white px-6 py-3 rounded-xl font-bold">
-            🎥 Start Video
+            🎥 ${t.startVideo}
         </button>
 
 
@@ -105,7 +129,7 @@ function renderCropHealth() {
             id="stop-recording-btn"
             onclick="stopRecording()"
             class="hidden bg-gray-700 text-white px-6 py-3 rounded-xl font-bold">
-            ⏹ Stop Video
+            ⏹ ${t.stopVideo}
         </button>
 
 
@@ -114,7 +138,7 @@ function renderCropHealth() {
             id="close-camera-btn"
             onclick="closeCamera()"
             class="bg-white border-2 border-[#2d5a27] text-[#2d5a27] px-6 py-3 rounded-xl font-bold">
-            ✕ Close
+            ✕ ${t.closeCamera}
         </button>
 
     </div>
@@ -152,32 +176,39 @@ function renderCropHealth() {
 
 
 
-
-
-
-
       <!-- Health Stats -->
       <div class="lg:col-span-4 flex flex-col gap-6">
         <div class="flex-1 bg-[#ffa536] p-6 rounded-[2rem] text-[#2c1700] shadow-sm">
           <div class="flex justify-between items-start mb-4">
             <div class="p-2 bg-white/30 rounded-lg"><span class="material-symbols-outlined">health_and_safety</span></div>
-            <span class="text-xs font-bold uppercase tracking-wider opacity-70">Weekly Status</span>
+            <span id="weekly-status" class="text-xs font-bold uppercase tracking-wider opacity-70">
+              ${t.weeklyStatus}
+            </span>
           </div>
-          <h4 class="font-[Lexend] text-xl font-medium mb-1">Health Score</h4>
+          <h4 id="health-score-title" class="font-[Lexend] text-xl font-medium mb-1">
+            ${t.healthScore}
+          </h4>
           <div class="text-4xl font-extrabold mb-4">84%</div>
           <div class="h-2 w-full bg-white/20 rounded-full overflow-hidden mb-2"><div class="h-full bg-white w-[84%]"></div></div>
-          <p class="text-sm opacity-80">Your crops are generally healthy. 2 alerts need attention.</p>
+          <p id="health-score-description" class="text-sm opacity-80">
+            ${t.healthScoreDescription}
+          </p>
         </div>
         <div class="flex-1 bg-white border border-stone-100 p-6 rounded-[2rem] shadow-sm">
-          <h4 class="font-semibold text-sm mb-4">Weather Impact</h4>
+          <h4 id="weather-impact-title" class="font-semibold text-sm mb-4">
+            ${t.weatherImpact}
+          </h4>
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-stone-50 rounded-xl flex items-center justify-center text-[#895100]">
               <span class="material-symbols-outlined text-3xl">partly_cloudy_day</span>
             </div>
-            <div><div class="font-bold text-lg">32°C</div><div class="text-xs text-[#42493e]">High Humidity Detected</div></div>
+            <div><div id="crop-weather-temperature" class="font-bold text-lg">32°C</div><div id="humidity-detected-text" class="text-xs text-[#42493e]">
+              ${t.highHumidityDetected}
+            </div></div>
           </div>
           <div class="mt-4 p-3 bg-[#ffdad6] text-[#93000a] rounded-xl text-xs flex gap-2">
-            <span class="material-symbols-outlined text-sm">warning</span> Fungal risk elevated for tomato crops.
+            <span class="material-symbols-outlined text-sm">warning</span>
+            <span id="fungal-risk-text">${t.fungalRisk}</span>
           </div>
         </div>
       </div>
@@ -186,21 +217,54 @@ function renderCropHealth() {
     <!-- Recent Diagnoses -->
     <section class="mt-16">
       <div class="flex items-center justify-between mb-8">
-        <h3 class="font-[Lexend] text-xl font-medium text-[#154212]">Recent Diagnoses</h3>
-        <button class="text-[#2d5a27] font-semibold flex items-center gap-1 hover:underline">View History <span class="material-symbols-outlined text-sm">arrow_forward</span></button>
+        <h3 id="recent-diagnoses-title" class="font-[Lexend] text-xl font-medium text-[#154212]">
+          ${t.recentDiagnoses}
+        </h3>
+        <button
+          id="view-history-btn"
+          class="text-[#2d5a27] font-semibold flex items-center gap-1 hover:underline">
+          ${t.viewHistory}
+          <span class="material-symbols-outlined text-sm">arrow_forward</span>
+        </button>
       </div>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         ${[
       {
-        name: 'Tomato (Roma)', disease: 'Early Blight (Fungal)', time: '2h ago', badge: 'Critical', badgeColor: 'bg-[#ba1a1a]', diseaseColor: 'text-[#ba1a1a]', desc: 'Affects foliage and fruit. Spreads quickly in warm, humid weather. Immediate treatment required.', btn: 'View Solution', icon: 'medical_services',
+          name: 'Tomato (Roma)',
+          disease: t.earlyBlight,
+          time: t.twoHoursAgo,
+          badge: t.critical,
+          badgeColor: 'bg-[#ba1a1a]',
+          diseaseColor: 'text-[#ba1a1a]',
+          desc: t.earlyBlightDescription,
+          btn: t.viewSolution,
+          icon: 'medical_services',
+
         img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD08YZk0mgAvvRiMF5GmyFxFYJhip8f4eNlQWGIg_z23nXBmk5R8hdJaM1sWNSIaly1vV25pWEEYZkvoNw8S15StZKeF7j7Avg_vIWSTUhwsmUHzAUWqS1kSFVsCR33YIhMMULRngZ5-TeleDjda54Wi3uuHQewINfAhav5KtlOwGvJkj4k4lzj0j8W7tMTsApmaBr7Yzgf-ijax4nm4DD3Lo7wD2KMlng30Qtlw4UKDFl5fS8cT7_ojuMYhYVw8N7fflOg_W1ajnJS'
       },
       {
-        name: 'Maize (Sweet Corn)', disease: 'No Pathogens Detected', time: 'Yesterday', badge: 'Healthy', badgeColor: 'bg-[#2d5a27]', diseaseColor: 'text-[#2d5a27]', desc: 'Crop shows optimal nitrogen levels and strong vigor. Continue current irrigation schedule.', btn: 'Detailed Report', icon: 'description',
+        name: 'Maize (Sweet Corn)',
+        disease: t.noPathogens,
+        time: t.yesterday,
+        badge: t.healthy,
+        badgeColor: 'bg-[#2d5a27]',
+        diseaseColor: 'text-[#2d5a27]',
+        desc: t.healthyCropDescription,
+        btn: t.detailedReport,
+        icon: 'description',
         img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBizTY3Ni0nLs6Nd_58ktaEORKIzB4gt_FNBmXTNAmnyZN0uMSK5Bg-wG7S8uUR4AHdQyj0Wn9rKGLIith9GT4JmNB4Zum9lJw4hYWamkB5z7ChycziOBwsGQclcxt9sRM8Nn6s_bmEz9xZg4FkUvEkSbXcROM9ytgt7b4QWfEjIrL-fe-N5tDHhFKkAIKuOhAOPnLGobuDHgpyO6ryTcqrtF-sPSw7bry6NS-g_PejFDvB9rQBq1Q0e5CExoA46FNUeKVLTFvPMFOQ'
       },
       {
-        name: 'Wheat (Durum)', disease: 'Leaf Rust (Moderate)', time: '3 days ago', badge: 'Warning', badgeColor: 'bg-[#ffa536]', diseaseColor: 'text-[#895100]', desc: 'Signs of P. triticina found on lower leaves. Monitor spreading to upper canopy.', btn: 'View Solution', icon: 'medical_services',
+        name: 'Wheat (Durum)',
+        disease: t.leafRust,
+        time: t.threeDaysAgo,
+        badge: t.warning,
+        badgeColor: 'bg-[#ffa536]',
+        diseaseColor: 'text-[#895100]',
+        desc: t.leafRustDescription,
+        btn: t.viewSolution,
+        icon: 'medical_services',
+        
         img: 'https://lh3.googleusercontent.com/aida-public/AB6AXuB1O2tD8jWF7wptZo0fwlmx1okmwa8iT3AntGFRV32dgh53fmRrnu0QRbXkN8htQo4QD6Gr7UQ2RARjTc8B5NVSzHbKIJH-LYUQGNVnXi2Y25fuN2eYHTnp80GCLwiiSpj1vCORxPsMlx4ww0AJ3Wq4NglRnkIjoDUwzyPY6urv4fjmTrT4-7yWB9po8dOXZcEsGE3LKtxh2XOVro8IFBUNuYO9yHGXuNXE9vE1zZsjEmJrHAXceN-Z8N_siGHk3lQccOgPaRiMgVrU'
       }
     ].map(d => `
@@ -229,9 +293,20 @@ function renderCropHealth() {
       <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl"></div>
       <div class="relative z-10 flex flex-col md:flex-row items-center gap-8">
         <div class="flex-1 text-center md:text-left">
-          <h3 class="font-[Lexend] text-3xl md:text-4xl font-semibold mb-4">Unsure about a symptom?</h3>
-          <p class="text-[#9dd090] text-lg mb-8 opacity-90">Chat with Krishi AI to get instant expert advice on soil health, pest management, and local weather patterns.</p>
-          <button onclick="navigateTo('ai-assistant')" class="bg-white text-[#2d5a27] px-10 py-4 rounded-full font-extrabold text-lg shadow-xl active:scale-95 transition-transform">Start AI Chat</button>
+          <h3 id="ai-symptom-title" class="font-[Lexend] text-3xl md:text-4xl font-semibold mb-4">
+            ${t.unsureSymptom}
+          </h3>
+          <p
+            id="ai-symptom-description"
+            class="text-[#9dd090] text-lg mb-8 opacity-90">
+            ${t.aiCropAdvice}
+          </p>
+          <button
+            id="start-ai-chat-btn"
+            onclick="navigateTo('ai-assistant')"
+            class="bg-white text-[#2d5a27] px-10 py-4 rounded-full font-extrabold text-lg shadow-xl active:scale-95 transition-transform">
+            ${t.startAIChat}
+          </button>
         </div>
         <div class="w-48 h-48 bg-white/20 rounded-[2rem] flex items-center justify-center backdrop-blur-md border border-white/30">
           <span class="material-symbols-outlined text-[80px] text-white" style="font-variation-settings:'FILL' 1;">smart_toy</span>
@@ -249,15 +324,19 @@ function handleImageUpload(event) {
   reader.onload = function (e) {
     zone.innerHTML = `
       <img src="${e.target.result}" class="max-h-64 rounded-xl shadow-lg mb-4" alt="Uploaded crop"/>
-      <p class="text-green-800 font-bold text-lg mb-2">Image Uploaded Successfully!</p>
-      <p class="text-stone-500 text-sm mb-4">AI is analyzing your crop image...</p>
+      <p class="text-green-800 font-bold text-lg mb-2">${t.imageUploadedSuccessfully}</p>
+      <p class="text-stone-500 text-sm mb-4">${t.analyzingCropImage}</p>
       <div class="flex gap-2"><span class="typing-dot w-2 h-2 rounded-full bg-green-600"></span><span class="typing-dot w-2 h-2 rounded-full bg-green-600"></span><span class="typing-dot w-2 h-2 rounded-full bg-green-600"></span></div>
     `;
     setTimeout(() => {
       zone.innerHTML += `
         <div class="mt-6 p-4 bg-[#ffdad6]/30 border border-[#ffdad6] rounded-xl text-left w-full max-w-md">
-          <h4 class="font-bold text-[#93000a] mb-1">⚠️ Possible: Early Blight Detected</h4>
-          <p class="text-sm text-[#42493e]">Confidence: 87%. Consider applying Mancozeb fungicide. Consult AI Assistant for detailed treatment plan.</p>
+          <h4 class="font-bold text-[#93000a] mb-1">
+            ⚠️ ${t.earlyBlightDetected}
+          </h4>
+          <p class="text-sm text-[#42493e]">
+            ${t.earlyBlightConfidence}
+          </p>
           <button onclick="navigateTo('ai-assistant')" class="mt-3 bg-[#2d5a27] text-white px-6 py-2 rounded-lg font-bold text-sm">Ask Krishak AI</button>
         </div>`;
     }, 3000);
@@ -265,33 +344,168 @@ function handleImageUpload(event) {
   reader.readAsDataURL(file);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 let cameraStream = null;
 let mediaRecorder = null;
 let recordedChunks = [];
 
 let capturedFile = null;
 let capturedURL = null;
+
+
+
+// ==========================================
+// CROP HEALTH LANGUAGE
+// ==========================================
+
+function applyCropHealthLanguage(lang) {
+
+  if (!translations[lang]) return;
+
+  const t = translations[lang];
+
+  renderCropHealth();
+
+  const uploadTitle =
+    document.getElementById("upload-crop-title");
+
+    if (uploadTitle)
+      uploadTitle.textContent =
+        t.uploadCropPhoto || "Upload Crop Photo";
+
+    const uploadDescription =
+      document.getElementById("upload-crop-description");
+
+    if (uploadDescription)
+      uploadDescription.textContent =
+        t.uploadCropDesc ||
+        "Drag and drop your image here, or browse from your device. For best results, use high-quality close-ups of leaves.";
+
+    // Page heading
+    const title =
+    document.getElementById("crop-management-title");
+
+  if (title)
+    title.textContent =
+      t.cropManagement || "Crop Management & Diagnosis";
+
+  // Page description
+  const description =
+    document.getElementById("crop-management-description");
+
+  if (description)
+    description.textContent =
+      t.cropDiagnosisDesc ||
+      "Identify plant diseases instantly with AI-powered diagnostics. Upload a photo or search for known symptoms.";
+
+  // Search
+  const search =
+    document.getElementById("crop-disease-search");
+
+  if (search)
+    search.placeholder =
+      t.searchCropDiseases || "Search crop diseases...";
+
+  
+  // Buttons
+  const browse =
+    document.getElementById("browse-gallery-btn");
+
+  if (browse)
+    browse.textContent =
+      t.browseGallery || "Browse Gallery";
+
+  const camera =
+    document.getElementById("open-camera-btn");
+
+  if (camera)
+    camera.textContent =
+      t.openCamera || "Open Camera";
+
+  // Health
+  const weekly =
+    document.getElementById("weekly-status");
+
+  if (weekly)
+    weekly.textContent =
+      t.weeklyStatus || "Weekly Status";
+
+  const healthScore =
+    document.getElementById("health-score-title");
+
+  if (healthScore)
+    healthScore.textContent =
+      t.healthScore || "Health Score";
+
+  const healthDescription =
+    document.getElementById("health-score-description");
+
+  if (healthDescription)
+    healthDescription.textContent =
+      t.healthScoreDescription ||
+      "Your crops are generally healthy. 2 alerts need attention.";
+
+  // Weather
+  const weatherImpact =
+    document.getElementById("weather-impact-title");
+
+  if (weatherImpact)
+    weatherImpact.textContent =
+      t.weatherImpact || "Weather Impact";
+
+  const humidity =
+    document.getElementById("humidity-detected-text");
+
+  if (humidity)
+    humidity.textContent =
+      t.highHumidityDetected || "High Humidity Detected";
+
+  const fungalRisk =
+    document.getElementById("fungal-risk-text");
+
+  if (fungalRisk)
+    fungalRisk.textContent =
+      t.fungalRisk ||
+      "Fungal risk elevated for tomato crops.";
+
+  // Recent diagnoses
+  const recent =
+    document.getElementById("recent-diagnoses-title");
+
+  if (recent)
+    recent.textContent =
+      t.recentDiagnoses || "Recent Diagnoses";
+
+  const history =
+    document.getElementById("view-history-btn");
+
+  if (history) {
+    history.childNodes[0].textContent =
+      (t.viewHistory || "View History") + " ";
+  }
+
+  // AI section
+  const aiTitle =
+    document.getElementById("ai-symptom-title");
+
+  if (aiTitle)
+    aiTitle.textContent =
+      t.unsureSymptom || "Unsure about a symptom?";
+
+  const aiDescription =
+    document.getElementById("ai-symptom-description");
+
+  if (aiDescription)
+    aiDescription.textContent =
+      t.aiCropAdvice ||
+      "Chat with Krishi AI to get instant expert advice on soil health, pest management, and local weather patterns.";
+
+  const aiButton =
+    document.getElementById("start-ai-chat-btn");
+
+  if (aiButton)
+    aiButton.textContent =
+      t.startAIChat || "Start AI Chat";
+}
 
 
 // ===============================

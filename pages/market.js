@@ -1,20 +1,41 @@
 // Market Rates & Trends Page
 function renderMarket() {
+
   const el = document.getElementById('page-market');
+
+  if (!el) return;
+
+  const activeLanguage =
+    localStorage.getItem("selectedLanguage") || "en";
+
+  const t =
+    translations[activeLanguage] ||
+    translations.en;
+
   el.innerHTML = `
+
     <div class="space-y-8">
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
         <div>
-          <h1 class="font-[Lexend] text-3xl font-medium text-[#154212]">Market Rates & Trends</h1>
-          <p class="text-[#42493e]">Real-time agricultural commodity prices across 450+ regional Mandis.</p>
+          <h1 id="market-title" class="font-[Lexend] text-3xl font-medium text-[#154212]">
+            ${t.marketRates}
+          </h1>
+
+          <p id="market-description" class="text-[#42493e]">
+            ${t.marketDescription}
+          </p>
         </div>
         <div class="flex gap-2">
           <div class="relative">
             <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#72796e]">search</span>
-            <input class="pl-10 pr-4 py-2.5 rounded-xl border border-[#c2c9bb] bg-white focus:ring-[#154212] focus:border-[#154212] w-full md:w-64" placeholder="Search crops or markets..."/>
+            <input
+              id="market-search"
+              class="pl-10 pr-4 py-2.5 rounded-xl border border-[#c2c9bb] bg-white focus:ring-[#154212] focus:border-[#154212] w-full md:w-64"
+              placeholder="${t.searchMarket}"
+            />
           </div>
           <button class="flex items-center gap-2 px-4 py-2.5 bg-white border border-[#c2c9bb] rounded-xl font-semibold text-sm hover:bg-stone-50 transition-colors">
-            <span class="material-symbols-outlined text-[20px]">filter_list</span> Filters
+            <span class="material-symbols-outlined text-[20px]">filter_list</span> ${t.filters}
           </button>
         </div>
       </div>
@@ -24,8 +45,12 @@ function renderMarket() {
         <div class="lg:col-span-8 bg-white border border-stone-100 rounded-3xl p-6 shadow-sm">
           <div class="flex items-center justify-between mb-8">
             <div>
-              <h3 class="font-[Lexend] text-xl font-medium text-[#154212]">Price Volatility Index</h3>
-              <p class="text-xs text-[#72796e]">Last 30 days - Wheat (Malwa Gold)</p>
+              <h3 class="font-[Lexend] text-xl font-medium text-[#154212]">
+                ${t.priceVolatility}
+              </h3>
+              <p class="text-xs text-[#72796e]">
+                ${t.last30Days} - Wheat (Malwa Gold)
+              </p>
             </div>
             <div class="flex gap-2 bg-[#edeeed] rounded-lg p-1">
               <button class="px-3 py-1 text-xs font-bold rounded-md bg-white shadow-sm">1M</button>
@@ -49,28 +74,33 @@ function renderMarket() {
         <div class="lg:col-span-4 space-y-6">
           <div class="bg-[#e1e3e2]/30 backdrop-blur-sm border border-white/50 rounded-3xl p-6">
             <h3 class="font-[Lexend] text-xl font-medium text-[#253f23] mb-4 flex items-center gap-2">
-              <span class="material-symbols-outlined text-[#895100]">newspaper</span> Market News
+              <span class="material-symbols-outlined text-[#895100]">newspaper</span> ${t.marketNews}
             </h3>
             <div class="space-y-4">
               <article class="group cursor-pointer">
-                <span class="text-[10px] font-bold text-[#895100] uppercase tracking-widest">Policy Update</span>
-                <h4 class="font-semibold text-sm mt-1 group-hover:text-[#154212] transition-colors">New MSP buffer stocks announced for Rabi Season.</h4>
-                <p class="text-xs text-[#72796e] mt-1 line-clamp-2">The central government has approved a 15% increase in procurement targets...</p>
+                <span class="text-[10px] font-bold text-[#895100] uppercase tracking-widest">${t.policyUpdate}</span>
+                <h4 class="font-semibold text-sm mt-1 group-hover:text-[#154212] transition-colors">${t.policyNewsTitle}</h4>
+                <p class="text-xs text-[#72796e] mt-1 line-clamp-2">${t.policyNewsDescription}</p>
               </article>
               <hr class="border-stone-200"/>
               <article class="group cursor-pointer">
-                <span class="text-[10px] font-bold text-green-700 uppercase tracking-widest">Global Shifts</span>
-                <h4 class="font-semibold text-sm mt-1 group-hover:text-[#154212] transition-colors">Soybean exports reach 3-year high amid supply gaps.</h4>
-                <p class="text-xs text-[#72796e] mt-1">International demand from Southeast Asian markets continues to surge...</p>
+                <span class="text-[10px] font-bold text-green-700 uppercase tracking-widest">${t.globalShifts}</span>
+                <h4 class="font-semibold text-sm mt-1 group-hover:text-[#154212] transition-colors">${t.globalNewsTitle}</h4>
+                <p class="text-xs text-[#72796e] mt-1">${t.globalNewsDescription}</p>
               </article>
-              <button class="w-full py-2 text-[#154212] font-bold text-xs border-2 border-[#154212]/10 rounded-xl hover:bg-[#154212]/5 transition-colors">View All Insights</button>
+              <button class="w-full py-2 text-[#154212] font-bold text-xs border-2 border-[#154212]/10 rounded-xl hover:bg-[#154212]/5 transition-colors">${t.viewInsights}</button>
             </div>
           </div>
           <div class="relative overflow-hidden rounded-3xl h-48 group">
             <img class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFLIj7V3ozGw-NxJTED8nTp91sjGhpIiy8H7p-42LWCdjRFLpwiS2CxKDdRn5VkIpGekOkkX_ReFhp6RuL3PzjwemoQr--50_82G1uCQFtJC2m_LnktTOouBc2nN_W9yPiBOrjqDaA0ZZ3oJiihT6GhGtDa_2vuF369gcuuzapcvoFpTH78i17u0Eu0sTgmtuUjcrOg_xFU_TTV0htq5G9AzHg8lttbtuSWoCAXkzrl2S3VSnbqri6KdPP1VKNWxYgn_psaUfQOVjH" alt="Storage"/>
             <div class="absolute inset-0 bg-gradient-to-t from-[#154212]/90 to-transparent p-6 flex flex-col justify-end">
-              <h4 class="text-white font-[Lexend] text-xl font-medium">Storage & Logistics</h4>
-              <p class="text-white/80 text-xs">Check available warehouse capacity near you.</p>
+              <h4 class="text-white font-[Lexend] text-xl font-medium">
+                ${t.storage}
+              </h4>
+
+              <p class="text-white/80 text-xs">
+                ${t.storageDesc}
+              </p>
             </div>
           </div>
         </div>
@@ -78,32 +108,35 @@ function renderMarket() {
         <!-- Mandi Table -->
         <div class="lg:col-span-12 bg-white border border-stone-100 rounded-3xl overflow-hidden shadow-sm">
           <div class="px-6 py-4 border-b border-stone-100 flex items-center justify-between bg-stone-50/50">
-            <h3 class="font-[Lexend] text-xl font-medium text-[#154212]">Live Mandi Prices</h3>
+            <h3 class="font-[Lexend] text-xl font-medium text-[#154212]">${t.liveMandi}</h3>
             <div class="flex gap-4">
               <div class="flex items-center gap-2 text-xs text-[#72796e]">
-                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> Live Updates
+                <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span> ${t.liveUpdates}
               </div>
-              <button class="text-[#154212] font-semibold text-sm">Export CSV</button>
+              <button class="text-[#154212] font-semibold text-sm">${t.exportCSV}</button>
             </div>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse">
               <thead>
                 <tr class="bg-stone-50 text-[#72796e] text-xs uppercase tracking-wider">
-                  <th class="px-6 py-4 font-bold">Commodity</th>
-                  <th class="px-6 py-4 font-bold">Mandi Location</th>
-                  <th class="px-6 py-4 font-bold">Min Price</th>
-                  <th class="px-6 py-4 font-bold">Max Price</th>
-                  <th class="px-6 py-4 font-bold">Modal Price</th>
-                  <th class="px-6 py-4 font-bold">Trend</th>
+                  <th class="px-6 py-4 font-bold">${t.commodity}</th>
+                  <th class="px-6 py-4 font-bold">${t.mandiLocation}</th>
+                  <th class="px-6 py-4 font-bold">${t.minPrice}</th>
+                  <th class="px-6 py-4 font-bold">${t.maxPrice}</th>
+                  <th class="px-6 py-4 font-bold">${t.modalPrice}</th>
+                  <th class="px-6 py-4 font-bold">${t.trend}</th>
                 </tr>
               </thead>
               <tbody class="divide-y divide-stone-100">
                 ${[
-                  {name:'Wheat (Dara)',loc:'Indore, MP',min:'₹2,150',max:'₹2,480',modal:'₹2,315',trend:'+2.4%',up:true},
-                  {name:'Cotton (Long)',loc:'Rajkot, GJ',min:'₹6,800',max:'₹7,450',modal:'₹7,125',trend:'-0.8%',up:false},
-                  {name:'Soybean (Yellow)',loc:'Kota, RJ',min:'₹4,200',max:'₹4,600',modal:'₹4,450',trend:'0.0%',up:null},
-                  {name:'Basmati Rice',loc:'Karnal, HR',min:'₹3,900',max:'₹4,850',modal:'₹4,420',trend:'+5.1%',up:true}
+                 {name:t.wheatDara,loc:'Indore, MP',min:'₹2,150',max:'₹2,480',modal:'₹2,315',trend:'+2.4%',up:true},
+
+                 {name:t.cottonLong,loc:'Rajkot, GJ',min:'₹6,800',max:'₹7,450',modal:'₹7,125',trend:'-0.8%',up:false},
+
+                 {name:t.soybeanYellow,loc:'Kota, RJ',min:'₹4,200',max:'₹4,600',modal:'₹4,450',trend:'0.0%',up:null},
+
+                 {name:t.basmatiRice,loc:'Karnal, HR',min:'₹3,900',max:'₹4,850',modal:'₹4,420',trend:'+5.1%',up:true}
                 ].map(r => `
                   <tr class="hover:bg-stone-50 transition-colors">
                     <td class="px-6 py-4 font-semibold">${r.name}</td>
@@ -133,3 +166,44 @@ function renderMarket() {
     </div>
   `;
 }
+
+
+function applyMarketLanguage(lang) {
+
+    if (!translations[lang]) return;
+
+    const t = translations[lang];
+
+    // Heading
+    const title = document.getElementById("market-title");
+    if (title)
+        title.textContent =
+            t.marketRates || "Market Rates & Trends";
+
+    // Description
+    const description =
+        document.getElementById("market-description");
+    if (description)
+        description.textContent =
+            t.marketDescription ||
+            "Real-time agricultural commodity prices across 450+ regional Mandis.";
+
+    // Search
+    const search =
+        document.getElementById("market-search");
+    if (search)
+        search.placeholder =
+            t.searchMarket || "Search crops or markets...";
+
+    // Filters
+    const filterButton =
+        document.querySelector("#page-market button");
+}
+
+    // Market News
+    const marketNews =
+        document.querySelector("#page-market h3");
+
+    if (marketNews)
+        marketNews.textContent =
+            t.marketNews || "Market News";

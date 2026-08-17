@@ -1,6 +1,16 @@
 // Pesticide Calculator Page
 function renderCalculator() {
+
+  const activeLanguage =
+    localStorage.getItem("selectedLanguage") || "en";
+
+  const t =
+    translations[activeLanguage] || translations.en;
+
   const el = document.getElementById('page-calculator');
+
+
+
   el.innerHTML = `
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
       <div class="lg:col-span-8 space-y-6">
@@ -8,38 +18,52 @@ function renderCalculator() {
         <section class="bg-white rounded-xl p-6 border border-[#c2c9bb] shadow-sm">
           <div class="flex items-center gap-3 mb-6">
             <div class="bg-[#2d5a27] p-2 rounded-lg"><span class="material-symbols-outlined text-white">biotech</span></div>
-            <h2 class="font-[Lexend] text-2xl font-medium text-[#154212]">Calculation Input</h2>
+            <h2 class="font-[Lexend] text-2xl font-medium text-[#154212]">
+              ${t.calculatorInput}
+            </h2>
           </div>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="space-y-2">
-              <label class="font-semibold text-sm text-[#42493e] px-1">Land Area</label>
+              <label class="font-semibold text-sm text-[#42493e] px-1">
+                ${t.landArea}
+              </label>
               <div class="relative">
-                <input id="calc-area" class="w-full p-3 bg-[#f8faf9] border border-[#c2c9bb] rounded-lg focus:ring-2 focus:ring-[#2d5a27] outline-none transition-all" placeholder="Enter value" type="number"/>
+                <input id="calc-area" class="w-full p-3 bg-[#f8faf9] border border-[#c2c9bb] rounded-lg focus:ring-2 focus:ring-[#2d5a27] outline-none transition-all" placeholder="${t.enterValue}" type="number"/>
                 <select id="calc-unit" class="absolute right-2 top-1.5 bg-[#e7e8e7] border-none rounded px-2 py-1.5 font-semibold text-sm focus:ring-0">
-                  <option>Acres</option><option>Hectares</option>
+                  <option>${t.acres}</option>
+                  <option>${t.hectares}</option>
                 </select>
               </div>
             </div>
             <div class="space-y-2">
-              <label class="font-semibold text-sm text-[#42493e] px-1">Crop Type</label>
+              <label class="font-semibold text-sm text-[#42493e] px-1">
+                ${t.cropType}
+              </label>
               <div class="relative">
                 <select id="calc-crop" class="w-full p-3 bg-[#f8faf9] border border-[#c2c9bb] rounded-lg focus:ring-2 focus:ring-[#2d5a27] outline-none appearance-none transition-all">
-                  <option disabled selected value="">Select crop</option>
-                  <option>Rice / Paddy</option><option>Wheat</option><option>Cotton</option><option>Maize</option><option>Sugarcane</option>
+                  <option disabled selected value="">${t.selectCrop}</option>
+                  <option value="Rice / Paddy">${t.ricePaddy}</option>
+                  <option value="Wheat">${t.wheat}</option>
+                  <option value="Cotton">${t.cotton}</option>
+                  <option value="Maize">${t.maize}</option>
+                  <option value="Sugarcane">${t.sugarcane}</option>
                 </select>
                 <span class="material-symbols-outlined absolute right-3 top-3 text-[#42493e] pointer-events-none">expand_more</span>
               </div>
             </div>
             <div class="md:col-span-2 space-y-2">
-              <label class="font-semibold text-sm text-[#42493e] px-1">Target Pest / Disease</label>
+              <label class="font-semibold text-sm text-[#42493e] px-1">
+                ${t.targetPestDisease}
+              </label>
               <div class="relative">
-                <input id="calc-pest" class="w-full p-3 bg-[#f8faf9] border border-[#c2c9bb] rounded-lg focus:ring-2 focus:ring-[#2d5a27] outline-none transition-all" placeholder="e.g. Stem Borer, Leaf Blight" type="text"/>
+                <input id="calc-pest" class="w-full p-3 bg-[#f8faf9] border border-[#c2c9bb] rounded-lg focus:ring-2 focus:ring-[#2d5a27] outline-none transition-all" placeholder="${t.pestPlaceholder}" type="text"/>
                 <span class="material-symbols-outlined absolute right-3 top-3 text-[#42493e]">search</span>
               </div>
             </div>
           </div>
           <button onclick="calculatePesticide()" class="w-full mt-8 bg-[#2d5a27] text-white py-4 rounded-xl font-[Lexend] text-lg font-medium flex items-center justify-center gap-2 hover:opacity-90 active:scale-[0.98] transition-all">
-            <span class="material-symbols-outlined">calculate</span> Calculate Requirements
+            <span class="material-symbols-outlined">calculate</span>
+            ${t.calculateRequirements}
           </button>
         </section>
 
@@ -47,8 +71,12 @@ function renderCalculator() {
         <section id="calc-results" class="bg-white rounded-xl border border-[#c2c9bb] shadow-sm overflow-hidden hidden">
           <div class="bg-[#154212]/5 p-6 border-b border-[#c2c9bb] flex justify-between items-center">
             <div>
-              <h2 class="font-[Lexend] text-2xl font-medium text-[#154212]">Calculation Results</h2>
-              <p class="text-[#42493e] text-xs" id="calc-summary">Generated for 5.0 Acres of Rice</p>
+              <h2 class="font-[Lexend] text-2xl font-medium text-[#154212]">
+                ${t.calculationResults}
+              </h2>
+              <p class="text-[#42493e] text-xs" id="calc-summary">
+                ${t.generatedFor} 5.0 Acres of Rice
+              </p>
             </div>
             <div class="flex gap-2">
               <button class="p-2 bg-white border border-[#c2c9bb] rounded-lg hover:bg-stone-50 transition-colors shadow-sm"><span class="material-symbols-outlined text-[#2d5a27]" style="font-variation-settings:'FILL' 1;">share</span></button>
@@ -58,11 +86,15 @@ function renderCalculator() {
           <div class="p-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
               <div class="bg-[#f3f4f3] p-4 rounded-xl border border-stone-100">
-                <p class="font-semibold text-sm text-[#42493e] mb-1">Recommended Pesticide</p>
+                <p class="font-semibold text-sm text-[#42493e] mb-1">
+                  ${t.recommendedPesticide}
+                </p>
                 <p class="font-[Lexend] text-xl font-medium text-[#154212]" id="res-pesticide">Monocrotophos 36% SL</p>
               </div>
               <div class="bg-[#f3f4f3] p-4 rounded-xl border border-stone-100">
-                <p class="font-semibold text-sm text-[#42493e] mb-1">Total Dosage</p>
+                <p class="font-semibold text-sm text-[#42493e] mb-1">
+                  ${t.totalDosage}
+                </p>
                 <p class="font-[Lexend] text-xl font-medium text-[#154212]" id="res-dosage">2.5 Liters</p>
                 <p class="text-xs text-[#42493e] mt-1" id="res-per-acre">(0.5 Liters per Acre)</p>
               </div>
