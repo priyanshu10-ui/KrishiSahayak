@@ -99,7 +99,9 @@ function renderCalculator() {
                 <p class="text-xs text-[#42493e] mt-1" id="res-per-acre">(0.5 Liters per Acre)</p>
               </div>
               <div class="bg-[#f3f4f3] p-4 rounded-xl border border-stone-100 md:col-span-2">
-                <p class="font-semibold text-sm text-[#42493e] mb-1">Water for Dilution</p>
+                <p class="font-semibold text-sm text-[#42493e] mb-1">
+                  ${t.waterForDilution}
+                </p>
                 <div class="flex items-end gap-2">
                   <p class="font-[Lexend] text-xl font-medium text-[#154212]" id="res-water">1,000 Liters</p>
                   <p class="text-[#42493e] mb-0.5" id="res-water-rate">@ 200L / Acre</p>
@@ -107,9 +109,16 @@ function renderCalculator() {
               </div>
             </div>
             <div class="space-y-4">
-              <h3 class="font-semibold text-sm uppercase tracking-wider">Safety & PPE Recommendations</h3>
+              <h3 class="font-semibold text-sm uppercase tracking-wider">
+                ${t.safetyPPE}
+              </h3>
               <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                ${['masks,Face Mask','front_hand,Gloves','visibility,Goggles','water_full,Boots'].map(i => {
+                ${[
+                  `masks,${t.faceMask}`,
+                  `front_hand,${t.gloves}`,
+                  `visibility,${t.goggles}`,
+                  `water_full,${t.boots}`
+                ].map(i => {
                   const [icon,name] = i.split(',');
                   return `<div class="flex flex-col items-center p-3 rounded-lg border border-[#c2c9bb] bg-stone-50 text-center">
                     <span class="material-symbols-outlined text-[#895100] mb-1">${icon}</span>
@@ -120,16 +129,18 @@ function renderCalculator() {
               <div class="bg-[#f0f4c5]/30 p-4 rounded-lg border-l-4 border-[#EBC106] mt-4">
                 <div class="flex gap-3">
                   <span class="material-symbols-outlined text-[#EBC106]">warning</span>
-                  <p class="text-[#EBC106] text-sm">Do not spray against the wind direction. Keep children and livestock away from the treated area for 48 hours.</p>
+                  <p class="text-[#EBC106] text-sm">
+                    ${t.safetyWarning}
+                  </p>
                 </div>
               </div>
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
               <button class="flex items-center justify-center gap-2 py-3 border-2 border-[#2d5a27] text-[#2d5a27] font-bold rounded-xl hover:bg-green-50 transition-colors">
-                <span class="material-symbols-outlined">save</span> Save Calculation
+                <span class="material-symbols-outlined">save</span> ${t.saveCalculation}
               </button>
               <button class="flex items-center justify-center gap-2 py-3 bg-[#25D366] text-white font-bold rounded-xl hover:opacity-90 shadow-md">
-                <span class="material-symbols-outlined">chat</span> Share to WhatsApp
+                <span class="material-symbols-outlined">chat</span> ${t.shareWhatsApp}
               </button>
             </div>
           </div>
@@ -140,14 +151,33 @@ function renderCalculator() {
       <div class="lg:col-span-4 space-y-6">
         <section class="bg-[#e7e8e7] rounded-xl p-6 border border-[#c2c9bb]">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="font-[Lexend] text-xl font-medium">Recent Activity</h3>
-            <button class="text-[#2d5a27] font-semibold text-sm hover:underline">View All</button>
+            <h3 class="font-[Lexend] text-xl font-medium">${t.recentActivity}</h3>
+            <button class="text-[#2d5a27] font-semibold text-sm hover:underline">
+              ${t.viewAll}
+            </button>
+              
           </div>
           <div class="space-y-3">
             ${[
-              {name:'Cotton Field A',detail:'2.5 Ac • 2 days ago',icon:'grass',color:'secondary-fixed,secondary'},
-              {name:'Wheat Plot 4',detail:'10.0 Ac • 1 week ago',icon:'agriculture',color:'tertiary-fixed,tertiary'},
-              {name:'Sugarcane Block',detail:'1.2 Ac • 15 Oct',icon:'eco',color:'stone-200,stone-600',faded:true}
+              {
+                name: t.cottonFieldA,
+                detail: t.twoDaysAgo,
+                icon: 'grass',
+                color: 'secondary-fixed,secondary'
+              },
+              {
+                name: t.wheatPlot4,
+                detail: t.oneWeekAgo,
+                icon: 'agriculture',
+                color: 'tertiary-fixed,tertiary'
+              },
+              {
+                name: t.sugarcaneBlock,
+                detail: t.oct15,
+                icon: 'eco',
+                color: 'stone-200,stone-600',
+                faded: true
+              }
             ].map(h => `
               <div class="bg-white p-3 rounded-lg border border-stone-200 flex items-center gap-3 ${h.faded?'opacity-70':''}">
                 <div class="bg-[${h.color.includes('secondary')?'#ffdcbc':h.color.includes('tertiary')?'#cbebc3':'#e7e5e4'}] text-[${h.color.includes('secondary')?'#895100':h.color.includes('tertiary')?'#253f23':'#57534e'}] p-2 rounded-lg">
@@ -166,18 +196,27 @@ function renderCalculator() {
         <div class="relative overflow-hidden rounded-xl h-64 group">
           <img class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEXFAvOrpBOukQSDesxopKAsO1OF9hKNrwBazT2akICXQNlqQTw10YWjBoz4nUfOfMktotpU-aYfbXnuaxr-K5QIa-L3PDA9da-Th9ToIvF9GQ-SYV9uiPeLR0Xnv1P_Wm88c9M9EUVcDcqmPrHHP6i3g2uXbveBGHAfTjt0rLm1xwvPCtYR-jbfH90-6zJql-9HZxJqEpn56s__XEFwUm6RAzwvIbQK2TOnPdDHckWWlU__554IPNqULQ_hDTaaQRHKdsquozVDXr" alt="Guide"/>
           <div class="absolute inset-0 bg-gradient-to-t from-[#154212]/90 to-transparent flex flex-col justify-end p-6">
-            <h4 class="text-white font-[Lexend] text-xl font-medium mb-2">Pest Management Guide</h4>
-            <p class="text-white/80 text-sm mb-4">Learn about sustainable alternatives and biological pest control methods.</p>
-            <button class="bg-white/20 backdrop-blur-md text-white border border-white/30 py-2 rounded-lg font-semibold text-sm hover:bg-white/30 transition-all">Read Guide</button>
-          </div>
+            <h4 class="text-white font-[Lexend] text-xl font-medium mb-2">
+              ${t.pestManagementGuide}
+            </h4>
+            <p class="text-white/80 text-sm mb-4">
+              ${t.pestGuideDescription}
+            </p>
+            <button class="bg-white/20 backdrop-blur-md text-white border border-white/30 py-2 rounded-lg font-semibold text-sm hover:bg-white/30 transition-all">
+              ${t.readGuide}
+            </button>
         </div>
 
         <section class="bg-white rounded-xl p-6 border border-[#c2c9bb] flex items-center gap-4">
           <div class="text-[#895100]"><span class="material-symbols-outlined text-4xl">sunny_snowing</span></div>
           <div>
-            <p class="font-semibold text-sm">Ideal Spraying Window</p>
-            <p class="text-sm text-green-700 font-bold">Good conditions expected at 6:00 AM</p>
-            <p class="text-xs text-[#42493e] mt-1">Wind: 4km/h • Humidity: 65%</p>
+            <p class="font-semibold text-sm">${t.idealSprayingWindow}</p>
+            <p class="text-sm text-green-700 font-bold">
+              ${t.goodConditions}
+            </p>
+            <p class="text-xs text-[#42493e] mt-1">
+              ${t.wind}: 4km/h • ${t.humidity}: 65%
+            </p>
           </div>
         </section>
       </div>
@@ -185,11 +224,16 @@ function renderCalculator() {
   `;
 }
 
-function calculatePesticide() {
-  const area = parseFloat(document.getElementById('calc-area').value);
-  const crop = document.getElementById('calc-crop').value;
-  const unit = document.getElementById('calc-unit').value;
-  if (!area || !crop) { alert('Please enter land area and select a crop type.'); return; }
+    function calculatePesticide() {
+
+    const area = parseFloat(document.getElementById('calc-area').value);
+    const crop = document.getElementById('calc-crop').value;
+    const unit = document.getElementById('calc-unit').value;
+
+    if (!area || !crop) {
+        alert(t.enterAreaAndCrop);
+        return;
+    }
 
   const pesticideData = {
     'Rice / Paddy': {name:'Monocrotophos 36% SL', dosage:0.5, water:200},
@@ -202,8 +246,10 @@ function calculatePesticide() {
   const totalDosage = (area * data.dosage).toFixed(1);
   const totalWater = Math.round(area * data.water);
 
-  document.getElementById('calc-results').classList.remove('hidden');
-  document.getElementById('calc-summary').textContent = `Generated for ${area} ${unit} of ${crop}`;
+  
+
+  document.getElementById('calc-summary').textContent =
+    `${t.generatedFor} ${area} ${unit} ${t.of} ${crop}`;
   document.getElementById('res-pesticide').textContent = data.name;
   document.getElementById('res-dosage').textContent = `${totalDosage} Liters`;
   document.getElementById('res-per-acre').textContent = `(${data.dosage} Liters per ${unit === 'Acres' ? 'Acre' : 'Hectare'})`;

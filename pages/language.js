@@ -99,6 +99,10 @@ document.addEventListener("DOMContentLoaded", function () {
     function applyLanguage(lang) {
 
         if (!translations[lang]) return;
+            // CALCULATOR LANGUAGE
+            if (typeof renderCalculator === "function") {
+                renderCalculator();
+            }
 
 
             // CROP HEALTH LANGUAGE
@@ -343,4 +347,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
             }
 
-        });
+        // ==========================================
+        // INITIAL LANGUAGE ON PAGE LOAD
+        // ==========================================
+
+        const savedLanguage =
+            localStorage.getItem("selectedLanguage") || "en";
+
+        applyLanguage(savedLanguage);
+    
+    });

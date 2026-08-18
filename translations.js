@@ -155,7 +155,13 @@ const translations = {
         sugarcaneBlock: "Sugarcane Block",
         pestManagementGuide: "Pest Management Guide",
         pestGuideDescription: "Learn about sustainable alternatives and biological pest control methods.",
-        readGuide: "Read Guide"
+        readGuide: "Read Guide",
+        generatedFor: "Generated for",
+        calculatorInput: "Calculation Input",
+        twoDaysAgo: "2.5 Ac • 2 days ago",
+        oneWeekAgo: "10.0 Ac • 1 week ago",
+        oct15: "1.2 Ac • 15 Oct",
+        of: "of"
 
     },
 
@@ -328,7 +334,13 @@ const translations = {
         sugarcaneBlock: "गन्ने का खेत",
         pestManagementGuide: "कीट प्रबंधन गाइड",
         pestGuideDescription: "टिकाऊ विकल्पों और जैविक कीट नियंत्रण विधियों के बारे में जानें।",
-        readGuide: "गाइड पढ़ें"
+        readGuide: "गाइड पढ़ें",
+        generatedFor: "के लिए बनाया गया",
+        calculatorInput: "गणना इनपुट",
+        twoDaysAgo: "2.5 एकड़ • 2 दिन पहले",
+        oneWeekAgo: "10.0 एकड़ • 1 सप्ताह पहले",
+        oct15: "1.2 एकड़ • 15 अक्टूबर",
+        of: "का"
         
 
     },
@@ -502,7 +514,13 @@ const translations = {
         sugarcaneBlock: "ऊस शेत",
         pestManagementGuide: "कीड व्यवस्थापन मार्गदर्शक",
         pestGuideDescription: "शाश्वत पर्याय आणि जैविक कीड नियंत्रण पद्धतींबद्दल जाणून घ्या.",
-        readGuide: "मार्गदर्शक वाचा"
+        readGuide: "मार्गदर्शक वाचा",
+        generatedFor: "यासाठी तयार केले",
+        calculatorInput: "गणना इनपुट",
+        twoDaysAgo: "2.5 एकर • 2 दिवसांपूर्वी",
+        oneWeekAgo: "10.0 एकर • 1 आठवड्यापूर्वी",
+        oct15: "1.2 एकर • 15 ऑक्टोबर",
+        of: "चे"
     
 
     },
@@ -683,7 +701,13 @@ const translations = {
         sugarcaneBlock: "ਗੰਨੇ ਦਾ ਖੇਤ",
         pestManagementGuide: "ਕੀਟ ਪ੍ਰਬੰਧਨ ਗਾਈਡ",
         pestGuideDescription: "ਟਿਕਾਊ ਵਿਕਲਪਾਂ ਅਤੇ ਜੈਵਿਕ ਕੀਟ ਨਿਯੰਤਰਣ ਤਰੀਕਿਆਂ ਬਾਰੇ ਜਾਣੋ।",
-        readGuide: "ਗਾਈਡ ਪੜ੍ਹੋ"
+        readGuide: "ਗਾਈਡ ਪੜ੍ਹੋ",
+        generatedFor: "ਲਈ ਬਣਾਇਆ ਗਿਆ",
+        calculatorInput: "ਗਣਨਾ ਇਨਪੁਟ",
+        twoDaysAgo: "2.5 ਏਕੜ • 2 ਦਿਨ ਪਹਿਲਾਂ",
+        oneWeekAgo: "10.0 ਏਕੜ • 1 ਹਫ਼ਤਾ ਪਹਿਲਾਂ",
+        oct15: "1.2 ਏਕੜ • 15 ਅਕਤੂਬਰ",
+        of: "ਦਾ"
         
     },
 
@@ -863,7 +887,14 @@ const translations = {
         sugarcaneBlock: "చెరకు పొలం",
         pestManagementGuide: "చీడపీడల నిర్వహణ గైడ్",
         pestGuideDescription: "స్థిరమైన ప్రత్యామ్నాయాలు మరియు సేంద్రీయ చీడపీడల నియంత్రణ పద్ధతుల గురించి తెలుసుకోండి.",
-        readGuide: "గైడ్ చదవండి"
+        readGuide: "గైడ్ చదవండి",
+        generatedFor: "కోసం రూపొందించబడింది",
+        calculatorInput: "గణన ఇన్‌పుట్",
+        twoDaysAgo: "2.5 ఎకరాలు • 2 రోజుల క్రితం",
+        oneWeekAgo: "10.0 ఎకరాలు • 1 వారం క్రితం",
+        oct15: "1.2 ఎకరాలు • అక్టోబర్ 15",
+        of: "యొక్క"
+
             
     },
 
@@ -1044,7 +1075,13 @@ const translations = {
         sugarcaneBlock: "શેરડીનું ખેતર",
         pestManagementGuide: "જીવાત નિયંત્રણ માર્ગદર્શિકા",
         pestGuideDescription: "ટકાઉ વિકલ્પો અને જૈવિક જીવાત નિયંત્રણ પદ્ધતિઓ વિશે જાણો.",
-        readGuide: "માર્ગદર્શિકા વાંચો"
+        readGuide: "માર્ગદર્શિકા વાંચો",
+        generatedFor: "માટે બનાવવામાં આવ્યું",
+        calculatorInput: "ગણતરી ઇનપુટ",
+        twoDaysAgo: "2.5 એકર • 2 દિવસ પહેલાં",
+        oneWeekAgo: "10.0 એકર • 1 અઠવાડિયા પહેલાં",
+        oct15: "1.2 એકર • 15 ઑક્ટોબર",
+        of: "નું"
     }
 
 };
