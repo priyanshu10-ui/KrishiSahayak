@@ -4,3 +4,12 @@ node_modules
 
 .env
 
+functions/node_modules
+
+functions
+
+skills-lock.json
+
+.agents
+
+.claude

@@ -58,26 +58,67 @@
 <body class="font-body-md text-on-background bg-background">
 
   <!-- PAGE: Splash -->
-  <div id="page-splash"
-    class="fixed inset-0 z-[9999] bg-gradient-to-br from-green-800 via-green-700 to-green-900 flex items-center justify-center">
-    <div class="flex flex-col items-center justify-center text-white px-6 text-center">
-      <div class="text-8xl animate-bounce">🌾</div>
-      <h1 class="mt-6 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-wide">Krishi Sahayak</h1>
-      <p class="mt-3 text-green-100 text-sm sm:text-base md:text-xl">Your Smart Farming Partner</p>
-      <div class="flex gap-3 mt-10">
-        <span class="w-3 h-3 bg-yellow-300 rounded-full animate-bounce"></span>
-        <span class="w-3 h-3 bg-yellow-300 rounded-full animate-bounce" style="animation-delay:.2s"></span>
-        <span class="w-3 h-3 bg-yellow-300 rounded-full animate-bounce" style="animation-delay:.4s"></span>
-      </div>
-      <p class="absolute bottom-6 text-xs md:text-sm text-green-100 opacity-80">Powered By Firebase</p>
-    </div>
-  </div>
+<!-- Splash Screen -->
+<div id="page-splash"
+     class="fixed inset-0 z-[9999] bg-gradient-to-br from-green-800 via-green-700 to-green-900 flex items-center justify-center">
 
+    <div class="flex flex-col items-center justify-center text-white px-6 text-center">
+
+        <!-- Logo -->
+        <div class="text-8xl animate-bounce"> 
+          🌾 
+        </div>
+            
+
+        <!-- App Name -->
+        <h1 class="mt-6
+                   text-4xl sm:text-5xl md:text-6xl
+                   font-extrabold tracking-wide">
+
+            Krishi Sahayak
+
+        </h1>
+
+        <!-- Tagline -->
+        <p class="mt-3
+                  text-green-100
+                  text-sm sm:text-base md:text-xl">
+
+            Your Smart Farming Partner
+
+        </p>
+
+        <!-- Loading Dots -->
+        <div class="flex gap-3 mt-10">
+
+            <span class="w-3 h-3 bg-yellow-300 rounded-full animate-bounce"></span>
+
+            <span class="w-3 h-3 bg-yellow-300 rounded-full animate-bounce"
+                  style="animation-delay:.2s"></span>
+
+            <span class="w-3 h-3 bg-yellow-300 rounded-full animate-bounce"
+                  style="animation-delay:.4s"></span>
+
+        </div>
+
+        <!-- Footer -->
+        <p class="absolute bottom-6
+                  text-xs md:text-sm
+                  text-green-100 opacity-80">
+
+            Powered By Firebase
+
+        </p>
+
+    </div>
+
+</div>
   <!-- ===== TOP NAV BAR ===== -->
   <header id="topnav"
     class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-16 bg-white/80 backdrop-blur-md border-b border-stone-100 shadow-sm shadow-green-900/5 font-[Lexend] antialiased">
     <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('dashboard')">
-      <span class="material-symbols-outlined text-green-800" style="font-variation-settings:'FILL' 1;">agriculture</span>
+      <span class="material-symbols-outlined text-green-800"
+        style="font-variation-settings:'FILL' 1;">agriculture</span>
       <h1 class="text-xl font-extrabold tracking-tight text-green-800">Krishi Sahayak</h1>
     </div>
     <div class="hidden md:flex items-center gap-6 mr-6">
@@ -96,31 +137,62 @@
         </div>
       </div>
 
-      <button class="p-2 text-stone-500 hover:bg-stone-50 rounded-full transition-colors">
-        <span class="material-symbols-outlined">notifications</span>
-      </button>
+
+
+      
+      <button class="p-2 text-stone-500 hover:bg-stone-50 rounded-full transition-colors"><span
+          class="material-symbols-outlined">notifications</span></button>
+
+
+
+
+
+
+
+
+
 
       <!-- Language Selector -->
       <div id="languageSelector" class="relative">
-        <button id="languageBtn"
-          class="px-3 py-2 bg-stone-100 rounded-lg text-sm font-semibold text-stone-700 hover:bg-stone-200 transition-colors">
-          English ▼
-        </button>
-      </div>
+
+          <button
+              id="languageBtn"
+              class="px-3 py-2 bg-stone-100 rounded-lg text-sm font-semibold text-stone-700 hover:bg-stone-200 transition-colors">
+              English ▼
+          </button>
+
+      </div>  
+
+
+
+
+
+
+
+
 
       <div id="user-area">
-        <div id="user-menu"></div>
-      </div>
+
+      <div id="user-menu"></div>
+
+
+</div>
     </div>
   </header>
 
-  <div id="app-layout" class="flex pt-16 pb-20 lg:pb-0 min-h-screen">
+  <div id="app-layout"
+     class="flex pt-16 pb-20 lg:pb-0 min-h-screen">
+
     <!-- ===== SIDE NAV BAR (Desktop) ===== -->
+
+
     <aside id="sidenav"
       class="hidden lg:flex flex-col h-[calc(100vh-64px)] w-64 border-r border-stone-200 bg-stone-50 py-6 px-4 space-y-2 sticky top-16 font-[Lexend] text-sm flex-shrink-0">
       <div class="mb-8 px-3">
         <p class="text-stone-500 font-medium">Hello,</p>
-        <h2 id="sidebar-user-name" class="text-lg font-bold text-green-800">Farmer</h2>
+        <h2 id="sidebar-user-name"
+    class="text-lg font-bold text-green-800">
+    Farmer</h2>
         <p class="text-[10px] text-stone-400 uppercase tracking-widest mt-1">Modern Farming Partner</p>
       </div>
       <nav class="flex-1 space-y-1">
@@ -128,6 +200,7 @@
           <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">dashboard</span> Dashboard
         </a>
         <a class="side-nav-link" data-page="crop-health" onclick="navigateTo('crop-health')">
+          
           <span class="material-symbols-outlined">potted_plant</span> Crop Health
         </a>
         <a class="side-nav-link" data-page="market" onclick="navigateTo('market')">
@@ -151,23 +224,57 @@
     </aside>
 
     <!-- ===== MAIN CONTENT ===== -->
-    <main class="flex-1 w-full min-w-0">
-      <div id="page-language" class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full"></div>
-      <div id="page-dashboard" class="page-content"></div>
-      <div id="page-crop-health" class="page-content"></div>
-      <div id="page-market" class="page-content"></div>
-      <div id="page-ai-assistant" class="page-content"></div>
-      <div id="page-calculator" class="page-content"></div>
-      <div id="page-profile" class="page-content"></div>
-      <div id="page-loading" class="page-content min-h-[80vh]">
-        <div class="flex flex-col items-center justify-center min-h-[80vh]">
-          <h2 class="text-3xl font-bold text-green-700">Loading...</h2>
-          <p class="text-gray-500 mt-2">Please wait</p>
-        </div>
-      </div>
-      <div id="page-login" class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full"></div>
+    <main class="flex-1 w-full">
+<!-- PAGE: Language -->
+<div id="page-language"
+     class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full">
+</div>      
+
+      <!-- PAGE: Dashboard -->
+<div id="page-dashboard" class="page-content"></div>
+
+<!-- PAGE: Crop Health -->
+<div id="page-crop-health" class="page-content"></div>
+
+<!-- PAGE: Market -->
+<div id="page-market" class="page-content"></div>
+
+<!-- PAGE: AI -->
+<div id="page-ai-assistant" class="page-content"></div>
+
+<!-- PAGE: Calculator -->
+<div id="page-calculator" class="page-content"></div>
+
+<!-- PAGE: Profile -->
+<div id="page-profile" class="page-content"></div>
+
+<!-- PAGE: Loading -->
+<div id="page-loading" class="page-content min-h-[80vh]">
+
+    <div class="flex flex-col items-center justify-center min-h-[80vh]">
+
+        <h2 class="text-3xl font-bold text-green-700">
+            Loading...
+        </h2>
+
+        <p class="text-gray-500 mt-2">
+            Please wait
+        </p>
+
+    </div>
+
+</div>
+
+<!-- PAGE: Login -->
+<div id="page-login"
+     class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full">
+</div>
+
     </main>
   </div>
+
+
+  
 
   <!-- ===== BOTTOM NAV BAR (Mobile) ===== -->
   <nav id="bottomnav"
@@ -186,122 +293,42 @@
     </a>
   </nav>
 
-  <!-- ===== FLOATING AI BUTTON & POPUP CHAT ===== -->
-  <button id="fab-ai" onclick="toggleKrishiChat()"
-    class="fixed bottom-24 right-6 lg:bottom-10 lg:right-10 w-14 h-14 bg-[#2d5a27] text-white rounded-full flex items-center justify-center shadow-2xl shadow-green-900/40 z-50 hover:scale-110 active:scale-95 transition-all">
+  <!-- ===== FLOATING AI BUTTON ===== -->
+  <button id="fab-ai" onclick="navigateTo('ai-assistant')"
+    class="fixed bottom-24 right-6 lg:bottom-10 lg:right-10 w-16 h-16 bg-[#2d5a27] text-white rounded-full flex items-center justify-center shadow-2xl shadow-green-900/40 z-40 hover:scale-110 active:scale-90 transition-all group">
     <span class="material-symbols-outlined text-3xl" style="font-variation-settings:'FILL' 1;">smart_toy</span>
+    <span
+      class="absolute right-full mr-4 bg-stone-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Ask
+      Krishak AI</span>
   </button>
 
-  <div id="krishi-chat-window" class="hidden fixed bottom-40 right-6 lg:bottom-28 lg:right-10 w-[90vw] max-w-[360px] h-[480px] bg-white rounded-2xl shadow-2xl z-50 flex-col overflow-hidden border border-stone-200 font-[Lexend]">
-    <!-- Header -->
-    <div class="bg-[#2d5a27] text-white px-4 py-3 flex justify-between items-center">
-      <div class="flex items-center gap-2">
-        <span class="material-symbols-outlined text-green-200">psychology_alt</span>
-        <div>
-          <h3 class="font-bold text-sm leading-tight">Krishi Sahayak AI</h3>
-          <p class="text-[10px] text-green-200">Crop & Pesticide Advisor</p>
-        </div>
-      </div>
-      <button onclick="toggleKrishiChat()" class="text-white hover:bg-white/20 rounded-full p-1 leading-none">
-        <span class="material-symbols-outlined text-lg">close</span>
-      </button>
-    </div>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
-    <!-- Messages Container -->
-    <div id="krishi-messages" class="flex-1 p-4 overflow-y-auto flex flex-col gap-3 text-sm bg-stone-50 font-['Public_Sans']">
-      <div id="krishi-welcome-msg" class="self-start bg-green-100 text-green-900 p-3 rounded-2xl rounded-tl-none max-w-[85%] shadow-sm leading-relaxed break-words">
-        Hello! I am Krishi Sahayak AI. How can I help you with your crops, pests, or pesticides today?
-      </div>
-    </div>
+<!-- Firebase Configuration -->
+<script src="config.js"></script>
 
-    <!-- Input Bar -->
-    <form id="krishi-form" onsubmit="sendKrishiMessage(event)" class="flex p-2 bg-white border-t border-stone-200 gap-2 items-center">
-      <input type="text" id="krishi-input" placeholder="Ask about crop health, pests, pesticides..." autocomplete="off" required
-        class="flex-1 text-sm bg-stone-100 border-none rounded-full px-4 py-2 focus:ring-2 focus:ring-green-800/20 font-['Public_Sans']" />
-      <button type="submit" class="bg-[#2d5a27] text-white p-2 rounded-full flex items-center justify-center hover:bg-green-800 transition-colors">
-        <span class="material-symbols-outlined text-lg">send</span>
-      </button>
-    </form>
-  </div>
+<script src="translations.js"></script>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<!-- Firebase Initialization -->
+<script src="js/firebase.js"></script>
 
-  <!-- Configurations & Scripts -->
-  <script src="config.js"></script>
-  <script src="translations.js"></script>
-  <script src="js/firebase.js"></script>
-  <script src="js/session.js"></script>
-  <script src="js/auth.js"></script>
+<script src="js/session.js"></script>
 
-  <script src="pages/dashboard.js"></script>
-  <script src="pages/crop-health.js"></script>
-  <script src="pages/market.js"></script>
-  <script src="pages/ai-assistant.js"></script>
-  <script src="pages/calculator.js"></script>
-  <script src="pages/profile.js"></script>
-  <script src="pages/login.js"></script>
-  <script src="pages/language.js"></script>
-  <script src="app.js"></script>
+<script src="js/auth.js"></script>
 
-  <!-- Chatbot Script Logic -->
-  <script>
-    function toggleKrishiChat() {
-      const win = document.getElementById('krishi-chat-window');
-      win.classList.toggle('hidden');
-      win.classList.toggle('flex');
-    }
+<script src="pages/dashboard.js"></script>
+<script src="pages/crop-health.js"></script>
+<script src="pages/market.js"></script>
+<script src="pages/ai-assistant.js"></script>
+<script src="pages/calculator.js"></script>
+<script src="pages/profile.js"></script>
+<script src="pages/login.js"></script>
+<script src="pages/language.js"></script>
 
-    function getCurrentLanguage() {
-      const langBtn = document.getElementById('languageBtn');
-      if (langBtn && langBtn.innerText.includes('हिंदी')) return 'Hindi';
-      return localStorage.getItem('krishi_language') || 'English';
-    }
-
-    async function sendKrishiMessage(e) {
-      e.preventDefault();
-      const input = document.getElementById('krishi-input');
-      const container = document.getElementById('krishi-messages');
-      const text = input.value.trim();
-      if (!text) return;
-
-      const currentLang = getCurrentLanguage();
-
-      // 1. Add user message bubble
-      const userBubble = document.createElement('div');
-      userBubble.className = 'self-end bg-[#2d5a27] text-white p-3 rounded-2xl rounded-tr-none max-w-[85%] shadow-sm break-words';
-      userBubble.textContent = text;
-      container.appendChild(userBubble);
-      input.value = '';
-      container.scrollTop = container.scrollHeight;
-
-      // 2. Add thinking indicator
-      const loadingBubble = document.createElement('div');
-      loadingBubble.className = 'self-start bg-stone-200 text-stone-600 p-2 px-3 rounded-2xl text-xs italic';
-      loadingBubble.textContent = currentLang === 'Hindi' ? 'कृषि सहायक सोच रहा है...' : 'Krishi Sahayak is thinking...';
-      container.appendChild(loadingBubble);
-      container.scrollTop = container.scrollHeight;
-
-      // 3. Call Gemini AI directly
-      try {
-        const reply = await callGeminiAPI(text);
-        container.removeChild(loadingBubble);
-
-        const botBubble = document.createElement('div');
-        botBubble.className = 'self-start bg-green-100 text-green-900 p-3 rounded-2xl rounded-tl-none max-w-[85%] shadow-sm leading-relaxed break-words';
-        botBubble.innerHTML = reply;
-        container.appendChild(botBubble);
-      } catch (err) {
-        container.removeChild(loadingBubble);
-        const errBubble = document.createElement('div');
-        errBubble.className = 'self-start bg-red-100 text-red-700 p-2 px-3 rounded-2xl text-xs';
-        errBubble.textContent = currentLang === 'Hindi' ? 'सर्वर से संपर्क नहीं हो पाया।' : 'Failed to generate response.';
-        container.appendChild(errBubble);
-      }
-      container.scrollTop = container.scrollHeight;
-    }
-  </script>
+<script src="app.js"></script>
 </body>
+
 </html>
