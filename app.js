@@ -314,3 +314,4 @@ function navigateTo(page) {
 // ==========================================
 
 document.addEventListener("DOMContentLoaded", initApp);
+
