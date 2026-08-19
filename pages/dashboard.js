@@ -69,14 +69,31 @@ function getWeatherCondition(code, lang = "en") {
 // FETCH LIVE WEATHER
 // ==========================================
 
+// ==========================================
+// 🌦 FETCH LIVE WEATHER
+// 7 DAYS + HOURLY WEATHER
+// ==========================================
+
 async function fetchLiveWeather(district, state, village) {
 
-    const tempEl = document.getElementById("weather-temp");
-    const descEl = document.getElementById("weather-desc");
-    const iconEl = document.getElementById("weather-icon");
-    const humidityEl = document.getElementById("weather-humidity");
-    const windEl = document.getElementById("weather-wind");
-    const forecastEl = document.getElementById("weather-forecast-list");
+    const tempEl =
+        document.getElementById("weather-temp");
+
+    const descEl =
+        document.getElementById("weather-desc");
+
+    const iconEl =
+        document.getElementById("weather-icon");
+
+    const humidityEl =
+        document.getElementById("weather-humidity");
+
+    const windEl =
+        document.getElementById("weather-wind");
+
+    const forecastEl =
+        document.getElementById("weather-forecast-list");
+
 
     function setWeatherError(message) {
 
@@ -84,18 +101,28 @@ async function fetchLiveWeather(district, state, village) {
             tempEl.textContent = "--°C";
 
         if (descEl)
-            descEl.textContent = message || "Unavailable";
+            descEl.textContent =
+                message || "Unavailable";
 
-        if (forecastEl)
-            forecastEl.innerHTML =
-                `<span class="text-xs text-stone-400 p-2">
-                    Forecast unavailable
-                </span>`;
+        if (forecastEl) {
+
+            forecastEl.innerHTML = `
+                <div class="w-full text-center py-6 text-sm text-stone-400">
+                    ${message || "Forecast unavailable"}
+                </div>
+            `;
+
+        }
+
     }
+
 
     try {
 
-        // Location search
+        // ==========================================
+        // 1. FIND LOCATION
+        // ==========================================
+
         const queriesToTry = [
             district,
             village,
@@ -103,24 +130,33 @@ async function fetchLiveWeather(district, state, village) {
             "New Delhi"
         ].filter(Boolean);
 
+
         let latitude = null;
         let longitude = null;
 
-        // Find coordinates
+
         for (const query of queriesToTry) {
 
             try {
 
                 const cleanQuery =
                     query
-                        .replace(/East|West|North|South/gi, "")
+                        .replace(
+                            /East|West|North|South/gi,
+                            ""
+                        )
                         .trim() || query;
 
-                const geoRes = await fetch(
-                    `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cleanQuery)}&count=1&language=en&format=json`
-                );
 
-                const geoData = await geoRes.json();
+                const geoRes =
+                    await fetch(
+                        `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(cleanQuery)}&count=1&language=en&format=json`
+                    );
+
+
+                const geoData =
+                    await geoRes.json();
+
 
                 if (
                     geoData.results &&
@@ -134,6 +170,7 @@ async function fetchLiveWeather(district, state, village) {
                         geoData.results[0].longitude;
 
                     break;
+
                 }
 
             } catch (error) {
@@ -142,10 +179,16 @@ async function fetchLiveWeather(district, state, village) {
                     "Geocoding failed:",
                     query
                 );
+
             }
+
         }
 
-        // Default India location
+
+        // ==========================================
+        // DEFAULT INDIA LOCATION
+        // ==========================================
+
         if (
             latitude === null ||
             longitude === null
@@ -153,30 +196,143 @@ async function fetchLiveWeather(district, state, village) {
 
             latitude = 20.5937;
             longitude = 78.9629;
+
         }
 
-        // Fetch weather
-        const weatherRes = await fetch(
-            `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max&timezone=auto`
+
+        // ==========================================
+        // 2. OPEN-METEO REQUEST
+        // ==========================================
+
+        const weatherUrl =
+            new URL(
+                "https://api.open-meteo.com/v1/forecast"
+            );
+
+
+        weatherUrl.searchParams.set(
+            "latitude",
+            latitude
         );
+
+
+        weatherUrl.searchParams.set(
+            "longitude",
+            longitude
+        );
+
+
+        weatherUrl.searchParams.set(
+            "timezone",
+            "auto"
+        );
+
+
+        weatherUrl.searchParams.set(
+            "forecast_days",
+            "7"
+        );
+
+
+        // CURRENT
+
+        weatherUrl.searchParams.set(
+            "current",
+            [
+                "temperature_2m",
+                "relative_humidity_2m",
+                "weather_code",
+                "wind_speed_10m",
+                "precipitation"
+            ].join(",")
+        );
+
+
+        // DAILY - 7 DAYS
+
+        weatherUrl.searchParams.set(
+            "daily",
+            [
+                "weather_code",
+                "temperature_2m_max",
+                "temperature_2m_min",
+                "precipitation_probability_max",
+                "precipitation_sum"
+            ].join(",")
+        );
+
+
+        // HOURLY
+
+        weatherUrl.searchParams.set(
+            "hourly",
+            [
+                "temperature_2m",
+                "relative_humidity_2m",
+                "precipitation_probability",
+                "precipitation",
+                "weather_code",
+                "wind_speed_10m"
+            ].join(",")
+        );
+
+
+        const weatherRes =
+            await fetch(
+                weatherUrl.toString()
+            );
+
+
+        if (!weatherRes.ok) {
+
+            throw new Error(
+                "Weather API request failed"
+            );
+
+        }
+
 
         const weatherData =
             await weatherRes.json();
 
+
         if (!weatherData.current) {
 
-            setWeatherError("Data error");
+            setWeatherError(
+                "Weather data unavailable"
+            );
+
             return;
+
         }
+
+
+        // ==========================================
+        // SAVE WEATHER DATA
+        // ==========================================
+
+        window.krishiWeatherData =
+            weatherData;
+
+        window.selectedWeatherDay =
+            0;
+
+
+        // ==========================================
+        // 3. CURRENT WEATHER
+        // ==========================================
 
         const current =
             weatherData.current;
 
-        // Current selected language
+
         const activeLanguage =
             typeof currentLanguage !== "undefined"
                 ? currentLanguage
-                : localStorage.getItem("selectedLanguage") || "en";
+                : localStorage.getItem(
+                    "selectedLanguage"
+                ) || "en";
+
 
         const condition =
             getWeatherCondition(
@@ -184,21 +340,31 @@ async function fetchLiveWeather(district, state, village) {
                 activeLanguage
             );
 
+
         // Temperature
+
         if (tempEl) {
 
             tempEl.textContent =
-                `${Math.round(current.temperature_2m)}°C`;
+                `${Math.round(
+                    current.temperature_2m
+                )}°C`;
+
         }
 
-        // Weather description
+
+        // Description
+
         if (descEl) {
 
             descEl.textContent =
                 condition.text;
+
         }
 
-        // Weather icon
+
+        // Icon
+
         if (iconEl) {
 
             iconEl.textContent =
@@ -206,108 +372,41 @@ async function fetchLiveWeather(district, state, village) {
 
             iconEl.className =
                 `material-symbols-outlined text-6xl ${condition.color}`;
+
+            iconEl.style.fontVariationSettings =
+                "'FILL' 1";
+
         }
 
+
         // Humidity
+
         if (humidityEl) {
 
             humidityEl.textContent =
                 `${current.relative_humidity_2m}%`;
+
         }
 
+
         // Wind
+
         if (windEl) {
 
             windEl.textContent =
-                `${Math.round(current.wind_speed_10m)} km/h`;
+                `${Math.round(
+                    current.wind_speed_10m
+                )} km/h`;
+
         }
 
+
         // ==========================================
-        // 4 DAY FORECAST
+        // 4. UPCOMING 6 HOURS
         // ==========================================
 
-        if (
-            forecastEl &&
-            weatherData.daily &&
-            weatherData.daily.time
-        ) {
+        renderNext6Hours(weatherData);
 
-            const activeLanguage =
-                typeof currentLanguage !== "undefined"
-                    ? currentLanguage
-                    : localStorage.getItem("selectedLanguage") || "en";
-
-            const dayNames = {
-
-                en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-
-                hi: ["रवि", "सोम", "मंगल", "बुध", "गुरु", "शुक्र", "शनि"],
-
-                mr: ["रवि", "सोम", "मंगळ", "बुध", "गुरु", "शुक्र", "शनि"],
-
-                pa: ["ਐਤ", "ਸੋਮ", "ਮੰਗਲ", "ਬੁੱਧ", "ਵੀਰ", "ਸ਼ੁੱਕਰ", "ਸ਼ਨੀ"],
-
-                te: ["ఆది", "సోమ", "మంగళ", "బుధ", "గురు", "శుక్ర", "శని"],
-
-                gu: ["રવિ", "સોમ", "મંગળ", "બુધ", "ગુરુ", "શુક્ર", "શનિ"],
-
-                ta: ["ஞாயிறு", "திங்கள்", "செவ்வாய்", "புதன்", "வியாழன்", "வெள்ளி", "சனி"]
-            };
-
-            const days =
-                dayNames[activeLanguage] || dayNames.en;
-
-            let forecastHTML = "";
-
-            for (let i = 1; i <= 4; i++) {
-
-                if (!weatherData.daily.time[i])
-                    break;
-
-                const date =
-                    new Date(
-                        weatherData.daily.time[i]
-                    );
-
-                const dayName =
-                    days[date.getDay()];
-
-                const dayCode =
-                    weatherData.daily.weather_code[i];
-
-                const dayTemp =
-                    Math.round(
-                        weatherData.daily.temperature_2m_max[i]
-                    );
-
-                const dayCondition =
-                    getWeatherCondition(
-                        dayCode,
-                        activeLanguage
-                    );
-
-                forecastHTML += `
-                    <div class="flex flex-col items-center p-3 min-w-[70px]">
-
-                        <span class="text-xs font-bold text-stone-400 mb-2 uppercase">
-                            ${dayName}
-                        </span>
-
-                        <span class="material-symbols-outlined ${dayCondition.color} mb-2">
-                            ${dayCondition.icon}
-                        </span>
-
-                        <span class="text-sm font-bold text-stone-700">
-                            ${dayTemp}°
-                        </span>
-
-                    </div>
-                `;
-            }
-
-            forecastEl.innerHTML =
-                forecastHTML;
-        }
 
     } catch (error) {
 
@@ -316,10 +415,822 @@ async function fetchLiveWeather(district, state, village) {
             error
         );
 
+
         setWeatherError(
             "Connection error"
         );
+
     }
+
+}
+
+// ==========================================
+// 🕐 UPCOMING 6 HOURS
+// ==========================================
+
+function renderNext6Hours(weatherData) {
+
+    const container =
+        document.getElementById(
+            "weather-forecast-list"
+        );
+
+
+    if (
+        !container ||
+        !weatherData ||
+        !weatherData.hourly
+    ) {
+
+        return;
+
+    }
+
+
+    const hourly =
+        weatherData.hourly;
+
+
+    const currentTime =
+        weatherData.current.time;
+
+
+    let startIndex =
+        hourly.time.indexOf(
+            currentTime
+        );
+
+
+    if (startIndex < 0) {
+
+        startIndex = 0;
+
+    }
+
+
+    const activeLanguage =
+        typeof currentLanguage !== "undefined"
+            ? currentLanguage
+            : localStorage.getItem(
+                "selectedLanguage"
+            ) || "en";
+
+
+    let html = "";
+
+
+    for (
+        let i = startIndex;
+        i < startIndex + 6 &&
+        i < hourly.time.length;
+        i++
+    ) {
+
+        const condition =
+            getWeatherCondition(
+                hourly.weather_code[i],
+                activeLanguage
+            );
+
+
+        html += `
+
+            <div
+                class="
+                    min-w-[95px]
+                    md:min-w-[105px]
+                    shrink-0
+                    bg-white
+                    border
+                    border-stone-100
+                    rounded-xl
+                    p-3
+                    text-center
+                "
+            >
+
+                <div
+                    class="
+                        text-xs
+                        font-bold
+                        text-stone-500
+                    "
+                >
+                    ${formatWeatherHour(
+                        hourly.time[i]
+                    )}
+                </div>
+
+
+                <span
+                    class="
+                        material-symbols-outlined
+                        text-3xl
+                        ${condition.color}
+                        my-2
+                    "
+                    style="
+                        font-variation-settings:
+                        'FILL' 1;
+                    "
+                >
+                    ${condition.icon}
+                </span>
+
+
+                <div
+                    class="
+                        text-lg
+                        font-bold
+                        text-green-900
+                    "
+                >
+                    ${Math.round(
+                        hourly.temperature_2m[i]
+                    )}°C
+                </div>
+
+
+                <div
+                    class="
+                        text-[11px]
+                        text-blue-600
+                        mt-1
+                    "
+                >
+                    💧
+                    ${hourly.precipitation_probability[i] ?? 0}%
+                </div>
+
+
+                <div
+                    class="
+                        text-[11px]
+                        text-stone-500
+                        mt-1
+                    "
+                >
+                    💨
+                    ${Math.round(
+                        hourly.wind_speed_10m[i]
+                    )} km/h
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    container.innerHTML = html;
+
+}
+
+// ==========================================
+// 🌦 WEATHER DETAILS DROPDOWN
+// ==========================================
+
+function toggleWeatherDetails() {
+
+    const dropdown =
+        document.getElementById(
+            "weather-details-dropdown"
+        );
+
+    const icon =
+        document.getElementById(
+            "weather-see-more-icon"
+        );
+
+    const text =
+        document.getElementById(
+            "weather-see-more-text"
+        );
+
+
+    if (!dropdown) return;
+
+
+    const isClosed =
+        dropdown.classList.contains(
+            "hidden"
+        );
+
+
+    if (isClosed) {
+
+        // OPEN
+
+        dropdown.classList.remove(
+            "hidden"
+        );
+
+
+        if (icon) {
+
+            icon.textContent =
+                "expand_less";
+
+        }
+
+
+        if (text) {
+
+            text.textContent =
+                "See Less";
+
+        }
+
+
+        // Render details
+
+        updateWeatherDetails();
+
+
+    } else {
+
+        // CLOSE
+
+        dropdown.classList.add(
+            "hidden"
+        );
+
+
+        if (icon) {
+
+            icon.textContent =
+                "expand_more";
+
+        }
+
+
+        if (text) {
+
+            text.textContent =
+                "See More";
+
+        }
+
+    }
+
+}
+
+// ==========================================
+// 📅 7 DAY FORECAST
+// ==========================================
+
+function renderDetailedSevenDayForecast() {
+
+    const container =
+        document.getElementById(
+            "weather-details-7-days"
+        );
+
+
+    const weatherData =
+        window.krishiWeatherData;
+
+
+    if (
+        !container ||
+        !weatherData ||
+        !weatherData.daily
+    ) {
+
+        return;
+
+    }
+
+
+    const daily =
+        weatherData.daily;
+
+
+    const activeLanguage =
+        typeof currentLanguage !== "undefined"
+            ? currentLanguage
+            : localStorage.getItem(
+                "selectedLanguage"
+            ) || "en";
+
+
+    const dayNames = {
+
+        en: [
+            "Sun",
+            "Mon",
+            "Tue",
+            "Wed",
+            "Thu",
+            "Fri",
+            "Sat"
+        ],
+
+        hi: [
+            "रवि",
+            "सोम",
+            "मंगल",
+            "बुध",
+            "गुरु",
+            "शुक्र",
+            "शनि"
+        ]
+
+    };
+
+
+    const days =
+        dayNames[activeLanguage] ||
+        dayNames.en;
+
+
+    let html = "";
+
+
+    for (
+        let i = 0;
+        i < 7;
+        i++
+    ) {
+
+        if (!daily.time[i])
+            break;
+
+
+        const date =
+            new Date(
+                `${daily.time[i]}T12:00:00`
+            );
+
+
+        const dayName =
+            i === 0
+                ? "Today"
+                : days[date.getDay()];
+
+
+        const condition =
+            getWeatherCondition(
+                daily.weather_code[i],
+                activeLanguage
+            );
+
+
+        const selected =
+            i === (
+                window.selectedWeatherDay || 0
+            );
+
+
+        html += `
+
+            <button
+                type="button"
+                onclick="selectWeatherDay(${i})"
+                class="
+                    min-w-[100px]
+                    shrink-0
+                    rounded-2xl
+                    border
+                    p-3
+                    text-center
+                    transition
+                    ${
+                        selected
+                            ? "border-green-600 bg-green-50"
+                            : "border-stone-100 bg-white"
+                    }
+                "
+            >
+
+                <div
+                    class="
+                        text-xs
+                        font-bold
+                        ${
+                            selected
+                                ? "text-green-800"
+                                : "text-stone-400"
+                        }
+                    "
+                >
+                    ${dayName}
+                </div>
+
+
+                <span
+                    class="
+                        material-symbols-outlined
+                        text-3xl
+                        ${condition.color}
+                        my-2
+                    "
+                    style="
+                        font-variation-settings:
+                        'FILL' 1;
+                    "
+                >
+                    ${condition.icon}
+                </span>
+
+
+                <div
+                    class="
+                        text-lg
+                        font-bold
+                        text-stone-800
+                    "
+                >
+                    ${Math.round(
+                        daily.temperature_2m_max[i]
+                    )}°
+                </div>
+
+
+                <div
+                    class="
+                        text-xs
+                        text-stone-400
+                    "
+                >
+                    ${Math.round(
+                        daily.temperature_2m_min[i]
+                    )}°
+                </div>
+
+
+                <div
+                    class="
+                        text-[11px]
+                        text-blue-600
+                        mt-2
+                    "
+                >
+                    💧
+                    ${daily.precipitation_probability_max[i] ?? 0}%
+                </div>
+
+            </button>
+
+        `;
+
+    }
+
+
+    container.innerHTML =
+        html;
+
+}
+
+// ==========================================
+// 📅 SELECT WEATHER DAY
+// ==========================================
+
+function selectWeatherDay(index) {
+
+    window.selectedWeatherDay =
+        index;
+
+
+    renderDetailedSevenDayForecast();
+
+    renderDetailedHourlyForecast();
+
+    renderFarmingWeatherAdvice();
+
+}
+
+// ==========================================
+// 🕐 FULL HOURLY FORECAST
+// ==========================================
+
+function renderDetailedHourlyForecast() {
+
+    const container =
+        document.getElementById(
+            "weather-details-hourly"
+        );
+
+
+    const title =
+        document.getElementById(
+            "weather-hourly-title"
+        );
+
+
+    const weatherData =
+        window.krishiWeatherData;
+
+
+    if (
+        !container ||
+        !weatherData ||
+        !weatherData.hourly
+    ) {
+
+        return;
+
+    }
+
+
+    const daily =
+        weatherData.daily;
+
+    const hourly =
+        weatherData.hourly;
+
+
+    const dayIndex =
+        window.selectedWeatherDay || 0;
+
+
+    const selectedDate =
+        daily.time[dayIndex];
+
+
+    if (!selectedDate) return;
+
+
+    if (title) {
+
+        title.textContent =
+            dayIndex === 0
+                ? "Today's Hourly Forecast"
+                : `${selectedDate} — Hourly Forecast`;
+
+    }
+
+
+    const activeLanguage =
+        typeof currentLanguage !== "undefined"
+            ? currentLanguage
+            : localStorage.getItem(
+                "selectedLanguage"
+            ) || "en";
+
+
+    let html = "";
+
+
+    for (
+        let i = 0;
+        i < hourly.time.length;
+        i++
+    ) {
+
+        if (
+            !hourly.time[i].startsWith(
+                selectedDate
+            )
+        ) {
+
+            continue;
+
+        }
+
+
+        const condition =
+            getWeatherCondition(
+                hourly.weather_code[i],
+                activeLanguage
+            );
+
+
+        html += `
+
+            <div
+                class="
+                    min-w-[105px]
+                    shrink-0
+                    bg-white
+                    border
+                    border-stone-100
+                    rounded-xl
+                    p-3
+                    text-center
+                "
+            >
+
+                <div
+                    class="
+                        text-xs
+                        font-bold
+                        text-stone-500
+                    "
+                >
+                    ${formatWeatherHour(
+                        hourly.time[i]
+                    )}
+                </div>
+
+
+                <span
+                    class="
+                        material-symbols-outlined
+                        text-3xl
+                        ${condition.color}
+                        my-2
+                    "
+                    style="
+                        font-variation-settings:
+                        'FILL' 1;
+                    "
+                >
+                    ${condition.icon}
+                </span>
+
+
+                <div
+                    class="
+                        text-lg
+                        font-bold
+                        text-green-900
+                    "
+                >
+                    ${Math.round(
+                        hourly.temperature_2m[i]
+                    )}°C
+                </div>
+
+
+                <div
+                    class="
+                        text-[11px]
+                        text-blue-600
+                        mt-1
+                    "
+                >
+                    💧
+                    ${hourly.precipitation_probability[i] ?? 0}%
+                </div>
+
+
+                <div
+                    class="
+                        text-[11px]
+                        text-stone-500
+                        mt-1
+                    "
+                >
+                    🌧
+                    ${Number(
+                        hourly.precipitation[i] || 0
+                    ).toFixed(1)} mm
+                </div>
+
+
+                <div
+                    class="
+                        text-[11px]
+                        text-stone-500
+                        mt-1
+                    "
+                >
+                    💨
+                    ${Math.round(
+                        hourly.wind_speed_10m[i] || 0
+                    )} km/h
+                </div>
+
+
+                <div
+                    class="
+                        text-[11px]
+                        text-stone-500
+                        mt-1
+                    "
+                >
+                    💦
+                    ${hourly.relative_humidity_2m[i] ?? 0}%
+                </div>
+
+            </div>
+
+        `;
+
+    }
+
+
+    container.innerHTML =
+        html ||
+        `
+            <div class="text-sm text-stone-400 p-4">
+                Hourly forecast unavailable.
+            </div>
+        `;
+
+}
+
+// ==========================================
+// 🌾 FARMING WEATHER ADVISORY
+// ==========================================
+
+function renderFarmingWeatherAdvice() {
+
+    const container =
+        document.getElementById(
+            "weather-farming-advice"
+        );
+
+
+    const weatherData =
+        window.krishiWeatherData;
+
+
+    if (
+        !container ||
+        !weatherData ||
+        !weatherData.daily
+    ) {
+
+        return;
+
+    }
+
+
+    const daily =
+        weatherData.daily;
+
+
+    const index =
+        window.selectedWeatherDay || 0;
+
+
+    const rainProbability =
+        daily.precipitation_probability_max[
+            index
+        ] || 0;
+
+
+    const rainfall =
+        daily.precipitation_sum[
+            index
+        ] || 0;
+
+
+    if (rainProbability >= 80) {
+
+        container.textContent =
+            "🌧️ High chance of rain. Avoid unnecessary irrigation and consider postponing pesticide spraying.";
+
+
+    } else if (rainProbability >= 50) {
+
+        container.textContent =
+            "🌦️ Moderate chance of rain. Monitor field conditions and avoid excessive irrigation.";
+
+
+    } else if (rainfall === 0) {
+
+        container.textContent =
+            "☀️ Dry conditions expected. Check soil moisture and irrigate according to crop requirements.";
+
+
+    } else {
+
+        container.textContent =
+            "🌱 Weather conditions are moderate. Continue regular crop monitoring.";
+
+    }
+
+}
+
+// ==========================================
+// 🌦 UPDATE DETAILED WEATHER
+// ==========================================
+
+function updateWeatherDetails() {
+
+    if (!window.krishiWeatherData)
+        return;
+
+
+    renderDetailedSevenDayForecast();
+
+    renderDetailedHourlyForecast();
+
+    renderFarmingWeatherAdvice();
+
+}
+// ==========================================
+// 🕐 FORMAT WEATHER HOUR
+// ==========================================
+
+function formatWeatherHour(timeString) {
+
+    const date =
+        new Date(timeString);
+
+
+    return date.toLocaleTimeString(
+        "en-IN",
+        {
+            hour: "numeric",
+            hour12: true
+        }
+    );
+
 }
 
 
@@ -409,145 +1320,607 @@ function renderDashboard() {
 
 
             <!-- ================================== -->
-            <!-- WEATHER -->
-            <!-- ================================== -->
+<!-- 🌦 FINAL WEATHER DASHBOARD -->
+<!-- ================================== -->
 
-            <section
-                class="md:col-span-12 lg:col-span-8 bg-white rounded-xl p-6 border border-stone-100 shadow-sm"
+<section
+    class="
+        md:col-span-12
+        lg:col-span-8
+        bg-white
+        rounded-xl
+        p-6
+        border
+        border-stone-100
+        shadow-sm
+    "
+>
+
+    <!-- HEADER -->
+
+    <div
+        class="
+            flex
+            flex-col
+            md:flex-row
+            justify-between
+            items-start
+            md:items-center
+            mb-6
+            gap-4
+        "
+    >
+
+        <div>
+
+            <h3
+                class="
+                    font-[Lexend]
+                    text-xl
+                    font-medium
+                    text-green-900
+                    flex
+                    items-center
+                    gap-2
+                "
+            >
+
+                <span
+                    class="material-symbols-outlined"
+                >
+                    cloud_sync
+                </span>
+
+                ${t.weatherForecast}
+
+            </h3>
+
+
+            <p
+                id="dashboard-user-address"
+                class="
+                    text-stone-500
+                    text-sm
+                    font-semibold
+                "
+            >
+                ${userAddress}
+            </p>
+
+        </div>
+
+
+        <!-- LIVE BADGE -->
+
+        <div
+            class="
+                px-3
+                py-1
+                rounded-full
+                bg-green-50
+                text-green-700
+                text-xs
+                font-bold
+            "
+        >
+            ● Live Weather
+        </div>
+
+    </div>
+
+
+
+    <!-- ================================= -->
+    <!-- CURRENT WEATHER -->
+    <!-- ================================= -->
+
+    <div
+        class="
+            grid
+            grid-cols-1
+            md:grid-cols-3
+            gap-4
+        "
+    >
+
+        <!-- TEMPERATURE -->
+
+        <div
+            class="
+                bg-green-50/50
+                p-5
+                rounded-2xl
+                border
+                border-green-100/50
+                flex
+                items-center
+                gap-4
+            "
+        >
+
+            <span
+                id="weather-icon"
+                class="
+                    material-symbols-outlined
+                    text-6xl
+                    text-[#ffa536]
+                "
+                style="
+                    font-variation-settings:
+                    'FILL' 1;
+                "
+            >
+                light_mode
+            </span>
+
+
+            <div>
+
+                <div
+                    id="weather-temp"
+                    class="
+                        text-4xl
+                        font-bold
+                        text-stone-900
+                    "
+                >
+                    --°C
+                </div>
+
+
+                <p
+                    id="weather-desc"
+                    class="
+                        text-stone-600
+                        font-medium
+                    "
+                >
+                    Loading...
+                </p>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- HUMIDITY -->
+
+        <div
+            class="
+                bg-blue-50
+                p-5
+                rounded-2xl
+                border
+                border-blue-100
+            "
+        >
+
+            <div
+                class="
+                    flex
+                    items-center
+                    gap-2
+                    text-blue-700
+                "
+            >
+
+                <span
+                    class="
+                        material-symbols-outlined
+                    "
+                >
+                    humidity_low
+                </span>
+
+                <span
+                    class="
+                        text-sm
+                        font-medium
+                    "
+                >
+                    Humidity
+                </span>
+
+            </div>
+
+
+            <div
+                id="weather-humidity"
+                class="
+                    text-2xl
+                    font-bold
+                    text-blue-900
+                    mt-2
+                "
+            >
+                --%
+            </div>
+
+        </div>
+
+
+
+        <!-- WIND -->
+
+        <div
+            class="
+                bg-orange-50
+                p-5
+                rounded-2xl
+                border
+                border-orange-100
+            "
+        >
+
+            <div
+                class="
+                    flex
+                    items-center
+                    gap-2
+                    text-orange-700
+                "
+            >
+
+                <span
+                    class="
+                        material-symbols-outlined
+                    "
+                >
+                    air
+                </span>
+
+                <span
+                    class="
+                        text-sm
+                        font-medium
+                    "
+                >
+                    Wind
+                </span>
+
+            </div>
+
+
+            <div
+                id="weather-wind"
+                class="
+                    text-2xl
+                    font-bold
+                    text-orange-900
+                    mt-2
+                "
+            >
+                -- km/h
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================================= -->
+    <!-- UPCOMING 6 HOURS -->
+    <!-- ================================= -->
+
+    <div
+        class="
+            mt-6
+            pt-5
+            border-t
+            border-stone-100
+        "
+    >
+
+        <div
+            class="
+                flex
+                items-center
+                justify-between
+                mb-3
+            "
+        >
+
+            <div>
+
+                <h4
+                    class="
+                        text-sm
+                        font-bold
+                        text-green-900
+                    "
+                >
+                    Upcoming 6 Hours
+                </h4>
+
+
+                <p
+                    class="
+                        text-[11px]
+                        text-stone-400
+                    "
+                >
+                    Temperature • Rain • Wind
+                </p>
+
+            </div>
+
+
+            <span
+                class="
+                    material-symbols-outlined
+                    text-stone-400
+                "
+            >
+                schedule
+            </span>
+
+        </div>
+
+
+        <!-- 6 HOURS -->
+
+        <div
+            id="weather-forecast-list"
+            class="
+                flex
+                gap-3
+                overflow-x-auto
+                pb-2
+            "
+        >
+
+            <div
+                class="
+                    min-w-full
+                    text-center
+                    py-5
+                    text-sm
+                    text-stone-400
+                "
+            >
+                Loading hourly weather...
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================================= -->
+    <!-- SEE MORE -->
+    <!-- ================================= -->
+
+    <div class="mt-4">
+
+        <button
+            id="weather-see-more-btn"
+            onclick="toggleWeatherDetails()"
+            class="
+                w-full
+                py-3
+                rounded-xl
+                border
+                border-green-200
+                bg-green-50
+                hover:bg-green-100
+                text-green-800
+                font-semibold
+                transition
+                flex
+                items-center
+                justify-center
+                gap-2
+            "
+        >
+
+            <span
+                id="weather-see-more-text"
+            >
+                See More
+            </span>
+
+
+            <span
+                id="weather-see-more-icon"
+                class="
+                    material-symbols-outlined
+                "
+            >
+                expand_more
+            </span>
+
+        </button>
+
+    </div>
+
+
+
+    <!-- ================================= -->
+    <!-- EXPANDABLE DETAILS -->
+    <!-- ================================= -->
+
+    <div
+        id="weather-details-dropdown"
+        class="
+            hidden
+            mt-5
+            pt-5
+            border-t
+            border-stone-100
+        "
+    >
+
+        <!-- 7 DAYS -->
+
+        <div>
+
+            <h4
+                class="
+                    font-[Lexend]
+                    text-lg
+                    font-semibold
+                    text-green-900
+                "
+            >
+                7-Day Forecast
+            </h4>
+
+
+            <p
+                class="
+                    text-xs
+                    text-stone-500
+                    mt-1
+                    mb-4
+                "
+            >
+                Select a day to view its hourly forecast
+            </p>
+
+
+            <div
+                id="weather-details-7-days"
+                class="
+                    flex
+                    gap-3
+                    overflow-x-auto
+                    pb-2
+                "
+            >
+                Loading forecast...
+            </div>
+
+        </div>
+
+
+
+        <!-- HOURLY -->
+
+        <div
+            class="
+                mt-6
+                pt-5
+                border-t
+                border-stone-100
+            "
+        >
+
+            <h4
+                id="weather-hourly-title"
+                class="
+                    font-[Lexend]
+                    text-lg
+                    font-semibold
+                    text-green-900
+                "
+            >
+                Today's Hourly Forecast
+            </h4>
+
+
+            <p
+                class="
+                    text-xs
+                    text-stone-500
+                    mt-1
+                    mb-4
+                "
+            >
+                Full 24-hour weather forecast
+            </p>
+
+
+            <div
+                id="weather-details-hourly"
+                class="
+                    flex
+                    gap-3
+                    overflow-x-auto
+                    pb-2
+                "
+            >
+                Loading hourly forecast...
+            </div>
+
+        </div>
+
+
+
+        <!-- FARMING ADVISORY -->
+
+        <div
+            class="
+                mt-6
+                pt-5
+                border-t
+                border-stone-100
+            "
+        >
+
+            <div
+                class="
+                    rounded-2xl
+                    border-l-4
+                    border-green-700
+                    bg-green-50
+                    p-4
+                    flex
+                    items-start
+                    gap-3
+                "
             >
 
                 <div
-                    class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4"
+                    class="
+                        w-10
+                        h-10
+                        shrink-0
+                        rounded-full
+                        bg-white
+                        flex
+                        items-center
+                        justify-center
+                    "
                 >
-
-                    <div>
-
-                        <h3
-                            class="font-[Lexend] text-xl font-medium text-green-900 flex items-center gap-2"
-                        >
-
-                            <span class="material-symbols-outlined">
-                                cloud_sync
-                            </span>
-
-                            ${t.weatherForecast}
-
-                        </h3>
-
-                        <p
-                            id="dashboard-user-address"
-                            class="text-stone-500 text-sm font-semibold"
-                        >
-                            ${userAddress}
-                        </p>
-
-                    </div>
-
-
-                    <!-- HUMIDITY + WIND -->
-
-                    <div
-                        class="flex items-center gap-4 bg-stone-50 px-4 py-2 rounded-full border border-stone-100"
-                    >
-
-                        <div class="flex items-center gap-2">
-
-                            <span class="material-symbols-outlined text-blue-500">
-                                humidity_low
-                            </span>
-
-                            <span
-                                id="weather-humidity"
-                                class="font-bold"
-                            >
-                                --%
-                            </span>
-
-                        </div>
-
-
-                        <div class="w-px h-4 bg-stone-300"></div>
-
-
-                        <div class="flex items-center gap-2">
-
-                            <span class="material-symbols-outlined text-orange-500">
-                                air
-                            </span>
-
-                            <span
-                                id="weather-wind"
-                                class="font-bold"
-                            >
-                                -- km/h
-                            </span>
-
-                        </div>
-
-                    </div>
-
+                    🌾
                 </div>
 
 
-                <!-- CURRENT WEATHER + FORECAST -->
+                <div>
 
-                <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
-
-
-                    <!-- CURRENT WEATHER -->
-
-                    <div
-                        class="md:col-span-2 flex items-center gap-4 bg-green-50/50 p-4 rounded-2xl border border-green-100/50"
+                    <h4
+                        class="
+                            font-bold
+                            text-green-900
+                        "
                     >
-
-                        <span
-                            id="weather-icon"
-                            class="material-symbols-outlined text-6xl text-[#ffa536]"
-                            style="font-variation-settings:'FILL' 1;"
-                        >
-                            light_mode
-                        </span>
+                        Farming Weather Advisory
+                    </h4>
 
 
-                        <div>
-
-                            <span
-                                id="weather-temp"
-                                class="text-4xl font-bold text-stone-900"
-                            >
-                                --°C
-                            </span>
-
-                            <p
-                                id="weather-desc"
-                                class="text-stone-600 font-medium"
-                            >
-                                Loading...
-                            </p>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- FORECAST -->
-
-                    <div
-                        id="weather-forecast-list"
-                        class="md:col-span-3 flex justify-between items-center gap-2 overflow-x-auto pb-2"
+                    <p
+                        id="weather-farming-advice"
+                        class="
+                            text-sm
+                            text-stone-600
+                            mt-1
+                        "
                     >
-
-                        <div
-                            class="text-xs text-stone-400 p-3"
-                        >
-                            Loading forecast...
-                        </div>
-
-                    </div>
+                        Checking weather conditions...
+                    </p>
 
                 </div>
 
-            </section>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
 
 
 
