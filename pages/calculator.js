@@ -30,8 +30,8 @@ function renderCalculator() {
               <div class="relative">
                 <input id="calc-area" class="w-full p-3 bg-[#f8faf9] border border-[#c2c9bb] rounded-lg focus:ring-2 focus:ring-[#2d5a27] outline-none transition-all" placeholder="${t.enterValue}" type="number"/>
                 <select id="calc-unit" class="absolute right-2 top-1.5 bg-[#e7e8e7] border-none rounded px-2 py-1.5 font-semibold text-sm focus:ring-0">
-                  <option>${t.acres}</option>
-                  <option>${t.hectares}</option>
+                  <option value="acres">${t.acres}</option>
+                  <option value="hectares">${t.hectares}</option>
                 </select>
               </div>
             </div>
@@ -224,39 +224,149 @@ function renderCalculator() {
   `;
 }
 
-    function calculatePesticide() {
+   function calculatePesticide() {
 
-    const area = parseFloat(document.getElementById('calc-area').value);
-    const crop = document.getElementById('calc-crop').value;
-    const unit = document.getElementById('calc-unit').value;
+    // Get translations
+    const activeLanguage =
+        localStorage.getItem("selectedLanguage") || "en";
 
-    if (!area || !crop) {
-        alert(t.enterAreaAndCrop);
+    const t =
+        translations[activeLanguage] || translations.en;
+
+    // Get input values
+    const area = parseFloat(
+        document.getElementById("calc-area").value
+    );
+
+    const crop =
+        document.getElementById("calc-crop").value;
+
+    const unit =
+        document.getElementById("calc-unit").value;
+
+    console.log("Calculator:", {
+        area,
+        crop,
+        unit
+    });
+
+    // Validate
+    if (!area || area <= 0) {
+        alert(
+            t.enterAreaAndCrop ||
+            "Please enter a valid land area."
+        );
         return;
     }
 
-  const pesticideData = {
-    'Rice / Paddy': {name:'Monocrotophos 36% SL', dosage:0.5, water:200},
-    'Wheat': {name:'Chlorpyrifos 20% EC', dosage:0.4, water:150},
-    'Cotton': {name:'Imidacloprid 17.8% SL', dosage:0.3, water:200},
-    'Maize': {name:'Cypermethrin 25% EC', dosage:0.5, water:200},
-    'Sugarcane': {name:'Fipronil 5% SC', dosage:0.6, water:250}
-  };
-  const data = pesticideData[crop];
-  const totalDosage = (area * data.dosage).toFixed(1);
-  const totalWater = Math.round(area * data.water);
+    if (!crop) {
+        alert(
+            t.enterAreaAndCrop ||
+            "Please select a crop."
+        );
+        return;
+    }
 
-  
+    // Pesticide data
+    const pesticideData = {
+        "Rice / Paddy": {
+            name: "Monocrotophos 36% SL",
+            dosage: 0.5,
+            water: 200
+        },
 
-  document.getElementById('calc-summary').textContent =
-    `${t.generatedFor} ${area} ${unit} ${t.of} ${crop}`;
-  document.getElementById('res-pesticide').textContent = data.name;
-  document.getElementById('res-dosage').textContent = `${totalDosage} Liters`;
-  document.getElementById('res-per-acre').textContent = `(${data.dosage} Liters per ${unit === 'Acres' ? 'Acre' : 'Hectare'})`;
-  document.getElementById('res-water').textContent = `${totalWater.toLocaleString()} Liters`;
-  document.getElementById('res-water-rate').textContent = `@ ${data.water}L / ${unit === 'Acres' ? 'Acre' : 'Hectare'}`;
+        "Wheat": {
+            name: "Chlorpyrifos 20% EC",
+            dosage: 0.4,
+            water: 150
+        },
 
-  document.getElementById('calc-results').scrollIntoView({ behavior: 'smooth' });
+        "Cotton": {
+            name: "Imidacloprid 17.8% SL",
+            dosage: 0.3,
+            water: 200
+        },
+
+        "Maize": {
+            name: "Cypermethrin 25% EC",
+            dosage: 0.5,
+            water: 200
+        },
+
+        "Sugarcane": {
+            name: "Fipronil 5% SC",
+            dosage: 0.6,
+            water: 250
+        }
+    };
+
+    const data = pesticideData[crop];
+
+    if (!data) {
+        console.error("No pesticide data for:", crop);
+        alert("No pesticide data available for this crop.");
+        return;
+    }
+
+    // Calculate
+    const totalDosage =
+        (area * data.dosage).toFixed(1);
+
+    const totalWater =
+        Math.round(area * data.water);
+
+    // Show results section
+    const results =
+        document.getElementById("calc-results");
+
+    if (results) {
+        results.classList.remove("hidden");
+    }
+
+    // Summary
+    const summary =
+        document.getElementById("calc-summary");
+
+    if (summary) {
+        const unitText =
+            unit === "hectares"
+                ? (t.hectares || "Hectares")
+                : (t.acres || "Acres");
+
+        summary.textContent =
+            `${t.generatedFor || "Generated for"} ${area} ${unitText} ${t.of || "of"} ${crop}`;
+    }
+
+    // Pesticide
+    document.getElementById("res-pesticide").textContent =
+        data.name;
+
+    // Total dosage
+    document.getElementById("res-dosage").textContent =
+        `${totalDosage} Liters`;
+
+    // Per unit
+    const unitName =
+        unit === "hectares"
+            ? "Hectare"
+            : "Acre";
+
+    document.getElementById("res-per-acre").textContent =
+        `(${data.dosage} Liters per ${unitName})`;
+
+    // Water
+    document.getElementById("res-water").textContent =
+        `${totalWater.toLocaleString()} Liters`;
+
+    // Water rate
+    document.getElementById("res-water-rate").textContent =
+        `@ ${data.water}L / ${unitName}`;
+
+    // Scroll to results
+    results.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+    });
+
+    console.log("Calculation successful!");
 }
-
-

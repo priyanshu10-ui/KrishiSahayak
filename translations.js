@@ -10,6 +10,7 @@ const translations = {
     // ENGLISH
     // =========================
     en: {
+
         dashboard: "Dashboard",
         cropHealth: "Crop Health",
         marketTrends: "Market Trends",
@@ -143,6 +144,7 @@ const translations = {
         landArea: "Land Area",
         enterValue: "Enter value",
         acres: "Acres",
+        hectares: "Hectares",
         cropType: "Crop Type",
         selectCrop: "Select crop",
         targetPestDisease: "Target Pest / Disease",
@@ -150,18 +152,75 @@ const translations = {
         calculateRequirements: "Calculate Requirements",
         recentActivity: "Recent Activity",
         viewAll: "View All",
+        ricePaddy: "Rice / Paddy",
+        wheat: "Wheat",
+        cotton: "Cotton",
+        maize: "Maize",
+        sugarcane: "Sugarcane",
         cottonField: "Cotton Field A",
         wheatPlot: "Wheat Plot 4",
         sugarcaneBlock: "Sugarcane Block",
         pestManagementGuide: "Pest Management Guide",
         pestGuideDescription: "Learn about sustainable alternatives and biological pest control methods.",
         readGuide: "Read Guide",
+        calculationInput: "Calculation Input",
+        landArea: "Land Area",
+        enterValue: "Enter value",
+        acres: "Acres",
+        hectares: "Hectares",
+
+        cropType: "Crop Type",
+        selectCrop: "Select crop",
+
+        ricePaddy: "Rice / Paddy",
+        wheat: "Wheat",
+        cotton: "Cotton",
+        maize: "Maize",
+        sugarcane: "Sugarcane",
+
+        targetPestDisease: "Target Pest / Disease",
+        pestPlaceholder: "e.g. Stem Borer, Leaf Blight",
+        calculateRequirements: "Calculate Requirements",
+
+        calculationResults: "Calculation Results",
         generatedFor: "Generated for",
-        calculatorInput: "Calculation Input",
+        of: "of",
+
+        recommendedPesticide: "Recommended Pesticide",
+        totalDosage: "Total Dosage",
+        waterForDilution: "Water for Dilution",
+
+        safetyPPE: "Safety & PPE",
+        faceMask: "Face Mask",
+        gloves: "Gloves",
+        goggles: "Goggles",
+        boots: "Boots",
+
+        safetyWarning: "Always wear protective equipment and follow the pesticide label instructions. Keep children and animals away during spraying.",
+
+        saveCalculation: "Save Calculation",
+        shareWhatsApp: "Share on WhatsApp",
+
+        idealSprayingWindow: "Ideal Spraying Window",
+        goodConditions: "Good Conditions",
+        wind: "Wind",
+        humidity: "Humidity",
+
+        enterAreaAndCrop: "Please enter the land area and select a crop.",
+
+        recentActivity: "Recent Activity",
+        viewAll: "View All",
+        cottonFieldA: "Cotton Field A",
+        wheatPlot4: "Wheat Plot 4",
+        sugarcaneBlock: "Sugarcane Block",
+
+        pestManagementGuide: "Pest Management Guide",
+        pestGuideDescription: "Learn about sustainable alternatives and biological pest control methods.",
+        readGuide: "Read Guide",
+
         twoDaysAgo: "2.5 Ac • 2 days ago",
         oneWeekAgo: "10.0 Ac • 1 week ago",
-        oct15: "1.2 Ac • 15 Oct",
-        of: "of"
+        oct15: "1.2 Ac • 15 Oct"
 
     },
 
@@ -322,6 +381,7 @@ const translations = {
         landArea: "भूमि क्षेत्रफल",
         enterValue: "मान दर्ज करें",
         acres: "एकड़",
+        hectares: "हेक्टेयर",
         cropType: "फसल का प्रकार",
         selectCrop: "फसल चुनें",
         targetPestDisease: "लक्षित कीट / रोग",
@@ -329,18 +389,76 @@ const translations = {
         calculateRequirements: "आवश्यकता की गणना करें",
         recentActivity: "हाल की गतिविधि",
         viewAll: "सभी देखें",
+        ricePaddy: "चावल / धान",
+        wheat: "गेहूं",
+        cotton: "कपास",
+        maize: "मक्का",
+        sugarcane: "गन्ना",
         cottonField: "कपास का खेत A",
         wheatPlot: "गेहूं का खेत 4",
         sugarcaneBlock: "गन्ने का खेत",
         pestManagementGuide: "कीट प्रबंधन गाइड",
         pestGuideDescription: "टिकाऊ विकल्पों और जैविक कीट नियंत्रण विधियों के बारे में जानें।",
         readGuide: "गाइड पढ़ें",
-        generatedFor: "के लिए बनाया गया",
-        calculatorInput: "गणना इनपुट",
+        calculationInput: "गणना इनपुट",
+        landArea: "भूमि क्षेत्रफल",
+        enterValue: "मान दर्ज करें",
+        acres: "एकड़",
+        hectares: "हेक्टेयर",
+
+        cropType: "फसल का प्रकार",
+        selectCrop: "फसल चुनें",
+
+        ricePaddy: "चावल / धान",
+        wheat: "गेहूं",
+        cotton: "कपास",
+        maize: "मक्का",
+        sugarcane: "गन्ना",
+
+        targetPestDisease: "लक्षित कीट / रोग",
+        pestPlaceholder: "जैसे स्टेम बोरर, लीफ ब्लाइट",
+        calculateRequirements: "आवश्यकता की गणना करें",
+
+        calculationResults: "गणना के परिणाम",
+        generatedFor: "के लिए परिणाम",
+        of: "का",
+
+        recommendedPesticide: "अनुशंसित कीटनाशक",
+        totalDosage: "कुल मात्रा",
+        waterForDilution: "घोल के लिए पानी",
+
+        safetyPPE: "सुरक्षा और सुरक्षात्मक उपकरण",
+        faceMask: "फेस मास्क",
+        gloves: "दस्ताने",
+        goggles: "सुरक्षा चश्मा",
+        boots: "जूते",
+
+        safetyWarning: "हमेशा सुरक्षात्मक उपकरण पहनें और कीटनाशक के लेबल पर दिए निर्देशों का पालन करें। छिड़काव के दौरान बच्चों और जानवरों को दूर रखें।",
+
+        saveCalculation: "गणना सहेजें",
+        shareWhatsApp: "WhatsApp पर साझा करें",
+
+        idealSprayingWindow: "छिड़काव का उचित समय",
+        goodConditions: "उपयुक्त परिस्थितियाँ",
+        wind: "हवा",
+        humidity: "नमी",
+
+        enterAreaAndCrop: "कृपया भूमि क्षेत्रफल दर्ज करें और फसल चुनें।",
+
+        recentActivity: "हाल की गतिविधि",
+        viewAll: "सभी देखें",
+
+        cottonFieldA: "कपास का खेत A",
+        wheatPlot4: "गेहूं का खेत 4",
+        sugarcaneBlock: "गन्ने का खेत",
+
+        pestManagementGuide: "कीट प्रबंधन गाइड",
+        pestGuideDescription: "टिकाऊ विकल्पों और जैविक कीट नियंत्रण विधियों के बारे में जानें।",
+        readGuide: "गाइड पढ़ें",
+
         twoDaysAgo: "2.5 एकड़ • 2 दिन पहले",
         oneWeekAgo: "10.0 एकड़ • 1 सप्ताह पहले",
-        oct15: "1.2 एकड़ • 15 अक्टूबर",
-        of: "का"
+        oct15: "1.2 एकड़ • 15 अक्टूबर" 
         
 
     },
@@ -502,6 +620,7 @@ const translations = {
         landArea: "जमिनीचे क्षेत्रफळ",
         enterValue: "मूल्य प्रविष्ट करा",
         acres: "एकर",
+        hectares: "हेक्टर",
         cropType: "पिकाचा प्रकार",
         selectCrop: "पीक निवडा",
         targetPestDisease: "लक्षित कीड / रोग",
@@ -509,18 +628,76 @@ const translations = {
         calculateRequirements: "आवश्यकतेची गणना करा",
         recentActivity: "अलीकडील क्रियाकलाप",
         viewAll: "सर्व पहा",
+        ricePaddy: "तांदूळ / भात",
+        wheat: "गहू",
+        cotton: "कापूस",
+        maize: "मका",
+        sugarcane: "ऊस",
         cottonField: "कापूस शेत A",
         wheatPlot: "गहू शेत 4",
         sugarcaneBlock: "ऊस शेत",
         pestManagementGuide: "कीड व्यवस्थापन मार्गदर्शक",
         pestGuideDescription: "शाश्वत पर्याय आणि जैविक कीड नियंत्रण पद्धतींबद्दल जाणून घ्या.",
         readGuide: "मार्गदर्शक वाचा",
-        generatedFor: "यासाठी तयार केले",
-        calculatorInput: "गणना इनपुट",
+        calculationInput: "गणना इनपुट",
+        landArea: "जमिनीचे क्षेत्रफळ",
+        enterValue: "मूल्य प्रविष्ट करा",
+        acres: "एकर",
+        hectares: "हेक्टर",
+
+        cropType: "पिकाचा प्रकार",
+        selectCrop: "पीक निवडा",
+
+        ricePaddy: "तांदूळ / भात",
+        wheat: "गहू",
+        cotton: "कापूस",
+        maize: "मका",
+        sugarcane: "ऊस",
+
+        targetPestDisease: "लक्ष्यित कीड / रोग",
+        pestPlaceholder: "उदा. स्टेम बोरर, लीफ ब्लाइट",
+        calculateRequirements: "आवश्यकतेची गणना करा",
+
+        calculationResults: "गणनेचे परिणाम",
+        generatedFor: "यासाठी निकाल",
+        of: "चे",
+
+        recommendedPesticide: "शिफारस केलेले कीटकनाशक",
+        totalDosage: "एकूण मात्रा",
+        waterForDilution: "मिश्रणासाठी पाणी",
+
+        safetyPPE: "सुरक्षा आणि संरक्षणात्मक साधने",
+        faceMask: "फेस मास्क",
+        gloves: "हातमोजे",
+        goggles: "सुरक्षा चष्मा",
+        boots: "बूट",
+
+        safetyWarning: "नेहमी संरक्षणात्मक साधने वापरा आणि कीटकनाशकाच्या लेबलवरील सूचनांचे पालन करा. फवारणीदरम्यान मुले आणि प्राण्यांना दूर ठेवा.",
+
+        saveCalculation: "गणना जतन करा",
+        shareWhatsApp: "WhatsApp वर शेअर करा",
+
+        idealSprayingWindow: "फवारणीसाठी योग्य वेळ",
+        goodConditions: "चांगल्या परिस्थिती",
+        wind: "वारा",
+        humidity: "आर्द्रता",
+
+        enterAreaAndCrop: "कृपया जमिनीचे क्षेत्रफळ प्रविष्ट करा आणि पीक निवडा.",
+
+        recentActivity: "अलीकडील क्रियाकलाप",
+        viewAll: "सर्व पहा",
+
+        cottonFieldA: "कापसाचे शेत A",
+        wheatPlot4: "गव्हाचे शेत 4",
+        sugarcaneBlock: "उसाचे शेत",
+
+        pestManagementGuide: "कीड व्यवस्थापन मार्गदर्शक",
+        pestGuideDescription: "शाश्वत पर्याय आणि जैविक कीड नियंत्रण पद्धतींबद्दल जाणून घ्या.",
+        readGuide: "मार्गदर्शक वाचा",
+
         twoDaysAgo: "2.5 एकर • 2 दिवसांपूर्वी",
         oneWeekAgo: "10.0 एकर • 1 आठवड्यापूर्वी",
-        oct15: "1.2 एकर • 15 ऑक्टोबर",
-        of: "चे"
+        oct15: "1.2 एकर • 15 ऑक्टोबर"
     
 
     },
@@ -689,6 +866,7 @@ const translations = {
         landArea: "ਜ਼ਮੀਨ ਦਾ ਖੇਤਰਫਲ",
         enterValue: "ਮੁੱਲ ਦਰਜ ਕਰੋ",
         acres: "ਏਕੜ",
+        hectares: "ਹੈਕਟੇਅਰ",
         cropType: "ਫਸਲ ਦੀ ਕਿਸਮ",
         selectCrop: "ਫਸਲ ਚੁਣੋ",
         targetPestDisease: "ਨਿਸ਼ਾਨਾ ਕੀਟ / ਬਿਮਾਰੀ",
@@ -696,18 +874,76 @@ const translations = {
         calculateRequirements: "ਲੋੜ ਦੀ ਗਣਨਾ ਕਰੋ",
         recentActivity: "ਹਾਲੀਆ ਗਤੀਵਿਧੀ",
         viewAll: "ਸਭ ਦੇਖੋ",
+        ricePaddy: "ਚੌਲ / ਝੋਨਾ",
+        wheat: "ਕਣਕ",
+        cotton: "ਕਪਾਹ",
+        maize: "ਮੱਕੀ",
+        sugarcane: "ਗੰਨਾ",
         cottonField: "ਕਪਾਹ ਦਾ ਖੇਤ A",
         wheatPlot: "ਕਣਕ ਦਾ ਖੇਤ 4",
         sugarcaneBlock: "ਗੰਨੇ ਦਾ ਖੇਤ",
         pestManagementGuide: "ਕੀਟ ਪ੍ਰਬੰਧਨ ਗਾਈਡ",
         pestGuideDescription: "ਟਿਕਾਊ ਵਿਕਲਪਾਂ ਅਤੇ ਜੈਵਿਕ ਕੀਟ ਨਿਯੰਤਰਣ ਤਰੀਕਿਆਂ ਬਾਰੇ ਜਾਣੋ।",
         readGuide: "ਗਾਈਡ ਪੜ੍ਹੋ",
-        generatedFor: "ਲਈ ਬਣਾਇਆ ਗਿਆ",
-        calculatorInput: "ਗਣਨਾ ਇਨਪੁਟ",
+        calculationInput: "ਗਣਨਾ ਇਨਪੁੱਟ",
+        landArea: "ਜ਼ਮੀਨ ਦਾ ਖੇਤਰਫਲ",
+        enterValue: "ਮੁੱਲ ਦਰਜ ਕਰੋ",
+        acres: "ਏਕੜ",
+        hectares: "ਹੈਕਟੇਅਰ",
+
+        cropType: "ਫਸਲ ਦੀ ਕਿਸਮ",
+        selectCrop: "ਫਸਲ ਚੁਣੋ",
+
+        ricePaddy: "ਚੌਲ / ਝੋਨਾ",
+        wheat: "ਕਣਕ",
+        cotton: "ਕਪਾਹ",
+        maize: "ਮੱਕੀ",
+        sugarcane: "ਗੰਨਾ",
+
+        targetPestDisease: "ਨਿਸ਼ਾਨਾ ਕੀੜਾ / ਬਿਮਾਰੀ",
+        pestPlaceholder: "ਜਿਵੇਂ ਸਟੈਮ ਬੋਰਰ, ਲੀਫ ਬਲਾਈਟ",
+        calculateRequirements: "ਲੋੜ ਦੀ ਗਣਨਾ ਕਰੋ",
+
+        calculationResults: "ਗਣਨਾ ਦੇ ਨਤੀਜੇ",
+        generatedFor: "ਲਈ ਨਤੀਜਾ",
+        of: "ਦਾ",
+
+        recommendedPesticide: "ਸਿਫਾਰਸ਼ ਕੀਤਾ ਕੀਟਨਾਸ਼ਕ",
+        totalDosage: "ਕੁੱਲ ਮਾਤਰਾ",
+        waterForDilution: "ਘੋਲ ਲਈ ਪਾਣੀ",
+
+        safetyPPE: "ਸੁਰੱਖਿਆ ਅਤੇ ਸੁਰੱਖਿਆ ਉਪਕਰਣ",
+        faceMask: "ਫੇਸ ਮਾਸਕ",
+        gloves: "ਦਸਤਾਨੇ",
+        goggles: "ਸੁਰੱਖਿਆ ਚਸ਼ਮੇ",
+        boots: "ਬੂਟ",
+
+        safetyWarning: "ਹਮੇਸ਼ਾ ਸੁਰੱਖਿਆ ਉਪਕਰਣ ਪਹਿਨੋ ਅਤੇ ਕੀਟਨਾਸ਼ਕ ਦੇ ਲੇਬਲ ਉੱਤੇ ਦਿੱਤੀਆਂ ਹਦਾਇਤਾਂ ਦੀ ਪਾਲਣਾ ਕਰੋ। ਛਿੜਕਾਅ ਦੌਰਾਨ ਬੱਚਿਆਂ ਅਤੇ ਜਾਨਵਰਾਂ ਨੂੰ ਦੂਰ ਰੱਖੋ।",
+
+        saveCalculation: "ਗਣਨਾ ਸੇਵ ਕਰੋ",
+        shareWhatsApp: "WhatsApp 'ਤੇ ਸਾਂਝਾ ਕਰੋ",
+
+        idealSprayingWindow: "ਛਿੜਕਾਅ ਲਈ ਢੁਕਵਾਂ ਸਮਾਂ",
+        goodConditions: "ਚੰਗੀਆਂ ਸਥਿਤੀਆਂ",
+        wind: "ਹਵਾ",
+        humidity: "ਨਮੀ",
+
+        enterAreaAndCrop: "ਕਿਰਪਾ ਕਰਕੇ ਜ਼ਮੀਨ ਦਾ ਖੇਤਰਫਲ ਦਰਜ ਕਰੋ ਅਤੇ ਫਸਲ ਚੁਣੋ।",
+
+        recentActivity: "ਹਾਲੀਆ ਗਤੀਵਿਧੀ",
+        viewAll: "ਸਭ ਦੇਖੋ",
+
+        cottonFieldA: "ਕਪਾਹ ਦਾ ਖੇਤ A",
+        wheatPlot4: "ਕਣਕ ਦਾ ਖੇਤ 4",
+        sugarcaneBlock: "ਗੰਨੇ ਦਾ ਖੇਤ",
+
+        pestManagementGuide: "ਕੀਟ ਪ੍ਰਬੰਧਨ ਗਾਈਡ",
+        pestGuideDescription: "ਟਿਕਾਊ ਵਿਕਲਪਾਂ ਅਤੇ ਜੈਵਿਕ ਕੀਟ ਨਿਯੰਤਰਣ ਤਰੀਕਿਆਂ ਬਾਰੇ ਜਾਣੋ।",
+        readGuide: "ਗਾਈਡ ਪੜ੍ਹੋ",
+
         twoDaysAgo: "2.5 ਏਕੜ • 2 ਦਿਨ ਪਹਿਲਾਂ",
         oneWeekAgo: "10.0 ਏਕੜ • 1 ਹਫ਼ਤਾ ਪਹਿਲਾਂ",
-        oct15: "1.2 ਏਕੜ • 15 ਅਕਤੂਬਰ",
-        of: "ਦਾ"
+        oct15: "1.2 ਏਕੜ • 15 ਅਕਤੂਬਰ"
         
     },
 
@@ -875,6 +1111,7 @@ const translations = {
         landArea: "భూమి విస్తీర్ణం",
         enterValue: "విలువను నమోదు చేయండి",
         acres: "ఎకరాలు",
+        hectares: "హెక్టార్లు",
         cropType: "పంట రకం",
         selectCrop: "పంటను ఎంచుకోండి",
         targetPestDisease: "లక్ష్య చీడపీడ / వ్యాధి",
@@ -882,18 +1119,76 @@ const translations = {
         calculateRequirements: "అవసరాలను లెక్కించండి",
         recentActivity: "ఇటీవలి కార్యకలాపాలు",
         viewAll: "అన్నీ చూడండి",
+        ricePaddy: "బియ్యం / వరి",
+        wheat: "గోధుమ",
+        cotton: "పత్తి",
+        maize: "మొక్కజొన్న",
+        sugarcane: "చెరకు",
         cottonField: "పత్తి పొలం A",
         wheatPlot: "గోధుమ పొలం 4",
         sugarcaneBlock: "చెరకు పొలం",
         pestManagementGuide: "చీడపీడల నిర్వహణ గైడ్",
         pestGuideDescription: "స్థిరమైన ప్రత్యామ్నాయాలు మరియు సేంద్రీయ చీడపీడల నియంత్రణ పద్ధతుల గురించి తెలుసుకోండి.",
         readGuide: "గైడ్ చదవండి",
-        generatedFor: "కోసం రూపొందించబడింది",
-        calculatorInput: "గణన ఇన్‌పుట్",
+        calculationInput: "గణన ఇన్‌పుట్",
+        landArea: "భూమి విస్తీర్ణం",
+        enterValue: "విలువను నమోదు చేయండి",
+        acres: "ఎకరాలు",
+        hectares: "హెక్టార్లు",
+
+        cropType: "పంట రకం",
+        selectCrop: "పంటను ఎంచుకోండి",
+
+        ricePaddy: "బియ్యం / వరి",
+        wheat: "గోధుమ",
+        cotton: "పత్తి",
+        maize: "మొక్కజొన్న",
+        sugarcane: "చెరకు",
+
+        targetPestDisease: "లక్ష్య కీటకం / వ్యాధి",
+        pestPlaceholder: "ఉదా. స్టెమ్ బోరర్, లీఫ్ బ్లైట్",
+        calculateRequirements: "అవసరాలను లెక్కించండి",
+
+        calculationResults: "గణన ఫలితాలు",
+        generatedFor: "దీని కోసం ఫలితం",
+        of: "యొక్క",
+
+        recommendedPesticide: "సిఫార్సు చేసిన పురుగుమందు",
+        totalDosage: "మొత్తం మోతాదు",
+        waterForDilution: "కలపడానికి అవసరమైన నీరు",
+
+        safetyPPE: "భద్రత మరియు రక్షణ పరికరాలు",
+        faceMask: "ఫేస్ మాస్క్",
+        gloves: "చేతి తొడుగులు",
+        goggles: "రక్షణ కళ్లద్దాలు",
+        boots: "బూట్లు",
+
+        safetyWarning: "ఎల్లప్పుడూ రక్షణ పరికరాలను ధరించండి మరియు పురుగుమందు లేబుల్‌లోని సూచనలను పాటించండి. పిచికారీ సమయంలో పిల్లలు మరియు జంతువులను దూరంగా ఉంచండి.",
+
+        saveCalculation: "గణనను సేవ్ చేయండి",
+        shareWhatsApp: "WhatsAppలో భాగస్వామ్యం చేయండి",
+
+        idealSprayingWindow: "పిచికారీకి అనువైన సమయం",
+        goodConditions: "మంచి పరిస్థితులు",
+        wind: "గాలి",
+        humidity: "తేమ",
+
+        enterAreaAndCrop: "దయచేసి భూమి విస్తీర్ణాన్ని నమోదు చేసి పంటను ఎంచుకోండి.",
+
+        recentActivity: "ఇటీవలి కార్యకలాపాలు",
+        viewAll: "అన్నింటినీ చూడండి",
+
+        cottonFieldA: "పత్తి పొలం A",
+        wheatPlot4: "గోధుమ పొలం 4",
+        sugarcaneBlock: "చెరకు పొలం",
+
+        pestManagementGuide: "కీటక నిర్వహణ గైడ్",
+        pestGuideDescription: "స్థిరమైన ప్రత్యామ్నాయాలు మరియు జీవసంబంధమైన కీటక నియంత్రణ పద్ధతుల గురించి తెలుసుకోండి.",
+        readGuide: "గైడ్ చదవండి",
+
         twoDaysAgo: "2.5 ఎకరాలు • 2 రోజుల క్రితం",
         oneWeekAgo: "10.0 ఎకరాలు • 1 వారం క్రితం",
-        oct15: "1.2 ఎకరాలు • అక్టోబర్ 15",
-        of: "యొక్క"
+        oct15: "1.2 ఎకరాలు • అక్టోబర్ 15"
 
             
     },
@@ -1063,6 +1358,7 @@ const translations = {
         landArea: "જમીનનું ક્ષેત્રફળ",
         enterValue: "મૂલ્ય દાખલ કરો",
         acres: "એકર",
+        hectares: "હેક્ટર",
         cropType: "પાકનો પ્રકાર",
         selectCrop: "પાક પસંદ કરો",
         targetPestDisease: "લક્ષિત જીવાત / રોગ",
@@ -1070,18 +1366,76 @@ const translations = {
         calculateRequirements: "જરૂરિયાતોની ગણતરી કરો",
         recentActivity: "તાજેતરની પ્રવૃત્તિ",
         viewAll: "બધું જુઓ",
+        ricePaddy: "ચોખા / ડાંગર",
+        wheat: "ઘઉં",
+        cotton: "કપાસ",
+        maize: "મકાઈ",
+        sugarcane: "શેરડી",
         cottonField: "કપાસનું ખેતર A",
         wheatPlot: "ઘઉંનું ખેતર 4",
         sugarcaneBlock: "શેરડીનું ખેતર",
         pestManagementGuide: "જીવાત નિયંત્રણ માર્ગદર્શિકા",
         pestGuideDescription: "ટકાઉ વિકલ્પો અને જૈવિક જીવાત નિયંત્રણ પદ્ધતિઓ વિશે જાણો.",
         readGuide: "માર્ગદર્શિકા વાંચો",
-        generatedFor: "માટે બનાવવામાં આવ્યું",
-        calculatorInput: "ગણતરી ઇનપુટ",
-        twoDaysAgo: "2.5 એકર • 2 દિવસ પહેલાં",
-        oneWeekAgo: "10.0 એકર • 1 અઠવાડિયા પહેલાં",
-        oct15: "1.2 એકર • 15 ઑક્ટોબર",
-        of: "નું"
+        calculationInput: "ગણતરી ઇનપુટ",
+        landArea: "જમીનનું ક્ષેત્રફળ",
+        enterValue: "મૂલ્ય દાખલ કરો",
+        acres: "એકર",
+        hectares: "હેક્ટર",
+
+        cropType: "પાકનો પ્રકાર",
+        selectCrop: "પાક પસંદ કરો",
+
+        ricePaddy: "ચોખા / ડાંગર",
+        wheat: "ઘઉં",
+        cotton: "કપાસ",
+        maize: "મકાઈ",
+        sugarcane: "શેરડી",
+
+        targetPestDisease: "લક્ષિત જીવાત / રોગ",
+        pestPlaceholder: "દા.ત. સ્ટેમ બોરર, લીફ બ્લાઇટ",
+        calculateRequirements: "જરૂરિયાતોની ગણતરી કરો",
+
+        calculationResults: "ગણતરીના પરિણામો",
+        generatedFor: "આ માટે પરિણામ",
+        of: "નું",
+
+        recommendedPesticide: "ભલામણ કરેલ જંતુનાશક",
+        totalDosage: "કુલ માત્રા",
+        waterForDilution: "મિશ્રણ માટે પાણી",
+
+        safetyPPE: "સુરક્ષા અને રક્ષણાત્મક સાધનો",
+        faceMask: "ફેસ માસ્ક",
+        gloves: "મોજા",
+        goggles: "સુરક્ષા ચશ્મા",
+        boots: "બૂટ",
+
+        safetyWarning: "હંમેશા રક્ષણાત્મક સાધનો પહેરો અને જંતુનાશકના લેબલ પરની સૂચનાઓનું પાલન કરો. છંટકાવ દરમિયાન બાળકો અને પ્રાણીઓને દૂર રાખો.",
+
+        saveCalculation: "ગણતરી સાચવો",
+        shareWhatsApp: "WhatsApp પર શેર કરો",
+
+        idealSprayingWindow: "છંટકાવ માટે યોગ્ય સમય",
+        goodConditions: "સારી પરિસ્થિતિઓ",
+        wind: "પવન",
+        humidity: "ભેજ",
+
+        enterAreaAndCrop: "કૃપા કરીને જમીનનું ક્ષેત્રફળ દાખલ કરો અને પાક પસંદ કરો.",
+
+        recentActivity: "તાજેતરની પ્રવૃત્તિ",
+        viewAll: "બધું જુઓ",
+
+        cottonFieldA: "કપાસનું ખેતર A",
+        wheatPlot4: "ઘઉંનું ખેતર 4",
+        sugarcaneBlock: "શેરડીનું ખેતર",
+
+        pestManagementGuide: "જીવાત વ્યવસ્થાપન માર્ગદર્શિકા",
+        pestGuideDescription: "ટકાઉ વિકલ્પો અને જૈવિક જીવાત નિયંત્રણ પદ્ધતિઓ વિશે જાણો.",
+        readGuide: "માર્ગદર્શિકા વાંચો",
+
+        twoDaysAgo: "2.5 એકર • 2 દિવસ પહેલા",
+        oneWeekAgo: "10.0 એકર • 1 અઠવાડિયા પહેલા",
+        oct15: "1.2 એકર • 15 ઑક્ટોબર"
     }
 
 };
