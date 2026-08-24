@@ -315,3 +315,45 @@ function navigateTo(page) {
 
 document.addEventListener("DOMContentLoaded", initApp);
 
+function showAppNavigation() {
+  const topNav = document.getElementById("topnav");
+  const sideNav = document.getElementById("sidenav");
+  const bottomNav = document.getElementById("bottomnav");
+
+  if (topNav) topNav.style.display = "flex";
+  if (sideNav) sideNav.style.display = "flex";
+  if (bottomNav) bottomNav.style.display = "flex";
+}
+
+function hideAppNavigation() {
+  const topNav = document.getElementById("topnav");
+  const sideNav = document.getElementById("sidenav");
+  const bottomNav = document.getElementById("bottomnav");
+
+  if (topNav) topNav.style.display = "none";
+  if (sideNav) sideNav.style.display = "none";
+  if (bottomNav) bottomNav.style.display = "none";
+}
+
+function updateAppHeader() {
+  const currentName = localStorage.getItem("userName") || "Farmer";
+  const currentAvatar = localStorage.getItem("avatar");
+
+  // Sidebar Greeting
+  const sidebarGreeting = document.getElementById("sidebar-user-name");
+  if (sidebarGreeting) {
+    sidebarGreeting.textContent = currentName;
+  }
+
+  // Top Navbar Farmer Name
+  const navUserName = document.getElementById("nav-user-name");
+  if (navUserName) {
+    navUserName.textContent = currentName;
+  }
+
+  // Top Navbar Avatar (with fallback generator)
+  const navAvatar = document.getElementById("nav-user-avatar");
+  if (navAvatar) {
+    navAvatar.src = currentAvatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentName)}&background=2d5a27&color=fff&bold=true`;
+  }
+}

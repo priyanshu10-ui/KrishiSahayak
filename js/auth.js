@@ -408,28 +408,43 @@ auth.onAuthStateChanged(async (user) => {
     // LOGOUT
     // ==========================================
 
-    function logout() {
+    // ==========================================
+// UNIVERSAL LOGOUT HANDLER
+// ==========================================
 
-        auth.signOut()
+function logout() {
+  console.log("🚪 Logging out user...");
 
-            .then(() => {
+  if (typeof auth !== "undefined" && auth.signOut) {
+    auth.signOut().catch((err) => console.warn("Firebase signout omitted:", err));
+  }
 
-                console.log(
-                    "✅ Logged Out"
-                );
+  // Clear session data
+  localStorage.removeItem("userName");
+  localStorage.removeItem("phone");
+  localStorage.removeItem("avatar");
+  localStorage.removeItem("loginMethod");
+  localStorage.removeItem("village");
+  localStorage.removeItem("district");
+  localStorage.removeItem("state");
+  localStorage.removeItem("crops");
 
-                navigateTo("login");
+  // Reset greetings
+  const navName = document.getElementById("nav-user-name");
+  if (navName) navName.textContent = "Farmer";
 
-            })
+  const sidebarName = document.getElementById("sidebar-user-name");
+  if (sidebarName) sidebarName.textContent = "Farmer";
 
-            .catch((error) => {
+  const navAvatar = document.getElementById("nav-user-avatar");
+  if (navAvatar) {
+    navAvatar.src = "https://ui-avatars.com/api/?name=Farmer&background=2d5a27&color=fff&bold=true";
+  }
 
-                console.error(
-                    "❌ Logout Error:",
-                    error
-                );
+  // Hide nav and return to login
+  hideAppNavigation();
+  navigateTo("login");
+}
 
-                alert(error.message);
-
-            });
-    }
+window.logout = logout;
+window.logoutUser = logout;

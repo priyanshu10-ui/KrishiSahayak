@@ -1,4 +1,6 @@
+// ==========================================
 // Complete list of all 28 States & 8 Union Territories of India
+// ==========================================
 const stateDistrictData = {
   "Andaman and Nicobar Islands": ["Nicobar", "North and Middle Andaman", "South Andaman"],
   "Andhra Pradesh": ["Anantapur", "Chittoor", "East Godavari", "Guntur", "Krishna", "Kurnool", "Nandyal", "NTR", "Prakasam", "Srikakulam", "Tirupati", "Visakhapatnam", "Vizianagaram", "West Godavari", "YSR Kadapa"],
@@ -38,124 +40,140 @@ const stateDistrictData = {
   "West Bengal": ["Alipurduar", "Bankura", "Birbhum", "Cooch Behar", "Dakshin Dinajpur", "Darjeeling", "Hooghly", "Howrah", "Jalpaiguri", "Jhargram", "Kalimpong", "Kolkata", "Malda", "Murshidabad", "Nadia", "North 24 Parganas", "Paschim Bardhaman", "Paschim Medinipur", "Purba Bardhaman", "Purba Medinipur", "Purulia", "South 24 Parganas", "Uttar Dinajpur"]
 };
 
+// ==========================================
+// RENDER PROFILE PAGE
+// ==========================================
+
 function renderProfile() {
   const page = document.getElementById("page-profile");
+  if (!page) return;
+
+  const savedName = localStorage.getItem("userName") || "";
+  const loginMethod = localStorage.getItem("loginMethod") || "";
+  const hideNameInput = loginMethod === "google" && savedName.trim().length > 0;
 
   page.innerHTML = `
-<div class="max-w-2xl mx-auto bg-white shadow-lg rounded-xl p-8 mt-8">
+    <div class="max-w-2xl mx-auto bg-white shadow-lg rounded-xl p-8 mt-8">
+      <h2 class="text-3xl font-bold text-green-700 mb-6">Complete Your Profile</h2>
 
-    <h2 class="text-3xl font-bold text-green-700 mb-6">
-        Complete Your Profile
-    </h2>
+      <!-- General Error Banner -->
+      <div id="error-message" class="hidden mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm font-medium"></div>
 
-    <!-- General Error Banner -->
-    <div id="error-message" class="hidden mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm font-medium"></div>
+      <div class="space-y-4">
+        <!-- Full Name Input (Hidden if Google login already provided name) -->
+        <div id="name-container" class="${hideNameInput ? 'hidden' : 'block'}">
+          <input
+            id="user-name"
+            type="text"
+            placeholder="Full Name (किसान का पूरा नाम) *"
+            value="${savedName}"
+            class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700">
+        </div>
 
-    <div class="space-y-4">
-
-        <!-- Phone Number Input (Strict 10 Digits) -->
+        <!-- Phone Number Input -->
         <div>
-            <input
-                id="phone"
-                type="tel"
-                placeholder="Phone Number (10 Digits) *"
-                maxlength="10"
-                inputmode="numeric"
-                oninput="this.value = this.value.replace(/[^0-9]/g, '')"
-                class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700">
+          <input
+            id="phone"
+            type="tel"
+            placeholder="Phone Number (10 Digits) *"
+            maxlength="10"
+            inputmode="numeric"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+            class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700">
         </div>
 
-        <!-- Searchable State Input -->
+        <!-- State Input -->
         <div class="relative">
-            <input
-                id="state"
-                type="text"
-                placeholder="Type or Select State *"
-                autocomplete="off"
-                onfocus="filterStates()"
-                oninput="filterStates()"
-                class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700">
-            <div 
-                id="state-dropdown" 
-                class="hidden absolute z-20 w-full bg-white border border-gray-300 rounded-lg max-h-48 overflow-y-auto shadow-lg mt-1">
-            </div>
+          <input
+            id="state"
+            type="text"
+            placeholder="Type or Select State *"
+            autocomplete="off"
+            onfocus="filterStates()"
+            oninput="filterStates()"
+            class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700">
+          <div id="state-dropdown" 
+            class="hidden absolute z-20 w-full bg-white border border-gray-300 rounded-lg max-h-48 overflow-y-auto shadow-lg mt-1">
+          </div>
         </div>
 
-        <!-- Searchable District Input -->
+        <!-- District Input -->
         <div class="relative">
-            <input
-                id="district"
-                type="text"
-                placeholder="Type or Select District *"
-                autocomplete="off"
-                disabled
-                onfocus="filterDistricts()"
-                oninput="filterDistricts()"
-                class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700 disabled:bg-gray-100 disabled:cursor-not-allowed">
-            <div 
-                id="district-dropdown" 
-                class="hidden absolute z-20 w-full bg-white border border-gray-300 rounded-lg max-h-48 overflow-y-auto shadow-lg mt-1">
-            </div>
+          <input
+            id="district"
+            type="text"
+            placeholder="Type or Select District *"
+            autocomplete="off"
+            disabled
+            onfocus="filterDistricts()"
+            oninput="filterDistricts()"
+            class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700 disabled:bg-gray-100 disabled:cursor-not-allowed">
+          <div id="district-dropdown" 
+            class="hidden absolute z-20 w-full bg-white border border-gray-300 rounded-lg max-h-48 overflow-y-auto shadow-lg mt-1">
+          </div>
         </div>
 
         <!-- Village Input -->
         <div>
-            <input
-                id="village"
-                type="text"
-                placeholder="Village *"
-                class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700">
+          <input
+            id="village"
+            type="text"
+            placeholder="Village *"
+            class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700">
         </div>
 
         <!-- Language Dropdown -->
         <div>
-            <select
-                id="language"
-                onchange="this.style.color = '#374151'"
-                class="w-full border rounded-lg p-3 bg-white text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-700">
-                <option value="" disabled selected>Select Preferred Language *</option>
-                <option value="English" class="text-gray-700">English</option>
-                <option value="Hindi" class="text-gray-700">हिन्दी (Hindi)</option>
-                <option value="Telugu" class="text-gray-700">తెలుగు (Telugu)</option>
-                <option value="Tamil" class="text-gray-700">தமிழ் (Tamil)</option>
-                <option value="Marathi" class="text-gray-700">मराठी (Marathi)</option>
-                <option value="Bengali" class="text-gray-700">বাংলা (Bengali)</option>
-                <option value="Punjabi" class="text-gray-700">ਪੰਜਾਬੀ (Punjabi)</option>
-                <option value="Gujarati" class="text-gray-700">ગુજરાતી (Gujarati)</option>
-            </select>
+          <select
+            id="language"
+            onchange="this.style.color = '#374151'"
+            class="w-full border rounded-lg p-3 bg-white text-gray-400 focus:outline-none focus:ring-2 focus:ring-green-700">
+            <option value="" disabled selected>Select Preferred Language *</option>
+            <option value="English" class="text-gray-700">English</option>
+            <option value="Hindi" class="text-gray-700">हिन्दी (Hindi)</option>
+            <option value="Telugu" class="text-gray-700">తెలుగు (Telugu)</option>
+            <option value="Tamil" class="text-gray-700">தமிழ் (Tamil)</option>
+            <option value="Marathi" class="text-gray-700">मराठी (Marathi)</option>
+            <option value="Bengali" class="text-gray-700">বাংলা (Bengali)</option>
+            <option value="Punjabi" class="text-gray-700">ਪੰਜਾਬੀ (Punjabi)</option>
+            <option value="Gujarati" class="text-gray-700">ગુજરાતી (Gujarati)</option>
+          </select>
         </div>
 
         <!-- Main Crops Input -->
         <div>
-            <input
-                id="crops"
-                type="text"
-                placeholder="Main Crops (e.g. Wheat, Rice) "
-                class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700">
+          <input
+            id="crops"
+            type="text"
+            placeholder="Main Crops (e.g. Wheat, Rice)"
+            class="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-green-700">
         </div>
 
         <button
-            id="save-profile-btn"
-            onclick="saveProfile()"
-            class="w-full bg-green-700 text-white py-3 rounded-lg hover:bg-green-800 transition font-bold">
-            Save Profile
+          id="save-profile-btn"
+          onclick="saveProfile()"
+          class="w-full bg-green-700 text-white py-3 rounded-lg hover:bg-green-800 transition font-bold">
+          Save Profile
         </button>
-
+      </div>
     </div>
+  `;
 
-</div>
-`;
-
+  document.removeEventListener("click", handleOutsideClick);
   document.addEventListener("click", handleOutsideClick);
   loadSavedPreferences();
 }
 
-// Search and Selection Helpers
+// ==========================================
+// SEARCH & SELECTION HELPERS
+// ==========================================
+
 function filterStates() {
   const input = document.getElementById("state");
   const dropdown = document.getElementById("state-dropdown");
-  const query = input.value.toLowerCase().trim();
+  if (!input || !dropdown) return;
 
+  const query = input.value.toLowerCase().trim();
   const states = Object.keys(stateDistrictData).sort();
   const matches = states.filter(s => s.toLowerCase().includes(query));
 
@@ -165,9 +183,7 @@ function filterStates() {
   }
 
   dropdown.innerHTML = matches
-    .map(
-      s => `<div onclick="selectState('${s}')" class="p-3 hover:bg-green-50 cursor-pointer border-b border-gray-100">${s}</div>`
-    )
+    .map(s => `<div onclick="selectState('${s}')" class="p-3 hover:bg-green-50 cursor-pointer border-b border-gray-100">${s}</div>`)
     .join("");
 
   dropdown.classList.remove("hidden");
@@ -178,23 +194,26 @@ function selectState(stateName) {
   const stateDropdown = document.getElementById("state-dropdown");
   const districtInput = document.getElementById("district");
 
-  stateInput.value = stateName;
-  stateDropdown.classList.add("hidden");
+  if (stateInput) stateInput.value = stateName;
+  if (stateDropdown) stateDropdown.classList.add("hidden");
 
-  districtInput.disabled = false;
-  districtInput.value = "";
-  document.getElementById("district-dropdown").classList.add("hidden");
+  if (districtInput) {
+    districtInput.disabled = false;
+    districtInput.value = "";
+  }
+  const districtDropdown = document.getElementById("district-dropdown");
+  if (districtDropdown) districtDropdown.classList.add("hidden");
 }
 
 function filterDistricts() {
-  const stateInput = document.getElementById("state").value;
+  const stateInput = document.getElementById("state");
   const input = document.getElementById("district");
   const dropdown = document.getElementById("district-dropdown");
 
-  if (!stateInput || !stateDistrictData[stateInput]) return;
+  if (!stateInput || !stateDistrictData[stateInput.value] || !input || !dropdown) return;
 
   const query = input.value.toLowerCase().trim();
-  const districts = stateDistrictData[stateInput].sort();
+  const districts = stateDistrictData[stateInput.value].sort();
   const matches = districts.filter(d => d.toLowerCase().includes(query));
 
   if (matches.length === 0) {
@@ -203,9 +222,7 @@ function filterDistricts() {
   }
 
   dropdown.innerHTML = matches
-    .map(
-      d => `<div onclick="selectDistrict('${d}')" class="p-3 hover:bg-green-50 cursor-pointer border-b border-gray-100">${d}</div>`
-    )
+    .map(d => `<div onclick="selectDistrict('${d}')" class="p-3 hover:bg-green-50 cursor-pointer border-b border-gray-100">${d}</div>`)
     .join("");
 
   dropdown.classList.remove("hidden");
@@ -215,8 +232,8 @@ function selectDistrict(districtName) {
   const districtInput = document.getElementById("district");
   const districtDropdown = document.getElementById("district-dropdown");
 
-  districtInput.value = districtName;
-  districtDropdown.classList.add("hidden");
+  if (districtInput) districtInput.value = districtName;
+  if (districtDropdown) districtDropdown.classList.add("hidden");
 }
 
 function handleOutsideClick(event) {
@@ -235,11 +252,22 @@ function handleOutsideClick(event) {
 }
 
 function loadSavedPreferences() {
+  const savedName = localStorage.getItem("userName");
+  const savedPhone = localStorage.getItem("phone");
   const savedState = localStorage.getItem("state");
   const savedDistrict = localStorage.getItem("district");
   const savedVillage = localStorage.getItem("village");
   const savedLang = localStorage.getItem("language");
+  const savedCrops = localStorage.getItem("crops");
 
+  if (savedName) {
+    const nameInput = document.getElementById("user-name");
+    if (nameInput) nameInput.value = savedName;
+  }
+  if (savedPhone) {
+    const phoneInput = document.getElementById("phone");
+    if (phoneInput) phoneInput.value = savedPhone;
+  }
   if (savedState) {
     const stateInput = document.getElementById("state");
     if (stateInput) {
@@ -248,17 +276,18 @@ function loadSavedPreferences() {
       if (districtInput) districtInput.disabled = false;
     }
   }
-
   if (savedDistrict) {
     const districtInput = document.getElementById("district");
     if (districtInput) districtInput.value = savedDistrict;
   }
-
   if (savedVillage) {
     const villageInput = document.getElementById("village");
     if (villageInput) villageInput.value = savedVillage;
   }
-
+  if (savedCrops) {
+    const cropsInput = document.getElementById("crops");
+    if (cropsInput) cropsInput.value = savedCrops;
+  }
   if (savedLang) {
     const langSelect = document.getElementById("language");
     if (langSelect) {
@@ -268,7 +297,10 @@ function loadSavedPreferences() {
   }
 }
 
-// Function to highlight invalid fields with a red border
+// ==========================================
+// VALIDATION & SAVE LOGIC
+// ==========================================
+
 function markInvalid(elementId) {
   const el = document.getElementById(elementId);
   if (el) {
@@ -276,7 +308,6 @@ function markInvalid(elementId) {
   }
 }
 
-// Reset error styles
 function clearErrors() {
   const errorMsg = document.getElementById("error-message");
   if (errorMsg) {
@@ -284,7 +315,7 @@ function clearErrors() {
     errorMsg.innerText = "";
   }
 
-  const fields = ["phone", "state", "district", "village", "language", "crops"];
+  const fields = ["user-name", "phone", "state", "district", "village", "language", "crops"];
   fields.forEach(id => {
     const el = document.getElementById(id);
     if (el) {
@@ -293,102 +324,100 @@ function clearErrors() {
   });
 }
 
-// Complete Validation and Save logic
 async function saveProfile() {
   clearErrors();
 
-  const user = auth.currentUser;
-  if (!user) {
-    alert("Please login first.");
-    return;
-  }
-
+  const nameInput = document.getElementById("user-name");
+  let fullName = nameInput ? nameInput.value.trim() : (localStorage.getItem("userName") || "");
   const phone = document.getElementById("phone").value.trim();
   const state = document.getElementById("state").value.trim();
   const district = document.getElementById("district").value.trim();
   const village = document.getElementById("village").value.trim();
   const language = document.getElementById("language").value.trim();
   const crops = document.getElementById("crops").value.trim();
-
   const errorMsg = document.getElementById("error-message");
 
-  // 1. Check Phone Number Validation (Must be exactly 10 digits)
+  if (!fullName) {
+    markInvalid("user-name");
+    errorMsg.innerText = "Please enter your Full Name.";
+    errorMsg.classList.remove("hidden");
+    return;
+  }
+
   if (!/^\d{10}$/.test(phone)) {
     markInvalid("phone");
     errorMsg.innerText = "Invalid Phone Number! Please enter exactly 10 digits.";
     errorMsg.classList.remove("hidden");
-    document.getElementById("phone").focus();
     return;
   }
 
-  // 2. Validate State Selection
   if (!state || !stateDistrictData[state]) {
     markInvalid("state");
     errorMsg.innerText = "Please select a valid State from the list.";
     errorMsg.classList.remove("hidden");
-    document.getElementById("state").focus();
     return;
   }
 
-  // 3. Validate District Selection
   if (!district || !stateDistrictData[state].includes(district)) {
     markInvalid("district");
     errorMsg.innerText = "Please select a valid District from the list.";
     errorMsg.classList.remove("hidden");
-    document.getElementById("district").focus();
     return;
   }
 
-  // 4. Validate Village Field
   if (!village) {
     markInvalid("village");
     errorMsg.innerText = "Please enter your Village name.";
     errorMsg.classList.remove("hidden");
-    document.getElementById("village").focus();
     return;
   }
 
-  // 5. Validate Language Selection
   if (!language) {
     markInvalid("language");
     errorMsg.innerText = "Please select a preferred Language.";
     errorMsg.classList.remove("hidden");
-    document.getElementById("language").focus();
     return;
   }
 
+  // Save locally
+  localStorage.setItem("userName", fullName);
+  localStorage.setItem("phone", phone);
+  localStorage.setItem("state", state);
+  localStorage.setItem("district", district);
+  localStorage.setItem("village", village);
+  localStorage.setItem("language", language);
+  localStorage.setItem("crops", crops);
 
-  const btn = document.getElementById("save-profile-btn");
-  if (btn) btn.disabled = true;
-
+  // Sync to Firestore
   try {
-    // ✅ Overwrite all location fields in localStorage immediately
-    localStorage.setItem("village", village);
-    localStorage.setItem("district", district);
-    localStorage.setItem("state", state);
-    localStorage.setItem("language", language);
-
-    // Save full document to Firestore
-    await db.collection("users").doc(user.uid).set(
-      {
-        uid: user.uid,
-        phone: phone,
-        state: state,
-        district: district,
-        village: village,
-        language: language,
-        crops: crops,
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      },
-      { merge: true }
-    );
-
-    showAppNavigation();
-    navigateTo("dashboard");
-  } catch (error) {
-    console.error("Firestore Save Error:", error);
-    errorMsg.innerText = "Failed to save profile: " + error.message;
-    errorMsg.classList.remove("hidden");
-    if (btn) btn.disabled = false;
+    const user = typeof auth !== "undefined" ? auth.currentUser : null;
+    if (user && typeof db !== "undefined") {
+      await db.collection("users").doc(user.uid).set(
+        { name: fullName, phone, state, district, village, language, crops },
+        { merge: true }
+      );
+    } else if (typeof db !== "undefined") {
+      await db.collection("users").doc(`phone_${phone}`).set(
+        { name: fullName, phone, state, district, village, language, crops },
+        { merge: true }
+      );
+    }
+  } catch (err) {
+    console.warn("Firestore background sync omitted:", err);
   }
+
+  // Update header and navigate
+  if (typeof updateAppHeader === "function") {
+    updateAppHeader();
+  }
+
+  if (typeof showAppNavigation === "function") {
+    showAppNavigation();
+  }
+  
+  if (typeof renderDashboard === "function") {
+    renderDashboard();
+  }
+
+  navigateTo("dashboard");
 }

@@ -171,11 +171,27 @@
 
 
 
-      <div id="user-area">
+      <div id="user-area" class="flex items-center gap-3">
+  <!-- Dynamic Profile Avatar -->
+  <img 
+    id="nav-user-avatar" 
+    src="https://ui-avatars.com/api/?name=Farmer&background=2d5a27&color=fff&bold=true" 
+    alt="Farmer Avatar" 
+    class="w-9 h-9 rounded-full object-cover border border-stone-200 shadow-sm" />
 
-      <div id="user-menu"></div>
+  <!-- Dynamic Farmer Name -->
+  <span 
+    id="nav-user-name" 
+    class="font-semibold text-stone-800 text-sm hidden sm:inline-block">
+    Farmer
+  </span>
 
-
+  <!-- Logout Button -->
+  <button 
+    onclick="logout()" 
+    class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg transition active:scale-95 shadow-sm">
+    Logout
+  </button>
 </div>
     </div>
   </header>
