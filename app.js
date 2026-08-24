@@ -318,21 +318,17 @@ document.addEventListener("DOMContentLoaded", initApp);
 function showAppNavigation() {
   const topNav = document.getElementById("topnav");
   const sideNav = document.getElementById("sidenav");
-  const bottomNav = document.getElementById("bottomnav");
 
   if (topNav) topNav.style.display = "flex";
   if (sideNav) sideNav.style.display = "flex";
-  if (bottomNav) bottomNav.style.display = "flex";
 }
 
 function hideAppNavigation() {
   const topNav = document.getElementById("topnav");
   const sideNav = document.getElementById("sidenav");
-  const bottomNav = document.getElementById("bottomnav");
 
   if (topNav) topNav.style.display = "none";
   if (sideNav) sideNav.style.display = "none";
-  if (bottomNav) bottomNav.style.display = "none";
 }
 
 function updateAppHeader() {
