@@ -212,22 +212,78 @@
         <p class="text-[10px] text-stone-400 uppercase tracking-widest mt-1">Modern Farming Partner</p>
       </div>
       <nav class="flex-1 space-y-1">
-        <a class="side-nav-link active" data-page="dashboard" onclick="navigateTo('dashboard')">
-          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">dashboard</span> Dashboard
-        </a>
-        <a class="side-nav-link" data-page="crop-health" onclick="navigateTo('crop-health')">
-          
-          <span class="material-symbols-outlined">potted_plant</span> Crop Health
-        </a>
-        <a class="side-nav-link" data-page="market" onclick="navigateTo('market')">
-          <span class="material-symbols-outlined">trending_up</span> Market Trends
-        </a>
-        <a class="side-nav-link" data-page="ai-assistant" onclick="navigateTo('ai-assistant')">
-          <span class="material-symbols-outlined">smart_toy</span> AI Assistant
-        </a>
-        <a class="side-nav-link" data-page="calculator" onclick="navigateTo('calculator')">
-          <span class="material-symbols-outlined">calculate</span> Pesticide Calc
-        </a>
+      <a class="side-nav-link active"
+        data-page="dashboard"
+        onclick="navigateTo('dashboard')">
+
+        <span class="material-symbols-outlined"
+              style="font-variation-settings:'FILL' 1;">
+          dashboard
+        </span>
+
+        Dashboard
+      </a>
+
+
+      <a class="side-nav-link"
+        data-page="crop-health"
+        onclick="navigateTo('crop-health')">
+
+        <span class="material-symbols-outlined">
+          potted_plant
+        </span>
+
+        Crop Health
+      </a>
+
+
+      <a class="side-nav-link"
+        data-page="market"
+        onclick="navigateTo('market')">
+
+        <span class="material-symbols-outlined">
+          trending_up
+        </span>
+
+        Market Trends
+      </a>
+
+
+      <!-- GOVERNMENT SCHEMES & SUBSIDIES -->
+      <a class="side-nav-link"
+        data-page="subsidies"
+        onclick="navigateTo('subsidies')">
+
+        <span class="material-symbols-outlined">
+          account_balance
+        </span>
+
+        Government Schemes
+      </a>
+
+
+      <a class="side-nav-link"
+        data-page="ai-assistant"
+        onclick="navigateTo('ai-assistant')">
+
+        <span class="material-symbols-outlined">
+          smart_toy
+        </span>
+
+        AI Assistant
+      </a>
+
+
+      <a class="side-nav-link"
+        data-page="calculator"
+        onclick="navigateTo('calculator')">
+
+        <span class="material-symbols-outlined">
+          calculate
+        </span>
+
+        Pesticide Calc
+      </a>
       </nav>
       <div class="pt-6 border-t border-stone-200 space-y-1">
         <a class="side-nav-link" href="#"><span class="material-symbols-outlined">settings</span> Settings</a>
@@ -254,6 +310,9 @@
 
 <!-- PAGE: Market -->
 <div id="page-market" class="page-content"></div>
+
+<!-- PAGE: Government Schemes & Subsidies -->
+<div id="page-subsidies" class="page-content"></div>
 
 <!-- PAGE: AI -->
 <div id="page-ai-assistant" class="page-content"></div>
@@ -335,6 +394,7 @@
 <script src="pages/dashboard.js"></script>
 <script src="pages/crop-health.js"></script>
 <script src="pages/market.js"></script>
+<script src="pages/subsidies.js"></script>
 <script src="pages/ai-assistant.js"></script>
 <script src="pages/calculator.js"></script>
 <script src="pages/profile.js"></script>
