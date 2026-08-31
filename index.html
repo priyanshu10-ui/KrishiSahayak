@@ -38,15 +38,6 @@
             "headline-sm": ["Lexend"], "headline-md": ["Lexend"], "body-lg": ["Public Sans"],
             "caption": ["Public Sans"], "label-md": ["Public Sans"], "display-lg": ["Lexend"],
             "body-md": ["Public Sans"]
-          },
-          fontSize: {
-            "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "500" }],
-            "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "500" }],
-            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
-            "caption": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
-            "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
-            "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "600" }],
-            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }]
           }
         }
       }
@@ -57,76 +48,38 @@
 
 <body class="font-body-md text-on-background bg-background">
 
-  <!-- PAGE: Splash -->
-<!-- Splash Screen -->
-<div id="page-splash"
-     class="fixed inset-0 z-[9999] bg-gradient-to-br from-green-800 via-green-700 to-green-900 flex items-center justify-center">
-
+  <!-- Splash Screen -->
+  <div id="page-splash"
+    class="fixed inset-0 z-[9999] bg-gradient-to-br from-green-800 via-green-700 to-green-900 flex items-center justify-center">
     <div class="flex flex-col items-center justify-center text-white px-6 text-center">
-
-        <!-- Logo -->
-        <div class="text-8xl animate-bounce"> 
-          🌾 
-        </div>
-            
-
-        <!-- App Name -->
-        <h1 class="mt-6
-                   text-4xl sm:text-5xl md:text-6xl
-                   font-extrabold tracking-wide">
-
-            Krishi Sahayak
-
-        </h1>
-
-        <!-- Tagline -->
-        <p class="mt-3
-                  text-green-100
-                  text-sm sm:text-base md:text-xl">
-
-            Your Smart Farming Partner
-
-        </p>
-
-        <!-- Loading Dots -->
-        <div class="flex gap-3 mt-10">
-
-            <span class="w-3 h-3 bg-yellow-300 rounded-full animate-bounce"></span>
-
-            <span class="w-3 h-3 bg-yellow-300 rounded-full animate-bounce"
-                  style="animation-delay:.2s"></span>
-
-            <span class="w-3 h-3 bg-yellow-300 rounded-full animate-bounce"
-                  style="animation-delay:.4s"></span>
-
-        </div>
-
-        <!-- Footer -->
-        <p class="absolute bottom-6
-                  text-xs md:text-sm
-                  text-green-100 opacity-80">
-
-            Powered By Firebase
-
-        </p>
-
+      <div class="text-8xl animate-bounce">🌾</div>
+      <h1 class="mt-6 text-4xl sm:text-5xl md:text-6xl font-extrabold tracking-wide">Krishi Sahayak</h1>
+      <p class="mt-3 text-green-100 text-sm sm:text-base md:text-xl">Your Smart Farming Partner</p>
+      <div class="flex gap-3 mt-10">
+        <span class="w-3 h-3 bg-yellow-300 rounded-full animate-bounce"></span>
+        <span class="w-3 h-3 bg-yellow-300 rounded-full animate-bounce" style="animation-delay:.2s"></span>
+        <span class="w-3 h-3 bg-yellow-300 rounded-full animate-bounce" style="animation-delay:.4s"></span>
+      </div>
+      <p class="absolute bottom-6 text-xs md:text-sm text-green-100 opacity-80">Powered By Firebase</p>
     </div>
+  </div>
 
-</div>
   <!-- ===== TOP NAV BAR ===== -->
   <header id="topnav"
     class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-16 bg-white/80 backdrop-blur-md border-b border-stone-100 shadow-sm shadow-green-900/5 font-[Lexend] antialiased">
     <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('dashboard')">
-      <span class="material-symbols-outlined text-green-800"
-        style="font-variation-settings:'FILL' 1;">agriculture</span>
+      <span class="material-symbols-outlined text-green-800" style="font-variation-settings:'FILL' 1;">agriculture</span>
       <h1 class="text-xl font-extrabold tracking-tight text-green-800">Krishi Sahayak</h1>
     </div>
+
     <div class="hidden md:flex items-center gap-6 mr-6">
-      <a class="nav-top-link active" data-page="dashboard" onclick="navigateTo('dashboard')">Dashboard</a>
-      <a class="nav-top-link" data-page="crop-health" onclick="navigateTo('crop-health')">Crop Health</a>
-      <a class="nav-top-link" data-page="market" onclick="navigateTo('market')">Market Trends</a>
-      <a class="nav-top-link" data-page="ai-assistant" onclick="navigateTo('ai-assistant')">AI Assistant</a>
+      <a class="nav-top-link active cursor-pointer" data-page="dashboard" onclick="navigateTo('dashboard')">Dashboard</a>
+      <a class="nav-top-link cursor-pointer" data-page="crop-health" onclick="navigateTo('crop-health')">Crop Health</a>
+      <a class="nav-top-link cursor-pointer" data-page="market" onclick="navigateTo('market')">Market Trends</a>
+      <a class="nav-top-link cursor-pointer" data-page="subsidies" onclick="navigateTo('subsidies')">Government Schemes</a>
+      <a class="nav-top-link cursor-pointer" data-page="ai-assistant" onclick="navigateTo('ai-assistant')">AI Assistant</a>
     </div>
+
     <div class="flex items-center gap-4">
       <div class="hidden lg:flex flex-1 max-w-xs">
         <div class="relative w-full">
@@ -137,270 +90,148 @@
         </div>
       </div>
 
-
-
-      
-      <button class="p-2 text-stone-500 hover:bg-stone-50 rounded-full transition-colors"><span
-          class="material-symbols-outlined">notifications</span></button>
-
-
-
-
-
-
-
-
-
+      <button class="p-2 text-stone-500 hover:bg-stone-50 rounded-full transition-colors">
+        <span class="material-symbols-outlined">notifications</span>
+      </button>
 
       <!-- Language Selector -->
       <div id="languageSelector" class="relative">
+        <button id="languageBtn"
+          class="px-3 py-2 bg-stone-100 rounded-lg text-sm font-semibold text-stone-700 hover:bg-stone-200 transition-colors">
+          English ▼
+        </button>
+      </div>
 
-          <button
-              id="languageBtn"
-              class="px-3 py-2 bg-stone-100 rounded-lg text-sm font-semibold text-stone-700 hover:bg-stone-200 transition-colors">
-              English ▼
-          </button>
-
-      </div>  
-
-
-
-
-
-
-
-
-
+      <!-- User Area (Clickable Avatar + Name to open Account Page) -->
       <div id="user-area" class="flex items-center gap-3">
-  <!-- Dynamic Profile Avatar -->
-  <img 
-    id="nav-user-avatar" 
-    src="https://ui-avatars.com/api/?name=Farmer&background=2d5a27&color=fff&bold=true" 
-    alt="Farmer Avatar" 
-    class="w-9 h-9 rounded-full object-cover border border-stone-200 shadow-sm" />
+        <div onclick="navigateTo('account')" class="flex items-center gap-2.5 cursor-pointer hover:opacity-85 transition group" title="Open Farmer Account">
+          <img 
+            id="nav-user-avatar" 
+            src="https://ui-avatars.com/api/?name=Farmer&background=2d5a27&color=fff&bold=true" 
+            alt="Farmer Avatar" 
+            class="w-9 h-9 rounded-full object-cover border border-stone-200 shadow-sm group-hover:ring-2 group-hover:ring-green-700 transition" />
+          <span 
+            id="nav-user-name" 
+            class="font-semibold text-stone-800 text-sm hidden sm:inline-block group-hover:text-green-800 transition">
+            Farmer
+          </span>
+        </div>
 
-  <!-- Dynamic Farmer Name -->
-  <span 
-    id="nav-user-name" 
-    class="font-semibold text-stone-800 text-sm hidden sm:inline-block">
-    Farmer
-  </span>
-
-  <!-- Logout Button -->
-  <button 
-    onclick="logout()" 
-    class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg transition active:scale-95 shadow-sm">
-    Logout
-  </button>
-</div>
+        <button 
+          onclick="logout()" 
+          class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg transition active:scale-95 shadow-sm">
+          Logout
+        </button>
+      </div>
     </div>
   </header>
 
-  <div id="app-layout"
-     class="flex pt-16 pb-20 lg:pb-0 min-h-screen">
+  <!-- ===== APP LAYOUT CONTAINER ===== -->
+  <div id="app-layout" class="flex pt-16 min-h-screen">
 
     <!-- ===== SIDE NAV BAR (Desktop) ===== -->
-
-
     <aside id="sidenav"
       class="hidden lg:flex flex-col h-[calc(100vh-64px)] w-64 border-r border-stone-200 bg-stone-50 py-6 px-4 space-y-2 sticky top-16 font-[Lexend] text-sm flex-shrink-0">
-      <div class="mb-8 px-3">
+      
+      <!-- Clickable Sidebar Greeting -->
+      <div class="mb-6 px-3 cursor-pointer hover:opacity-85 transition" onclick="navigateTo('account')" title="Open Farmer Account">
         <p class="text-stone-500 font-medium">Hello,</p>
-        <h2 id="sidebar-user-name"
-    class="text-lg font-bold text-green-800">
-    Farmer</h2>
+        <h2 id="sidebar-user-name" class="text-lg font-bold text-green-800 hover:underline">Farmer</h2>
         <p class="text-[10px] text-stone-400 uppercase tracking-widest mt-1">Modern Farming Partner</p>
       </div>
+
+      <!-- Navigation Links -->
       <nav class="flex-1 space-y-1">
-      <a class="side-nav-link active"
-        data-page="dashboard"
-        onclick="navigateTo('dashboard')">
-
-        <span class="material-symbols-outlined"
-              style="font-variation-settings:'FILL' 1;">
-          dashboard
-        </span>
-
-        Dashboard
-      </a>
-
-
-      <a class="side-nav-link"
-        data-page="crop-health"
-        onclick="navigateTo('crop-health')">
-
-        <span class="material-symbols-outlined">
-          potted_plant
-        </span>
-
-        Crop Health
-      </a>
-
-
-      <a class="side-nav-link"
-        data-page="market"
-        onclick="navigateTo('market')">
-
-        <span class="material-symbols-outlined">
-          trending_up
-        </span>
-
-        Market Trends
-      </a>
-
-
-      <!-- GOVERNMENT SCHEMES & SUBSIDIES -->
-      <a class="side-nav-link"
-        data-page="subsidies"
-        onclick="navigateTo('subsidies')">
-
-        <span class="material-symbols-outlined">
-          account_balance
-        </span>
-
-        Government Schemes
-      </a>
-
-
-      <a class="side-nav-link"
-        data-page="ai-assistant"
-        onclick="navigateTo('ai-assistant')">
-
-        <span class="material-symbols-outlined">
-          smart_toy
-        </span>
-
-        AI Assistant
-      </a>
-
-
-      <a class="side-nav-link"
-        data-page="calculator"
-        onclick="navigateTo('calculator')">
-
-        <span class="material-symbols-outlined">
-          calculate
-        </span>
-
-        Pesticide Calc
-      </a>
+        <a class="side-nav-link active cursor-pointer" data-page="dashboard" onclick="navigateTo('dashboard')">
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">dashboard</span> Dashboard
+        </a>
+        <a class="side-nav-link cursor-pointer" data-page="crop-health" onclick="navigateTo('crop-health')">
+          <span class="material-symbols-outlined">potted_plant</span> Crop Health
+        </a>
+        <a class="side-nav-link cursor-pointer" data-page="market" onclick="navigateTo('market')">
+          <span class="material-symbols-outlined">trending_up</span> Market Trends
+        </a>
+        <a class="side-nav-link cursor-pointer" data-page="subsidies" onclick="navigateTo('subsidies')">
+          <span class="material-symbols-outlined">account_balance</span> Government Schemes
+        </a>
+        <a class="side-nav-link cursor-pointer" data-page="ai-assistant" onclick="navigateTo('ai-assistant')">
+          <span class="material-symbols-outlined">smart_toy</span> AI Assistant
+        </a>
+        <a class="side-nav-link cursor-pointer" data-page="calculator" onclick="navigateTo('calculator')">
+          <span class="material-symbols-outlined">calculate</span> Pesticide Calc
+        </a>
       </nav>
-      <div class="pt-6 border-t border-stone-200 space-y-1">
-        <a class="side-nav-link" href="#"><span class="material-symbols-outlined">settings</span> Settings</a>
-        <a class="side-nav-link" href="#"><span class="material-symbols-outlined">contact_support</span> Support</a>
+
+      <!-- Bottom Settings Section (Account added right above Settings) -->
+      <div class="pt-4 border-t border-stone-200 space-y-1">
+        <a class="side-nav-link cursor-pointer" data-page="account" onclick="navigateTo('account')">
+          <span class="material-symbols-outlined">manage_accounts</span> Account</a>
+        <a class="side-nav-link cursor-pointer" href="#"><span class="material-symbols-outlined">contact_support</span> Support</a>
         <div class="mt-4 p-4 bg-[#2d5a27] text-white rounded-xl">
           <p class="text-xs opacity-80 mb-2">Need help?</p>
-          <button class="w-full bg-white text-[#2d5a27] font-bold py-2 rounded-lg text-xs">Help Center</button>
+          <button onclick="navigateTo('ai-assistant')" class="w-full bg-white text-[#2d5a27] font-bold py-2 rounded-lg text-xs">Help Center</button>
         </div>
       </div>
     </aside>
 
     <!-- ===== MAIN CONTENT ===== -->
     <main class="flex-1 w-full">
-<!-- PAGE: Language -->
-<div id="page-language"
-     class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full">
-</div>      
+      <div id="page-language" class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full"></div>
+      <div id="page-dashboard" class="page-content"></div>
+      <div id="page-crop-health" class="page-content"></div>
+      <div id="page-market" class="page-content"></div>
+      <div id="page-subsidies" class="page-content"></div>
+      <div id="page-ai-assistant" class="page-content"></div>
+      <div id="page-calculator" class="page-content"></div>
+      <div id="page-profile" class="page-content"></div>
+      <div id="page-account" class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full"></div>
+      
+      <div id="page-loading" class="page-content min-h-[80vh]">
+        <div class="flex flex-col items-center justify-center min-h-[80vh]">
+          <h2 class="text-3xl font-bold text-green-700">Loading...</h2>
+          <p class="text-gray-500 mt-2">Please wait</p>
+        </div>
+      </div>
 
-      <!-- PAGE: Dashboard -->
-<div id="page-dashboard" class="page-content"></div>
-
-<!-- PAGE: Crop Health -->
-<div id="page-crop-health" class="page-content"></div>
-
-<!-- PAGE: Market -->
-<div id="page-market" class="page-content"></div>
-
-<!-- PAGE: Government Schemes & Subsidies -->
-<div id="page-subsidies" class="page-content"></div>
-
-<!-- PAGE: AI -->
-<div id="page-ai-assistant" class="page-content"></div>
-
-<!-- PAGE: Calculator -->
-<div id="page-calculator" class="page-content"></div>
-
-<!-- PAGE: Profile -->
-<div id="page-profile" class="page-content"></div>
-
-<!-- PAGE: Loading -->
-<div id="page-loading" class="page-content min-h-[80vh]">
-
-    <div class="flex flex-col items-center justify-center min-h-[80vh]">
-
-        <h2 class="text-3xl font-bold text-green-700">
-            Loading...
-        </h2>
-
-        <p class="text-gray-500 mt-2">
-            Please wait
-        </p>
-
-    </div>
-
-</div>
-
-<!-- PAGE: Login -->
-<div id="page-login"
-     class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full">
-</div>
-
+      <div id="page-login" class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full"></div>
     </main>
   </div>
 
-
-  
-
-  <!-- ===== BOTTOM NAV BAR (Mobile) ===== -->
-  <nav id="bottomnav"
-    class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-white/95 backdrop-blur-lg lg:hidden rounded-t-2xl border-t border-stone-100 shadow-[0_-4px_12px_rgba(45,90,39,0.08)] font-[Lexend] text-[11px] font-medium">
-    <a class="bottom-nav-link active" data-page="dashboard" onclick="navigateTo('dashboard')">
-      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">home</span> Home
-    </a>
-    <a class="bottom-nav-link" data-page="crop-health" onclick="navigateTo('crop-health')">
-      <span class="material-symbols-outlined">agriculture</span> Crops
-    </a>
-    <a class="bottom-nav-link" data-page="market" onclick="navigateTo('market')">
-      <span class="material-symbols-outlined">insights</span> Market
-    </a>
-    <a class="bottom-nav-link" data-page="ai-assistant" onclick="navigateTo('ai-assistant')">
-      <span class="material-symbols-outlined">mic</span> AI Chat
-    </a>
-  </nav>
-
   <!-- ===== FLOATING AI BUTTON ===== -->
   <button id="fab-ai" onclick="navigateTo('ai-assistant')"
-    class="fixed bottom-24 right-6 lg:bottom-10 lg:right-10 w-16 h-16 bg-[#2d5a27] text-white rounded-full flex items-center justify-center shadow-2xl shadow-green-900/40 z-40 hover:scale-110 active:scale-90 transition-all group">
+    class="fixed bottom-10 right-10 w-16 h-16 bg-[#2d5a27] text-white rounded-full flex items-center justify-center shadow-2xl shadow-green-900/40 z-40 hover:scale-110 active:scale-90 transition-all group">
     <span class="material-symbols-outlined text-3xl" style="font-variation-settings:'FILL' 1;">smart_toy</span>
     <span
-      class="absolute right-full mr-4 bg-stone-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Ask
-      Krishak AI</span>
+      class="absolute right-full mr-4 bg-stone-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+      Ask Krishak AI
+    </span>
   </button>
 
-  <!-- Chart.js for Live Mandi Visualizations -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- External & Firebase SDKs -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <!-- Core App Scripts -->
+  <script src="config.js"></script>
+  <script src="translations.js"></script>
+  <script src="js/firebase.js"></script>
+  <script src="js/session.js"></script>
+  <script src="js/auth.js"></script>
 
-
-<script src="config.js"></script>  <!-- Firebase Configuration -->
-<script src="translations.js"></script>
-<script src="js/firebase.js"></script>   <!-- Firebase Initialization -->
-<script src="js/session.js"></script>
-<script src="js/auth.js"></script>
-<script src="pages/dashboard.js"></script>
-<script src="pages/crop-health.js"></script>
-<script src="pages/market.js"></script>
-<script src="pages/subsidies.js"></script>
-<script src="pages/ai-assistant.js"></script>
-<script src="pages/calculator.js"></script>
-<script src="pages/profile.js"></script>
-<script src="pages/login.js"></script>
-<script src="pages/language.js"></script>
-<script src="app.js"></script>
+  <!-- Page View Scripts -->
+  <script src="pages/dashboard.js"></script>
+  <script src="pages/crop-health.js"></script>
+  <script src="pages/market.js"></script>
+  <script src="pages/subsidies.js"></script>
+  <script src="pages/ai-assistant.js"></script>
+  <script src="pages/calculator.js"></script>
+  <script src="pages/profile.js"></script>
+  <script src="pages/account.js"></script>
+  <script src="pages/login.js"></script>
+  <script src="pages/language.js"></script>
+  <script src="app.js"></script>
 </body>
 
 </html>

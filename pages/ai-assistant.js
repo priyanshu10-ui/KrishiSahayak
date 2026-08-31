@@ -1,8 +1,8 @@
-// AI Assistant (Krishak) Page - Powered by Gemini AI
+// AI Assistant (Krishak) Page - Powered by Groq API Backend
 let chatMessages = [
   { role: 'ai', text: 'Namaste! 🙏 I am <strong>Krishak</strong>, your AI farming assistant. Ask me anything about crops, soil health, pest management, weather, or mandi prices. I\'m here to help you grow better! 🌾', time: new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}) }
 ];
-let chatHistory = []; // Stores conversation for Gemini context
+let chatHistory = []; // Standard OpenAI/Groq history format: [{ role: 'user'|'assistant', content: '...' }]
 
 function renderAIAssistant() {
   const activeLanguage =
@@ -174,8 +174,12 @@ function renderUserBubble(m) {
 
 function showTyping() {
   const area = document.getElementById('chat-area');
-  if (!area) return;
-  area.innerHTML += `<div id="typing-indicator" class="flex gap-3 items-center">
+  if (!area || document.getElementById('typing-indicator')) return;
+  
+  const div = document.createElement('div');
+  div.id = 'typing-indicator';
+  div.className = 'flex gap-3 items-center';
+  div.innerHTML = `
     <div class="w-8 h-8 rounded-full bg-[#2d5a27]/10 flex-shrink-0 flex items-center justify-center">
       <span class="material-symbols-outlined text-[#154212] text-sm">smart_toy</span>
     </div>
@@ -184,94 +188,60 @@ function showTyping() {
       <span class="w-2 h-2 rounded-full bg-[#2d5a27] animate-bounce" style="animation-delay:0.2s"></span>
       <span class="w-2 h-2 rounded-full bg-[#2d5a27] animate-bounce" style="animation-delay:0.4s"></span>
     </div>
-  </div>`;
+  `;
+  area.appendChild(div);
   scrollChat();
 }
 
 function removeTyping() {
-  document.getElementById('typing-indicator')?.remove();
+  const indicator = document.getElementById('typing-indicator');
+  if (indicator) indicator.remove();
 }
 
-async function callGeminiAPI(userMessage) {
-  const activeLanguage = localStorage.getItem("selectedLanguage") || "en";
-  const selectedLanguage = (typeof translations !== 'undefined' && translations[activeLanguage]?.aiLanguageName) || "English";
-
-  if (typeof GEMINI_API_KEY === 'undefined' || !GEMINI_API_KEY || GEMINI_API_KEY === "PASTE_YOUR_GEMINI_API_KEY_HERE") {
-    return getFallbackResponse(userMessage);
-  }
+async function sendFarmerMessage(userText) {
+  const messagePayload = [...chatHistory, { role: "user", content: userText }];
 
   try {
-    const contents = [];
-    const promptText = typeof KRISHAK_SYSTEM_PROMPT !== 'undefined' ? KRISHAK_SYSTEM_PROMPT : 'You are Krishak, an AI farming assistant.';
-    
-    contents.push({
-      role: "user",
-      parts: [{
-        text: promptText +
-          `\n\nPlease respond as Krishak from now on. Always answer the farmer in ${selectedLanguage}. Use simple, easy-to-understand language suitable for farmers.`
-      }]
+    const response = await fetch("http://localhost:3000/api/chat", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages: messagePayload })
     });
-    contents.push({
-      role: "model",
-      parts: [{ text: "Namaste! I am Krishak, your AI farming assistant. I'm ready to help you with any farming questions. 🌾" }]
-    });
-
-    chatHistory.forEach(msg => {
-      contents.push({
-        role: msg.role === 'user' ? 'user' : 'model',
-        parts: [{ text: msg.text }]
-      });
-    });
-
-    contents.push({ role: "user", parts: [{ text: userMessage }] });
-
-    const endpoint = typeof GEMINI_API_URL !== 'undefined' ? `${GEMINI_API_URL}?key=${GEMINI_API_KEY}` : `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
-
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: contents,
-        generationConfig: {
-          temperature: 0.7,
-          topK: 40,
-          topP: 0.95,
-          maxOutputTokens: 1024,
-        }
-      })
-    });
-
-    if (!response.ok) {
-      return '⚠️ I\'m having trouble connecting right now. Please check your API key in config.js.';
-    }
 
     const data = await response.json();
-    const aiText = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
-    if (aiText) {
-      chatHistory.push({ role: 'user', text: userMessage });
-      chatHistory.push({ role: 'model', text: aiText });
-      if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
-      return aiText.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+    if (!response.ok || data.error) {
+      throw new Error(data.error || `Server responded with ${response.status}`);
     }
-    return 'I couldn\'t generate a response. Please try rephrasing your question.';
+
+    const rawReply = data.reply;
+    if (rawReply) {
+      // Keep successful conversation in memory
+      chatHistory.push({ role: "user", content: userText });
+      chatHistory.push({ role: "assistant", content: rawReply });
+      if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
+      
+      return rawReply.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+    }
+    return "I couldn't generate a response. Please try rephrasing your question.";
   } catch (error) {
-    return getFallbackResponse(userMessage);
+    console.error("Groq Backend Error:", error);
+    return getFallbackResponse(userText);
   }
 }
 
 function getFallbackResponse(text) {
   const t = text.toLowerCase();
   const responses = {
-    'wheat': '🌾 For wheat harvesting, the ideal time is when grain moisture content drops to 12-14%. Check if the stalk has turned golden brown. In Punjab and UP, Rabi wheat is typically harvested in April.',
-    'fertilizer': '🧪 For tomatoes, use balanced NPK (10-10-10) during early growth, then switch to high-potassium (5-10-15) during fruiting. Apply 2-3 kg per acre every 2 weeks.',
+    'wheat': '🌾 For wheat harvesting, the ideal time is when grain moisture content drops to 12-14%. Check if the stalk has turned golden brown.',
+    'fertilizer': '🧪 For tomatoes, use balanced NPK (10-10-10) during early growth, then switch to high-potassium (5-10-15) during fruiting.',
     'yellow': '🍂 Yellow leaf edges in rice could indicate: 1) Potassium deficiency 2) Bacterial leaf blight 3) Iron deficiency. Upload a photo in Crop Health for AI diagnosis!',
     'pest': '🐛 Common signs of pest attack: holes in leaves, wilting, discoloration, sticky residue. Neem oil spray (5ml per liter) works effectively for many sucking pests.',
     'price': '📊 Check our Market Trends page for live mandi prices! Wheat is around ₹2,315/quintal, Cotton ₹7,125/quintal.',
     'mandi': '📊 Check our Market Trends page for live mandi prices! Wheat is around ₹2,315/quintal, Cotton ₹7,125/quintal.',
   };
   const key = Object.keys(responses).find(k => t.includes(k));
-  return key ? responses[key] : '🌱 That\'s a great farming question! To get full AI responses, make sure your Gemini API key is configured in <code>config.js</code>. Meanwhile, feel free to ask about wheat, fertilizers, pests, or mandi prices!';
+  return key ? responses[key] : '🌱 I am having trouble reaching the server right now. Please ensure your backend server is running (`node server.js`) on port 3000.';
 }
 
 async function sendMessage() {
@@ -280,7 +250,7 @@ async function sendMessage() {
   const text = input.value.trim();
   if (!text) return;
 
-  const now = new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+  const now = new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
   chatMessages.push({ role: 'user', text, time: now });
   input.value = '';
   input.disabled = true;
@@ -292,15 +262,27 @@ async function sendMessage() {
   renderAllMessages();
   showTyping();
 
-  const aiResponse = await callGeminiAPI(text);
-  removeTyping();
-
-  chatMessages.push({ role: 'ai', text: aiResponse, time: new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}) });
-  renderAllMessages();
-
-  input.disabled = false;
-  if (sendBtn) sendBtn.disabled = false;
-  input.focus();
+  try {
+    const aiResponse = await sendFarmerMessage(text);
+    chatMessages.push({ 
+      role: 'ai', 
+      text: aiResponse, 
+      time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) 
+    });
+  } catch (err) {
+    console.error("UI Error in sendMessage:", err);
+    chatMessages.push({ 
+      role: 'ai', 
+      text: "Something went wrong while connecting to the assistant. Please try again.", 
+      time: new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' }) 
+    });
+  } finally {
+    removeTyping();
+    renderAllMessages();
+    input.disabled = false;
+    if (sendBtn) sendBtn.disabled = false;
+    input.focus();
+  }
 }
 
 function sendSuggestion(text) {

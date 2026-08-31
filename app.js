@@ -29,30 +29,35 @@ function initApp() {
 
     try {
 
-        renderDashboard();
+        if (typeof renderDashboard === "function") renderDashboard();
         console.log("✅ Dashboard rendered");
 
-        renderCropHealth();
+        if (typeof renderCropHealth === "function") renderCropHealth();
         console.log("✅ Crop Health rendered");
 
-        renderMarket();
+        if (typeof renderMarket === "function") renderMarket();
         console.log("✅ Market rendered");
 
-        renderAIAssistant();
+        if (typeof renderSubsidies === "function") renderSubsidies();
+        console.log("✅ Subsidies rendered");
+
+        if (typeof renderAIAssistant === "function") renderAIAssistant();
         console.log("✅ AI Assistant rendered");
 
-        renderCalculator();
+        if (typeof renderCalculator === "function") renderCalculator();
         console.log("✅ Calculator rendered");
 
-        renderProfile();
+        if (typeof renderProfile === "function") renderProfile();
         console.log("✅ Profile rendered");
 
-        renderLogin();
+        if (typeof renderAccount === "function") renderAccount();
+        console.log("✅ Account rendered");
+
+        if (typeof renderLogin === "function") renderLogin();
         console.log("✅ Login rendered");
 
-        renderLanguage();
+        if (typeof renderLanguage === "function") renderLanguage();
         console.log("✅ Language rendered");
-
 
 
         // Apply saved language after all pages are rendered
@@ -64,6 +69,7 @@ function initApp() {
         if (typeof applyLanguage === "function") {
             applyLanguage(savedLanguage);
         }
+
 
     } catch (error) {
 
@@ -97,7 +103,9 @@ function initApp() {
         // Check Firebase user
         // ----------------------------------
 
-        const user = auth.currentUser;
+        const user = typeof auth !== "undefined" ? auth.currentUser : null;
+        const localPhone = localStorage.getItem("phone");
+        const localUser = localStorage.getItem("userName");
 
         console.log(
             "👤 Current Firebase user:",
@@ -109,7 +117,7 @@ function initApp() {
         // USER LOGGED IN
         // ----------------------------------
 
-        if (user) {
+        if (user || localPhone || localUser) {
 
             console.log(
                 "👤 Existing user found"
@@ -153,10 +161,6 @@ document.addEventListener(
 // 2. PAGE NAVIGATION
 // ==========================================
 
-// ==========================================
-// 2. PAGE NAVIGATION
-// ==========================================
-
 function navigateTo(page) {
 
     console.log("Navigating to:", page);
@@ -165,12 +169,20 @@ function navigateTo(page) {
     // Dynamic re-render
     // --------------------------------------
 
-    if (page === "dashboard") {
+    if (page === "dashboard" && typeof renderDashboard === "function") {
         renderDashboard();
     }
 
-    if (page === "profile") {
+    if (page === "profile" && typeof renderProfile === "function") {
         renderProfile();
+    }
+
+    if (page === "account" && typeof renderAccount === "function") {
+        renderAccount();
+    }
+
+    if (page === "subsidies" && typeof renderSubsidies === "function") {
+        renderSubsidies();
     }
 
     // --------------------------------------
@@ -309,47 +321,89 @@ function navigateTo(page) {
     });
 }
 
-// ==========================================
-// 5. START APPLICATION
-// ==========================================
-
-document.addEventListener("DOMContentLoaded", initApp);
-
 function showAppNavigation() {
-  const topNav = document.getElementById("topnav");
-  const sideNav = document.getElementById("sidenav");
+    const topNav = document.getElementById("topnav");
+    const sideNav = document.getElementById("sidenav");
 
-  if (topNav) topNav.style.display = "flex";
-  if (sideNav) sideNav.style.display = "flex";
+    if (topNav) topNav.style.display = "flex";
+    if (sideNav) sideNav.style.display = "flex";
 }
 
 function hideAppNavigation() {
-  const topNav = document.getElementById("topnav");
-  const sideNav = document.getElementById("sidenav");
+    const topNav = document.getElementById("topnav");
+    const sideNav = document.getElementById("sidenav");
 
-  if (topNav) topNav.style.display = "none";
-  if (sideNav) sideNav.style.display = "none";
+    if (topNav) topNav.style.display = "none";
+    if (sideNav) sideNav.style.display = "none";
 }
 
 function updateAppHeader() {
-  const currentName = localStorage.getItem("userName") || "Farmer";
-  const currentAvatar = localStorage.getItem("avatar");
+    const currentName = localStorage.getItem("userName") || "Farmer";
+    const currentAvatar = localStorage.getItem("avatar");
 
-  // Sidebar Greeting
-  const sidebarGreeting = document.getElementById("sidebar-user-name");
-  if (sidebarGreeting) {
-    sidebarGreeting.textContent = currentName;
-  }
+    // Sidebar Greeting
+    const sidebarGreeting = document.getElementById("sidebar-user-name");
+    if (sidebarGreeting) {
+        sidebarGreeting.textContent = currentName;
+    }
 
-  // Top Navbar Farmer Name
-  const navUserName = document.getElementById("nav-user-name");
-  if (navUserName) {
-    navUserName.textContent = currentName;
-  }
+    // Top Navbar Farmer Name
+    const navUserName = document.getElementById("nav-user-name");
+    if (navUserName) {
+        navUserName.textContent = currentName;
+    }
 
-  // Top Navbar Avatar (with fallback generator)
-  const navAvatar = document.getElementById("nav-user-avatar");
-  if (navAvatar) {
-    navAvatar.src = currentAvatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentName)}&background=2d5a27&color=fff&bold=true`;
-  }
+    // Top Navbar Avatar (with fallback generator)
+    const navAvatar = document.getElementById("nav-user-avatar");
+    if (navAvatar) {
+        navAvatar.src = currentAvatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(currentName)}&background=2d5a27&color=fff&bold=true`;
+    }
 }
+
+function checkUserProfile(user) {
+    const savedVillage = localStorage.getItem("village");
+    const savedState = localStorage.getItem("state");
+
+    if (savedVillage && savedState) {
+        showAppNavigation();
+        updateAppHeader();
+        navigateTo("dashboard");
+    } else {
+        hideAppNavigation();
+        navigateTo("profile");
+    }
+}
+
+function logout() {
+    console.log("🚪 Logging out...");
+
+    if (typeof auth !== "undefined" && auth.signOut) {
+        auth.signOut().catch((err) => console.warn("Firebase signout omitted:", err));
+    }
+
+    localStorage.removeItem("userName");
+    localStorage.removeItem("phone");
+    localStorage.removeItem("avatar");
+    localStorage.removeItem("loginMethod");
+    localStorage.removeItem("village");
+    localStorage.removeItem("district");
+    localStorage.removeItem("state");
+    localStorage.removeItem("crops");
+
+    const navName = document.getElementById("nav-user-name");
+    if (navName) navName.textContent = "Farmer";
+
+    const sidebarName = document.getElementById("sidebar-user-name");
+    if (sidebarName) sidebarName.textContent = "Farmer";
+
+    const navAvatar = document.getElementById("nav-user-avatar");
+    if (navAvatar) {
+        navAvatar.src = "https://ui-avatars.com/api/?name=Farmer&background=2d5a27&color=fff&bold=true";
+    }
+
+    hideAppNavigation();
+    navigateTo("login");
+}
+
+window.logout = logout;
+window.logoutUser = logout;
