@@ -202,7 +202,7 @@ async function sendFarmerMessage(userText) {
   const messagePayload = [...chatHistory, { role: "user", content: userText }];
 
   try {
-    const response = await fetch("http://localhost:3000/api/chat", {
+    const response = await fetch("http://localhost:5000/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ messages: messagePayload })
@@ -241,7 +241,7 @@ function getFallbackResponse(text) {
     'mandi': '📊 Check our Market Trends page for live mandi prices! Wheat is around ₹2,315/quintal, Cotton ₹7,125/quintal.',
   };
   const key = Object.keys(responses).find(k => t.includes(k));
-  return key ? responses[key] : '🌱 I am having trouble reaching the server right now. Please ensure your backend server is running (`node server.js`) on port 3000.';
+  return key ? responses[key] : '🌱 I am having trouble reaching the server right now. Please ensure your backend server is running (`node server.js`) on port 5000.';
 }
 
 async function sendMessage() {

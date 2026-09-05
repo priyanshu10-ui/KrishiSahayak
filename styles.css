@@ -71,3 +71,119 @@
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #c2c9bb; border-radius: 3px; }
+
+/* ==========================================
+   🌓 GLOBAL DARK MODE OVERRIDES
+   ========================================== */
+
+/* Main page body and containers */
+html.dark,
+html.dark body {
+  background-color: #121413 !important;
+  color: #e1e3e2 !important;
+}
+
+/* Sidebar & Navigation Drawers */
+html.dark #sidenav,
+html.dark #topnav {
+  background-color: #191c1c !important;
+  border-color: #2a2e2d !important;
+  color: #e1e3e2 !important;
+}
+
+/* Side navigation links */
+html.dark .side-nav-link {
+  color: #c2c9bb !important;
+}
+
+html.dark .side-nav-link:hover {
+  background-color: #232726 !important;
+  color: #a1d494 !important;
+}
+
+html.dark .side-nav-link.active {
+  background-color: #1d331b !important;
+  color: #a1d494 !important;
+}
+
+/* All Cards, Sections & Dropdowns */
+html.dark .bg-white {
+  background-color: #1e2221 !important;
+  border-color: #2a2e2d !important;
+  color: #e1e3e2 !important;
+}
+
+html.dark .bg-stone-50,
+html.dark .bg-stone-100 {
+  background-color: #262a29 !important;
+  border-color: #333836 !important;
+  color: #e1e3e2 !important;
+}
+
+/* Metric / Weather boxes in Dark Mode */
+html.dark .bg-green-50,
+html.dark .bg-green-50\/50 {
+  background-color: #172a18 !important;
+  border-color: #254426 !important;
+}
+
+html.dark .bg-blue-50 {
+  background-color: #142233 !important;
+  border-color: #1d3450 !important;
+}
+
+html.dark .bg-orange-50 {
+  background-color: #332014 !important;
+  border-color: #4d301f !important;
+}
+
+/* Text adjustments for readability */
+html.dark .text-stone-900,
+html.dark .text-stone-800,
+html.dark .text-green-900,
+html.dark .text-\[\#191c1c\] {
+  color: #f1f3f2 !important;
+}
+
+html.dark .text-stone-600,
+html.dark .text-stone-500,
+html.dark .text-stone-400,
+html.dark .text-\[\#42493e\] {
+  color: #9ea49b !important;
+}
+
+html.dark .text-blue-900,
+html.dark .text-blue-700 {
+  color: #90caf9 !important;
+}
+
+html.dark .text-orange-900,
+html.dark .text-orange-700 {
+  color: #ffcc80 !important;
+}
+
+/* Borders and Dividers */
+html.dark .border-stone-100,
+html.dark .border-stone-200,
+html.dark .border-green-100,
+html.dark .border-green-200 {
+  border-color: #2e3332 !important;
+}
+
+/* Weather 'See More' button */
+html.dark #weather-see-more-btn {
+  background-color: #1d331b !important;
+  border-color: #2d5a27 !important;
+  color: #a1d494 !important;
+}
+
+html.dark #weather-see-more-btn:hover {
+  background-color: #254426 !important;
+}
+
+/* Inputs & Search boxes */
+html.dark input {
+  background-color: #262a29 !important;
+  color: #ffffff !important;
+  border-color: #3a403e !important;
+}

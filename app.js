@@ -1047,3 +1047,40 @@ window.logout =
 
 window.logoutUser =
     logout;
+
+    // ==========================================
+// 🌓 DARK / LIGHT MODE CONTROLLER
+// ==========================================
+
+function initTheme() {
+  const savedTheme = localStorage.getItem("theme");
+  const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const isDark = savedTheme === "dark" || (!savedTheme && prefersDark);
+
+  if (isDark) {
+    document.documentElement.classList.add("dark");
+  } else {
+    document.documentElement.classList.remove("dark");
+  }
+
+  updateThemeIcon(isDark);
+}
+
+function toggleDarkMode() {
+  const isDark = document.documentElement.classList.toggle("dark");
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+  updateThemeIcon(isDark);
+}
+
+function updateThemeIcon(isDark) {
+  const icon = document.getElementById("theme-toggle-icon");
+  if (icon) {
+    icon.textContent = isDark ? "light_mode" : "dark_mode";
+    icon.classList.toggle("text-yellow-400", isDark);
+    icon.classList.toggle("text-stone-600", !isDark);
+  }
+}
+
+// Attach to startup
+window.toggleDarkMode = toggleDarkMode;
+document.addEventListener("DOMContentLoaded", initTheme);

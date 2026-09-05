@@ -65,7 +65,8 @@ function getWeatherCondition(code, lang = "en") {
         color: "text-[#ffa536]"
     };
 }
-  // ==========================================
+
+// ==========================================
 // FETCH LIVE WEATHER
 // ==========================================
 
@@ -620,8 +621,6 @@ function toggleWeatherDetails() {
 
     if (isClosed) {
 
-        // OPEN
-
         dropdown.classList.remove(
             "hidden"
         );
@@ -643,14 +642,10 @@ function toggleWeatherDetails() {
         }
 
 
-        // Render details
-
         updateWeatherDetails();
 
 
     } else {
-
-        // CLOSE
 
         dropdown.classList.add(
             "hidden"
@@ -1213,6 +1208,7 @@ function updateWeatherDetails() {
     renderFarmingWeatherAdvice();
 
 }
+
 // ==========================================
 // 🕐 FORMAT WEATHER HOUR
 // ==========================================
@@ -1303,688 +1299,178 @@ function renderDashboard() {
         <div class="mb-8">
 
             <h2 class="font-[Lexend] text-2xl font-medium text-[#191c1c] mb-1">
-                ${t.fieldOverview}
+                ${t.fieldOverview || "Field Overview"}
             </h2>
 
             <p class="text-[#42493e]">
-                ${t.lastUpdated}
-                ${t.today}
-                ${t.weatherForecast}
+                ${t.lastUpdated || "Last updated"}
+                ${t.today || "Today"}
+                ${t.weatherForecast || "Weather Forecast"}
             </p>
 
         </div>
 
 
         <!-- MAIN GRID -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+         <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
 
 
             <!-- ================================== -->
-<!-- 🌦 FINAL WEATHER DASHBOARD -->
-<!-- ================================== -->
+            <!-- 🌦 FINAL WEATHER DASHBOARD (LEFT COLUMN) -->
+            <!-- ================================== -->
 
-<section
-    class="
-        md:col-span-12
-        lg:col-span-8
-        bg-white
-        rounded-xl
-        p-6
-        border
-        border-stone-100
-        shadow-sm
-    "
->
-
-    <!-- HEADER -->
-
-    <div
-        class="
-            flex
-            flex-col
-            md:flex-row
-            justify-between
-            items-start
-            md:items-center
-            mb-6
-            gap-4
-        "
-    >
-
-        <div>
-
-            <h3
-                class="
-                    font-[Lexend]
-                    text-xl
-                    font-medium
-                    text-green-900
-                    flex
-                    items-center
-                    gap-2
-                "
-            >
-
-                <span
-                    class="material-symbols-outlined"
-                >
-                    cloud_sync
-                </span>
-
-                ${t.weatherForecast}
-
-            </h3>
-
-
-            <p
-                id="dashboard-user-address"
-                class="
-                    text-stone-500
-                    text-sm
-                    font-semibold
-                "
-            >
-                ${userAddress}
-            </p>
-
-        </div>
-
-
-        <!-- LIVE BADGE -->
-
-        <div
+        <section
             class="
-                px-3
-                py-1
-                rounded-full
-                bg-green-50
-                text-green-700
-                text-xs
-                font-bold
-            "
-        >
-            ● Live Weather
-        </div>
-
-    </div>
-
-
-
-    <!-- ================================= -->
-    <!-- CURRENT WEATHER -->
-    <!-- ================================= -->
-
-    <div
-        class="
-            grid
-            grid-cols-1
-            md:grid-cols-3
-            gap-4
-        "
-    >
-
-        <!-- TEMPERATURE -->
-
-        <div
-            class="
-                bg-green-50/50
-                p-5
+                md:col-span-12
+                lg:col-span-8
+                bg-white
                 rounded-2xl
-                border
-                border-green-100/50
-                flex
-                items-center
-                gap-4
-            "
-        >
-
-            <span
-                id="weather-icon"
-                class="
-                    material-symbols-outlined
-                    text-6xl
-                    text-[#ffa536]
-                "
-                style="
-                    font-variation-settings:
-                    'FILL' 1;
-                "
-            >
-                light_mode
-            </span>
-
-
-            <div>
-
-                <div
-                    id="weather-temp"
-                    class="
-                        text-4xl
-                        font-bold
-                        text-stone-900
-                    "
-                >
-                    --°C
-                </div>
-
-
-                <p
-                    id="weather-desc"
-                    class="
-                        text-stone-600
-                        font-medium
-                    "
-                >
-                    Loading...
-                </p>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- HUMIDITY -->
-
-        <div
-            class="
-                bg-blue-50
                 p-5
-                rounded-2xl
                 border
-                border-blue-100
-            "
-        >
-
-            <div
-                class="
-                    flex
-                    items-center
-                    gap-2
-                    text-blue-700
-                "
-            >
-
-                <span
-                    class="
-                        material-symbols-outlined
-                    "
-                >
-                    humidity_low
-                </span>
-
-                <span
-                    class="
-                        text-sm
-                        font-medium
-                    "
-                >
-                    Humidity
-                </span>
-
-            </div>
-
-
-            <div
-                id="weather-humidity"
-                class="
-                    text-2xl
-                    font-bold
-                    text-blue-900
-                    mt-2
-                "
-            >
-                --%
-            </div>
-
-        </div>
-
-
-
-        <!-- WIND -->
-
-        <div
-            class="
-                bg-orange-50
-                p-5
-                rounded-2xl
-                border
-                border-orange-100
-            "
-        >
-
-            <div
-                class="
-                    flex
-                    items-center
-                    gap-2
-                    text-orange-700
-                "
-            >
-
-                <span
-                    class="
-                        material-symbols-outlined
-                    "
-                >
-                    air
-                </span>
-
-                <span
-                    class="
-                        text-sm
-                        font-medium
-                    "
-                >
-                    Wind
-                </span>
-
-            </div>
-
-
-            <div
-                id="weather-wind"
-                class="
-                    text-2xl
-                    font-bold
-                    text-orange-900
-                    mt-2
-                "
-            >
-                -- km/h
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- ================================= -->
-    <!-- UPCOMING 6 HOURS -->
-    <!-- ================================= -->
-
-    <div
-        class="
-            mt-6
-            pt-5
-            border-t
-            border-stone-100
-        "
-    >
-
-        <div
-            class="
-                flex
-                items-center
-                justify-between
-                mb-3
-            "
-        >
-
-            <div>
-
-                <h4
-                    class="
-                        text-sm
-                        font-bold
-                        text-green-900
-                    "
-                >
-                    Upcoming 6 Hours
-                </h4>
-
-
-                <p
-                    class="
-                        text-[11px]
-                        text-stone-400
-                    "
-                >
-                    Temperature • Rain • Wind
-                </p>
-
-            </div>
-
-
-            <span
-                class="
-                    material-symbols-outlined
-                    text-stone-400
-                "
-            >
-                schedule
-            </span>
-
-        </div>
-
-
-        <!-- 6 HOURS -->
-
-        <div
-            id="weather-forecast-list"
-            class="
-                flex
-                gap-3
-                overflow-x-auto
-                pb-2
-            "
-        >
-
-            <div
-                class="
-                    min-w-full
-                    text-center
-                    py-5
-                    text-sm
-                    text-stone-400
-                "
-            >
-                Loading hourly weather...
-            </div>
-
-        </div>
-
-    </div>
-
-
-
-    <!-- ================================= -->
-    <!-- SEE MORE -->
-    <!-- ================================= -->
-
-    <div class="mt-4">
-
-        <button
-            id="weather-see-more-btn"
-            onclick="toggleWeatherDetails()"
-            class="
-                w-full
-                py-3
-                rounded-xl
-                border
-                border-green-200
-                bg-green-50
-                hover:bg-green-100
-                text-green-800
-                font-semibold
-                transition
-                flex
-                items-center
-                justify-center
-                gap-2
-            "
-        >
-
-            <span
-                id="weather-see-more-text"
-            >
-                See More
-            </span>
-
-
-            <span
-                id="weather-see-more-icon"
-                class="
-                    material-symbols-outlined
-                "
-            >
-                expand_more
-            </span>
-
-        </button>
-
-    </div>
-
-
-
-    <!-- ================================= -->
-    <!-- EXPANDABLE DETAILS -->
-    <!-- ================================= -->
-
-    <div
-        id="weather-details-dropdown"
-        class="
-            hidden
-            mt-5
-            pt-5
-            border-t
-            border-stone-100
-        "
-    >
-
-        <!-- 7 DAYS -->
-
-        <div>
-
-            <h4
-                class="
-                    font-[Lexend]
-                    text-lg
-                    font-semibold
-                    text-green-900
-                "
-            >
-                7-Day Forecast
-            </h4>
-
-
-            <p
-                class="
-                    text-xs
-                    text-stone-500
-                    mt-1
-                    mb-4
-                "
-            >
-                Select a day to view its hourly forecast
-            </p>
-
-
-            <div
-                id="weather-details-7-days"
-                class="
-                    flex
-                    gap-3
-                    overflow-x-auto
-                    pb-2
-                "
-            >
-                Loading forecast...
-            </div>
-
-        </div>
-
-
-
-        <!-- HOURLY -->
-
-        <div
-            class="
-                mt-6
-                pt-5
-                border-t
                 border-stone-100
+                shadow-sm
+                h-fit
             "
         >
 
-            <h4
-                id="weather-hourly-title"
-                class="
-                    font-[Lexend]
-                    text-lg
-                    font-semibold
-                    text-green-900
-                "
-            >
-                Today's Hourly Forecast
-            </h4>
-
-
-            <p
-                class="
-                    text-xs
-                    text-stone-500
-                    mt-1
-                    mb-4
-                "
-            >
-                Full 24-hour weather forecast
-            </p>
-
-
-            <div
-                id="weather-details-hourly"
-                class="
-                    flex
-                    gap-3
-                    overflow-x-auto
-                    pb-2
-                "
-            >
-                Loading hourly forecast...
-            </div>
-
-        </div>
-
-
-
-        <!-- FARMING ADVISORY -->
-
-        <div
-            class="
-                mt-6
-                pt-5
-                border-t
-                border-stone-100
-            "
-        >
-
-            <div
-                class="
-                    rounded-2xl
-                    border-l-4
-                    border-green-700
-                    bg-green-50
-                    p-4
-                    flex
-                    items-start
-                    gap-3
-                "
-            >
+                <!-- HEADER -->
 
                 <div
                     class="
-                        w-10
-                        h-10
-                        shrink-0
-                        rounded-full
-                        bg-white
                         flex
-                        items-center
-                        justify-center
+                        flex-col
+                        md:flex-row
+                        justify-between
+                        items-start
+                        md:items-center
+                        mb-6
+                        gap-4
                     "
                 >
-                    🌾
-                </div>
+
+                    <div>
+
+                        <h3
+                            class="
+                                font-[Lexend]
+                                text-xl
+                                font-medium
+                                text-green-900
+                                flex
+                                items-center
+                                gap-2
+                            "
+                        >
+
+                            <span
+                                class="material-symbols-outlined"
+                            >
+                                cloud_sync
+                            </span>
+
+                            ${t.weatherForecast || "Weather Forecast"}
+
+                        </h3>
 
 
-                <div>
+                        <p
+                            id="dashboard-user-address"
+                            class="
+                                text-stone-500
+                                text-sm
+                                font-semibold
+                            "
+                        >
+                            ${userAddress}
+                        </p>
 
-                    <h4
+                    </div>
+
+
+                    <!-- LIVE BADGE -->
+
+                    <div
                         class="
+                            px-3
+                            py-1
+                            rounded-full
+                            bg-green-50
+                            text-green-700
+                            text-xs
                             font-bold
-                            text-green-900
                         "
                     >
-                        Farming Weather Advisory
-                    </h4>
+                        ● Live Weather
+                    </div>
+
+                </div>
 
 
-                    <p
-                        id="weather-farming-advice"
+
+                <!-- CURRENT WEATHER -->
+
+                <div
+                    class="
+                        grid
+                        grid-cols-1
+                        md:grid-cols-3
+                        gap-4
+                    "
+                >
+
+                    <!-- TEMPERATURE -->
+
+                    <div
                         class="
-                            text-sm
-                            text-stone-600
-                            mt-1
+                            bg-green-50/50
+                            p-5
+                            rounded-2xl
+                            border
+                            border-green-100/50
+                            flex
+                            items-center
+                            gap-4
                         "
                     >
-                        Checking weather conditions...
-                    </p>
 
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-
-            <!-- ================================== -->
-            <!-- MARKET RATES -->
-            <!-- ================================== -->
-
-            <section
-                class="md:col-span-12 lg:col-span-4 bg-white rounded-xl p-6 border border-stone-100 shadow-sm"
-            >
-
-                <h3
-                    class="font-[Lexend] text-xl font-medium text-green-900 mb-6 flex items-center gap-2"
-                >
-
-                    <span class="material-symbols-outlined">
-                        trending_up
-                    </span>
-
-                    ${t.topMarketRates}
-
-                </h3>
+                        <span
+                            id="weather-icon"
+                            class="
+                                material-symbols-outlined
+                                text-6xl
+                                text-[#ffa536]
+                            "
+                            style="
+                                font-variation-settings:
+                                'FILL' 1;
+                            "
+                        >
+                            light_mode
+                        </span>
 
 
-                <div class="space-y-4">
-
-
-                    <!-- WHEAT -->
-
-                    <div
-                        class="flex justify-between items-center p-3 rounded-xl border border-transparent hover:bg-stone-50"
-                    >
-
-                        <div class="flex items-center gap-3">
+                        <div>
 
                             <div
-                                class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-800 font-bold"
+                                id="weather-temp"
+                                class="
+                                    text-4xl
+                                    font-bold
+                                    text-stone-900
+                                "
                             >
-                                W
+                                --°C
                             </div>
 
-                            <div>
 
-                                <p class="font-bold text-sm">
-                                    Wheat
-                                </p>
-
-                                <p class="text-xs text-stone-500">
-                                    ${t.perQuintal}
-                                </p>
-
-                            </div>
-
-                        </div>
-
-
-                        <div class="text-right">
-
-                            <p class="font-bold text-sm">
-                                ₹2,125
-                            </p>
-
-                            <p class="text-xs text-green-600">
-                                ↑ +2.4%
+                            <p
+                                id="weather-desc"
+                                class="
+                                    text-stone-600
+                                    font-medium
+                                "
+                            >
+                                Loading...
                             </p>
 
                         </div>
@@ -1993,90 +1479,114 @@ function renderDashboard() {
 
 
 
-                    <!-- RICE -->
+                    <!-- HUMIDITY -->
 
                     <div
-                        class="flex justify-between items-center p-3 rounded-xl border border-transparent hover:bg-stone-50"
+                        class="
+                            bg-blue-50
+                            p-5
+                            rounded-2xl
+                            border
+                            border-blue-100
+                        "
                     >
 
-                        <div class="flex items-center gap-3">
+                        <div
+                            class="
+                                flex
+                                items-center
+                                gap-2
+                                text-blue-700
+                            "
+                        >
 
-                            <div
-                                class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-800 font-bold"
+                            <span
+                                class="
+                                    material-symbols-outlined
+                                "
                             >
-                                R
-                            </div>
+                                humidity_low
+                            </span>
 
-                            <div>
-
-                                <p class="font-bold text-sm">
-                                    Rice
-                                </p>
-
-                                <p class="text-xs text-stone-500">
-                                    ${t.perQuintal}
-                                </p>
-
-                            </div>
+                            <span
+                                class="
+                                    text-sm
+                                    font-medium
+                                "
+                            >
+                                Humidity
+                            </span>
 
                         </div>
 
 
-                        <div class="text-right">
-
-                            <p class="font-bold text-sm">
-                                ₹1,940
-                            </p>
-
-                            <p class="text-xs text-red-500">
-                                ↓ -0.8%
-                            </p>
-
+                        <div
+                            id="weather-humidity"
+                            class="
+                                text-2xl
+                                font-bold
+                                text-blue-900
+                                mt-2
+                            "
+                        >
+                            --%
                         </div>
 
                     </div>
 
 
 
-                    <!-- CORN -->
+                    <!-- WIND -->
 
                     <div
-                        class="flex justify-between items-center p-3 rounded-xl border border-transparent hover:bg-stone-50"
+                        class="
+                            bg-orange-50
+                            p-5
+                            rounded-2xl
+                            border
+                            border-orange-100
+                        "
                     >
 
-                        <div class="flex items-center gap-3">
+                        <div
+                            class="
+                                flex
+                                items-center
+                                gap-2
+                                text-orange-700
+                            "
+                        >
 
-                            <div
-                                class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-800 font-bold"
+                            <span
+                                class="
+                                    material-symbols-outlined
+                                "
                             >
-                                C
-                            </div>
+                                air
+                            </span>
 
-                            <div>
-
-                                <p class="font-bold text-sm">
-                                    Corn
-                                </p>
-
-                                <p class="text-xs text-stone-500">
-                                    ${t.perQuintal}
-                                </p>
-
-                            </div>
+                            <span
+                                class="
+                                    text-sm
+                                    font-medium
+                                "
+                            >
+                                Wind
+                            </span>
 
                         </div>
 
 
-                        <div class="text-right">
-
-                            <p class="font-bold text-sm">
-                                ₹1,850
-                            </p>
-
-                            <p class="text-xs text-green-600">
-                                ↑ +1.2%
-                            </p>
-
+                        <div
+                            id="weather-wind"
+                            class="
+                                text-2xl
+                                font-bold
+                                text-orange-900
+                                mt-2
+                            "
+                        >
+                            -- km/h
                         </div>
 
                     </div>
@@ -2084,27 +1594,624 @@ function renderDashboard() {
                 </div>
 
 
-                <!-- VIEW ALL -->
 
-                <button
-                    onclick="navigateTo('market')"
-                    class="w-full mt-6 py-2 text-stone-500 font-semibold text-sm hover:text-green-800 flex items-center justify-center gap-2"
+                <!-- UPCOMING 6 HOURS -->
+
+                <div
+                    class="
+                        mt-6
+                        pt-5
+                        border-t
+                        border-stone-100
+                    "
                 >
 
-                    ${t.viewAllMarkets}
+                    <div
+                        class="
+                            flex
+                            items-center
+                            justify-between
+                            mb-3
+                        "
+                    >
 
-                    <span class="material-symbols-outlined text-sm">
-                        arrow_forward
-                    </span>
+                        <div>
 
-                </button>
+                            <h4
+                                class="
+                                    text-sm
+                                    font-bold
+                                    text-green-900
+                                "
+                            >
+                                Upcoming 6 Hours
+                            </h4>
+
+
+                            <p
+                                class="
+                                    text-[11px]
+                                    text-stone-400
+                                "
+                            >
+                                Temperature • Rain • Wind
+                            </p>
+
+                        </div>
+
+
+                        <span
+                            class="
+                                material-symbols-outlined
+                                text-stone-400
+                            "
+                        >
+                            schedule
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        id="weather-forecast-list"
+                        class="
+                            flex
+                            gap-3
+                            overflow-x-auto
+                            pb-2
+                        "
+                    >
+
+                        <div
+                            class="
+                                min-w-full
+                                text-center
+                                py-5
+                                text-sm
+                                text-stone-400
+                            "
+                        >
+                            Loading hourly weather...
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- SEE MORE BUTTON -->
+
+                <div class="mt-2.5">
+                    <button
+                        id="weather-see-more-btn"
+                        onclick="toggleWeatherDetails()"
+                        class="w-full py-2
+                         rounded-xl border 
+                         border-green-200 
+                         bg-green-50
+                          hover:bg-green-100
+                           text-green-800
+                            font-semibold text-xs transition 
+                            flex items-center justify-center gap-1.5"
+                    >
+
+                        <span
+                            id="weather-see-more-text"
+                        >
+                            See More
+                        </span>
+
+
+                        <span
+                            id="weather-see-more-icon"
+                            class="
+                                material-symbols-outlined
+                            "
+                        >
+                            expand_more
+                        </span>
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- EXPANDABLE DETAILS -->
+
+                <div
+                    id="weather-details-dropdown"
+                    class="
+                        hidden
+                        mt-5
+                        pt-5
+                        border-t
+                        border-stone-100
+                    "
+                >
+
+                    <!-- 7 DAYS -->
+
+                    <div>
+
+                        <h4
+                            class="
+                                font-[Lexend]
+                                text-lg
+                                font-semibold
+                                text-green-900
+                            "
+                        >
+                            7-Day Forecast
+                        </h4>
+
+
+                        <p
+                            class="
+                                text-xs
+                                text-stone-500
+                                mt-1
+                                mb-4
+                            "
+                        >
+                            Select a day to view its hourly forecast
+                        </p>
+
+
+                        <div
+                            id="weather-details-7-days"
+                            class="
+                                flex
+                                gap-3
+                                overflow-x-auto
+                                pb-2
+                            "
+                        >
+                            Loading forecast...
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- HOURLY -->
+
+                    <div
+                        class="
+                            mt-6
+                            pt-5
+                            border-t
+                            border-stone-100
+                        "
+                    >
+
+                        <h4
+                            id="weather-hourly-title"
+                            class="
+                                font-[Lexend]
+                                text-lg
+                                font-semibold
+                                text-green-900
+                            "
+                        >
+                            Today's Hourly Forecast
+                        </h4>
+
+
+                        <p
+                            class="
+                                text-xs
+                                text-stone-500
+                                mt-1
+                                mb-4
+                            "
+                        >
+                            Full 24-hour weather forecast
+                        </p>
+
+
+                        <div
+                            id="weather-details-hourly"
+                            class="
+                                flex
+                                gap-3
+                                overflow-x-auto
+                                pb-2
+                            "
+                        >
+                            Loading hourly forecast...
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- FARMING ADVISORY -->
+
+                    <div
+                        class="
+                            mt-6
+                            pt-5
+                            border-t
+                            border-stone-100
+                        "
+                    >
+
+                        <div
+                            class="
+                                rounded-2xl
+                                border-l-4
+                                border-green-700
+                                bg-green-50
+                                p-4
+                                flex
+                                items-start
+                                gap-3
+                            "
+                        >
+
+                            <div
+                                class="
+                                    w-10
+                                    h-10
+                                    shrink-0
+                                    rounded-full
+                                    bg-white
+                                    flex
+                                    items-center
+                                    justify-center
+                                "
+                            >
+                                🌾
+                            </div>
+
+
+                            <div>
+
+                                <h4
+                                    class="
+                                        font-bold
+                                        text-green-900
+                                    "
+                                >
+                                    Farming Weather Advisory
+                                </h4>
+
+
+                                <p
+                                    id="weather-farming-advice"
+                                    class="
+                                        text-sm
+                                        text-stone-600
+                                        mt-1
+                                    "
+                                >
+                                    Checking weather conditions...
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </section>
 
 
 
             <!-- ================================== -->
-            <!-- CROP HEALTH -->
+            <!-- RIGHT SIDEBAR: MARKET & SCHEMES -->
+            <!-- ================================== -->
+
+            <div class="md:col-span-12 lg:col-span-4 space-y-6">
+
+                <!-- 1. MARKET RATES CARD -->
+                <section class="bg-white rounded-xl p-6 border border-stone-100 shadow-sm">
+
+                    <h3
+                        class="font-[Lexend] text-xl font-medium text-green-900 mb-6 flex items-center gap-2"
+                    >
+
+                        <span class="material-symbols-outlined">
+                            trending_up
+                        </span>
+
+                        ${t.topMarketRates || "Top Market Rates"}
+
+                    </h3>
+
+
+                    <div class="space-y-4">
+
+                        <!-- WHEAT -->
+                        <div
+                            class="flex justify-between items-center p-3 rounded-xl border border-transparent hover:bg-stone-50 transition"
+                        >
+
+                            <div class="flex items-center gap-3">
+
+                                <div
+                                    class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center text-amber-800 font-bold"
+                                >
+                                    W
+                                </div>
+
+                                <div>
+
+                                    <p class="font-bold text-sm">
+                                        Wheat
+                                    </p>
+
+                                    <p class="text-xs text-stone-500">
+                                        ${t.perQuintal || "Per Quintal"}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="text-right">
+
+                                <p class="font-bold text-sm">
+                                    ₹2,125
+                                </p>
+
+                                <p class="text-xs text-green-600">
+                                    ↑ +2.4%
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- RICE -->
+                        <div
+                            class="flex justify-between items-center p-3 rounded-xl border border-transparent hover:bg-stone-50 transition"
+                        >
+
+                            <div class="flex items-center gap-3">
+
+                                <div
+                                    class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-800 font-bold"
+                                >
+                                    R
+                                </div>
+
+                                <div>
+
+                                    <p class="font-bold text-sm">
+                                        Rice
+                                    </p>
+
+                                    <p class="text-xs text-stone-500">
+                                        ${t.perQuintal || "Per Quintal"}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="text-right">
+
+                                <p class="font-bold text-sm">
+                                    ₹1,940
+                                </p>
+
+                                <p class="text-xs text-red-500">
+                                    ↓ -0.8%
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- CORN -->
+                        <div
+                            class="flex justify-between items-center p-3 rounded-xl border border-transparent hover:bg-stone-50 transition"
+                        >
+
+                            <div class="flex items-center gap-3">
+
+                                <div
+                                    class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center text-yellow-800 font-bold"
+                                >
+                                    C
+                                </div>
+
+                                <div>
+
+                                    <p class="font-bold text-sm">
+                                        Corn
+                                    </p>
+
+                                    <p class="text-xs text-stone-500">
+                                        ${t.perQuintal || "Per Quintal"}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="text-right">
+
+                                <p class="font-bold text-sm">
+                                    ₹1,850
+                                </p>
+
+                                <p class="text-xs text-green-600">
+                                    ↑ +1.2%
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- VIEW ALL MARKETS -->
+                    <button
+                        onclick="navigateTo('market')"
+                        class="w-full mt-6 py-2 text-stone-500 font-semibold text-sm hover:text-green-800 flex items-center justify-center gap-2 transition"
+                    >
+
+                        ${t.viewAllMarkets || "View All Markets"}
+
+                        <span class="material-symbols-outlined text-sm">
+                            arrow_forward
+                        </span>
+
+                    </button>
+
+                </section>
+
+
+                <!-- 2. TOP GOVERNMENT SCHEMES CARD -->
+                <section class="bg-white rounded-xl p-6 border border-stone-100 shadow-sm">
+
+                    <div class="flex items-center justify-between pb-3 border-b border-stone-100 mb-4">
+
+                        <h3 class="font-[Lexend] text-lg font-medium text-green-900 flex items-center gap-2">
+
+                            <span class="material-symbols-outlined">
+                                account_balance
+                            </span>
+
+                            ${t.governmentSchemes || "Top Government Schemes"}
+
+                        </h3>
+
+                        <span class="text-[10px] font-bold bg-green-100 text-green-800 px-2 py-0.5 rounded-full uppercase">
+                            Active
+                        </span>
+
+                    </div>
+
+
+                    <div class="space-y-3">
+
+                        <!-- PM-KISAN -->
+                        <div 
+                            onclick="navigateTo('subsidies')" 
+                            class="flex items-start gap-3 p-2.5 rounded-xl hover:bg-stone-50 transition cursor-pointer group"
+                        >
+
+                            <div class="w-10 h-10 bg-emerald-100 text-emerald-800 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 group-hover:scale-105 transition">
+                                PMK
+                            </div>
+
+                            <div class="flex-1 min-w-0">
+
+                                <div class="flex items-center justify-between">
+                                    <h4 class="text-xs font-bold text-stone-800 group-hover:text-green-800 transition truncate">
+                                        PM-KISAN Samman Nidhi
+                                    </h4>
+                                    <span class="text-xs font-extrabold text-stone-900 shrink-0 ml-1">
+                                        ₹6,000/yr
+                                    </span>
+                                </div>
+
+                                <p class="text-[11px] text-stone-500 truncate mt-0.5">
+                                    Direct income support in 3 installments
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- PMFBY Crop Insurance -->
+                        <div 
+                            onclick="navigateTo('subsidies')" 
+                            class="flex items-start gap-3 p-2.5 rounded-xl hover:bg-stone-50 transition cursor-pointer group"
+                        >
+
+                            <div class="w-10 h-10 bg-blue-100 text-blue-800 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 group-hover:scale-105 transition">
+                                PMF
+                            </div>
+
+                            <div class="flex-1 min-w-0">
+
+                                <div class="flex items-center justify-between">
+                                    <h4 class="text-xs font-bold text-stone-800 group-hover:text-green-800 transition truncate">
+                                        PM Fasal Bima (PMFBY)
+                                    </h4>
+                                    <span class="text-xs font-bold text-blue-700 shrink-0 ml-1">
+                                        Insurance
+                                    </span>
+                                </div>
+
+                                <p class="text-[11px] text-stone-500 truncate mt-0.5">
+                                    Complete coverage against crop loss
+                                </p>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Kisan Credit Card (KCC) -->
+                        <div 
+                            onclick="navigateTo('subsidies')" 
+                            class="flex items-start gap-3 p-2.5 rounded-xl hover:bg-stone-50 transition cursor-pointer group"
+                        >
+
+                            <div class="w-10 h-10 bg-amber-100 text-amber-800 rounded-xl flex items-center justify-center font-bold text-xs shrink-0 group-hover:scale-105 transition">
+                                KCC
+                            </div>
+
+                            <div class="flex-1 min-w-0">
+
+                                <div class="flex items-center justify-between">
+                                    <h4 class="text-xs font-bold text-stone-800 group-hover:text-green-800 transition truncate">
+                                        Kisan Credit Card
+                                    </h4>
+                                    <span class="text-xs font-extrabold text-stone-900 shrink-0 ml-1">
+                                        4% Rate
+                                    </span>
+                                </div>
+
+                                <p class="text-[11px] text-stone-500 truncate mt-0.5">
+                                    Low-interest agricultural loans up to ₹3L
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- VIEW ALL SCHEMES -->
+                    <button
+                        onclick="navigateTo('subsidies')"
+                        class="w-full mt-4 pt-3 border-t border-stone-100 text-stone-500 font-semibold text-sm hover:text-green-800 flex items-center justify-center gap-2 transition"
+                    >
+
+                        View All Schemes
+
+                        <span class="material-symbols-outlined text-sm">
+                            arrow_forward
+                        </span>
+
+                    </button>
+
+                </section>
+
+            </div>
+
+
+
+            <!-- ================================== -->
+            <!-- CROP HEALTH (FULL ROW ACROSS 12 COLS) -->
             <!-- ================================== -->
 
             <section class="md:col-span-12">
@@ -2121,20 +2228,21 @@ function renderDashboard() {
                             potted_plant
                         </span>
 
-                        ${t.currentCropHealth}
+                        ${t.currentCropHealth || "Crop Health Overview"}
 
                     </h3>
 
 
                     <button
-                        class="bg-[#2d5a27] text-white px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2"
+                        onclick="navigateTo('crop-health')"
+                        class="bg-[#2d5a27] text-white px-4 py-2 rounded-full text-xs font-bold flex items-center gap-2 hover:bg-green-800 transition"
                     >
 
                         <span class="material-symbols-outlined text-sm">
                             add
                         </span>
 
-                        ${t.addField}
+                        ${t.addField || "Add Field"}
 
                     </button>
 
@@ -2145,17 +2253,17 @@ function renderDashboard() {
                     class="bg-white rounded-2xl border border-stone-100 shadow-sm p-6"
                 >
 
-                    <div class="grid grid-cols-2 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 
                         <div
                             class="bg-stone-50 p-4 rounded-xl text-center"
                         >
 
                             <p class="text-xs text-stone-400 uppercase font-bold">
-                                ${t.growthStage}
+                                ${t.growthStage || "Growth Stage"}
                             </p>
 
-                            <p class="font-bold mt-2">
+                            <p class="font-bold mt-2 text-stone-800">
                                 Tillering
                             </p>
 
@@ -2167,10 +2275,10 @@ function renderDashboard() {
                         >
 
                             <p class="text-xs text-stone-400 uppercase font-bold">
-                                ${t.soilPH}
+                                ${t.soilPH || "Soil pH"}
                             </p>
 
-                            <p class="font-bold mt-2">
+                            <p class="font-bold mt-2 text-stone-800">
                                 6.8
                             </p>
 
@@ -2182,10 +2290,10 @@ function renderDashboard() {
                         >
 
                             <p class="text-xs text-stone-400 uppercase font-bold">
-                                ${t.moisture}
+                                ${t.moisture || "Moisture"}
                             </p>
 
-                            <p class="font-bold mt-2">
+                            <p class="font-bold mt-2 text-stone-800">
                                 42%
                             </p>
 

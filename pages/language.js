@@ -12,7 +12,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const languageMenu = document.createElement("div");
 
     languageMenu.id = "languageMenu";
-
     languageMenu.style.display = "none";
     languageMenu.style.position = "absolute";
     languageMenu.style.top = "calc(100% + 8px)";
@@ -43,15 +42,14 @@ document.addEventListener("DOMContentLoaded", function () {
     // ==========================================
 
     languageBtn.addEventListener("click", function (event) {
-
         event.stopPropagation();
+        languageMenu.style.display = languageMenu.style.display === "none" ? "flex" : "none";
+    });
 
-        if (languageMenu.style.display === "none") {
-            languageMenu.style.display = "flex";
-        } else {
+    document.addEventListener("click", function () {
+        if (languageMenu) {
             languageMenu.style.display = "none";
         }
-
     });
 
 
@@ -59,36 +57,22 @@ document.addEventListener("DOMContentLoaded", function () {
     // LANGUAGE SELECTION
     // ==========================================
 
-    const languageOptions =
-        document.querySelectorAll(".language-option");
+    const languageOptions = document.querySelectorAll(".language-option");
 
     languageOptions.forEach(function (option) {
-
         option.addEventListener("click", function (event) {
-
             event.stopPropagation();
 
-            
             const selectedLanguage = this.textContent.trim();
             const selectedLangCode = this.dataset.lang;
 
-            currentLanguage = selectedLangCode;
-
             localStorage.setItem("selectedLanguage", selectedLangCode);
 
-            // Update language button immediately
             languageBtn.textContent = selectedLanguage + " ▼";
-
             languageMenu.style.display = "none";
 
             applyLanguage(selectedLangCode);
-
-            languageMenu.style.display = "none";
-
-    
-
         });
-
     });
 
 
@@ -98,33 +82,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function applyLanguage(lang) {
 
-        if (!translations[lang]) return;
-            // CALCULATOR LANGUAGE
-            if (typeof renderCalculator === "function") {
-                renderCalculator();
-            }
+        if (typeof translations === "undefined" || !translations[lang]) return;
 
+        // CALCULATOR LANGUAGE
+        if (typeof renderCalculator === "function") {
+            renderCalculator();
+        }
 
-            // CROP HEALTH LANGUAGE
-            if (typeof applyCropHealthLanguage === "function") {
+        // CROP HEALTH LANGUAGE
+        if (typeof applyCropHealthLanguage === "function") {
+            applyCropHealthLanguage(lang);
+        }
 
+        // AI ASSISTANT LANGUAGE
+        if (typeof renderAIAssistant === "function") {
+            renderAIAssistant();
+        }
 
-            // AI ASSISTANT LANGUAGE
-            if (typeof renderAIAssistant === "function") {
-                renderAIAssistant();
-            }  
-                applyCropHealthLanguage(lang);
-            }
-            // MARKET LANGUAGE
-            if (typeof applyMarketLanguage === "function") {
-                applyMarketLanguage(lang);
-            }
-            // MARKET LANGUAGE
-            if (typeof applyMarketLanguage === "function") {
-                applyMarketLanguage(lang);
-            }
-
-
+        // MARKET LANGUAGE
+        if (typeof applyMarketLanguage === "function") {
+            applyMarketLanguage(lang);
+        }
 
 
         // ==========================================
@@ -141,8 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         if (languageBtn) {
-            languageBtn.textContent =
-                (languageNames[lang] || "English") + " ▼";
+            languageBtn.textContent = (languageNames[lang] || "English") + " ▼";
         }
 
 
@@ -150,72 +127,59 @@ document.addEventListener("DOMContentLoaded", function () {
         // TOP NAVIGATION
         // ==========================================
 
-        const topLinks =
-            document.querySelectorAll(".nav-top-link");
+        const topLinks = document.querySelectorAll(".nav-top-link");
 
         topLinks.forEach(function (link) {
-
             const page = link.dataset.page;
 
-            if (page === "dashboard") {
-                link.textContent =
-                    translations[lang].dashboard;
+            if (page === "dashboard" && translations[lang].dashboard) {
+                link.textContent = translations[lang].dashboard;
             }
 
-            if (page === "crop-health") {
-                link.textContent =
-                    translations[lang].cropHealth;
+            if (page === "crop-health" && translations[lang].cropHealth) {
+                link.textContent = translations[lang].cropHealth;
             }
 
-            if (page === "market") {
-                link.textContent =
-                    translations[lang].marketTrends;
+            if (page === "market" && translations[lang].marketTrends) {
+                link.textContent = translations[lang].marketTrends;
             }
 
-            if (page === "ai-assistant") {
-                link.textContent =
-                    translations[lang].aiAssistant;
+            if (page === "subsidies" && (translations[lang].subsidies || translations[lang].governmentSchemes)) {
+                link.textContent = translations[lang].subsidies || translations[lang].governmentSchemes;
             }
 
+            if (page === "ai-assistant" && translations[lang].aiAssistant) {
+                link.textContent = translations[lang].aiAssistant;
+            }
         });
 
 
         // ==========================================
-        // SIDEBAR
+        // SIDEBAR (CLEAN REPLACEMENT - NO DUPLICATION)
         // ==========================================
 
-        const sideLinks =
-            document.querySelectorAll(".side-nav-link");
+        const sideLinks = document.querySelectorAll(".side-nav-link");
 
         sideLinks.forEach(function (link) {
-
             const page = link.dataset.page;
+            let targetText = "";
 
-            if (page === "dashboard") {
-                link.lastChild.textContent =
-                    " " + translations[lang].dashboard;
+            if (page === "dashboard") targetText = translations[lang].dashboard;
+            if (page === "crop-health") targetText = translations[lang].cropHealth;
+            if (page === "market") targetText = translations[lang].marketTrends;
+            if (page === "subsidies") targetText = translations[lang].subsidies || translations[lang].governmentSchemes || "Government Schemes";
+            if (page === "ai-assistant") targetText = translations[lang].aiAssistant;
+            if (page === "calculator") targetText = translations[lang].pesticideCalc;
+            if (page === "account") targetText = translations[lang].profile || translations[lang].account || "Profile";
+
+            if (targetText) {
+                const textSpan = link.querySelector("span:not(.material-symbols-outlined)");
+                if (textSpan) {
+                    textSpan.textContent = targetText;
+                } else if (link.lastChild && link.lastChild.nodeType === Node.TEXT_NODE) {
+                    link.lastChild.textContent = " " + targetText;
+                }
             }
-
-            if (page === "crop-health") {
-                link.lastChild.textContent =
-                    " " + translations[lang].cropHealth;
-            }
-
-            if (page === "market") {
-                link.lastChild.textContent =
-                    " " + translations[lang].marketTrends;
-            }
-
-            if (page === "ai-assistant") {
-                link.lastChild.textContent =
-                    " " + translations[lang].aiAssistant;
-            }
-
-            if (page === "calculator") {
-                link.lastChild.textContent =
-                    " " + translations[lang].pesticideCalc;
-            }
-
         });
 
 
@@ -223,95 +187,55 @@ document.addEventListener("DOMContentLoaded", function () {
         // SEARCH BOX
         // ==========================================
 
-        const searchBox =
-            document.getElementById("global-search");
+        const searchBox = document.getElementById("global-search");
 
-        if (searchBox) {
-            searchBox.placeholder =
-                translations[lang].search;
+        if (searchBox && translations[lang].search) {
+            searchBox.placeholder = translations[lang].search;
         }
 
 
         // ==========================================
-        // SETTINGS & SUPPORT
+        // PROFILE & SUPPORT
         // ==========================================
 
-        const sideNavLinks =
-            document.querySelectorAll(
-                "#sidenav > div:last-child .side-nav-link"
-            );
+        const accountTitle = document.getElementById("nav-account-title");
+        if (accountTitle) {
+            accountTitle.textContent = translations[lang].profile || translations[lang].account || "Profile";
+        }
 
-        if (sideNavLinks.length >= 2) {
-
-            sideNavLinks[0].lastChild.textContent =
-                " " + translations[lang].settings;
-
-            sideNavLinks[1].lastChild.textContent =
-                " " + translations[lang].support;
-
+        const supportTitle = document.getElementById("nav-support-title");
+        if (supportTitle) {
+            supportTitle.textContent = translations[lang].support || "Support";
         }
 
 
         // ==========================================
-        // HELP TEXT
+        // HELP TEXT & BUTTON
         // ==========================================
 
-        const helpText =
-            document.querySelector(
-                "#sidenav .text-xs.opacity-80"
-            );
+        const helpText = document.querySelector("#sidenav .text-xs.opacity-80");
+        if (helpText && translations[lang].help) {
+            helpText.textContent = translations[lang].help;
+        }
 
-        if (helpText) {
-            helpText.textContent =
-                translations[lang].help;
+        const helpButton = document.querySelector("#sidenav .bg-white.text-\\[\\#2d5a27\\]");
+        if (helpButton && translations[lang].helpCenter) {
+            helpButton.textContent = translations[lang].helpCenter;
         }
 
 
-        // ==========================================
-        // HELP CENTER BUTTON
-        // ==========================================
-
-        const helpButton =
-            document.querySelector("#sidenav button");
-
-        if (helpButton) {
-            helpButton.textContent =
-                translations[lang].helpCenter;
-
-
-            // ==========================================
-            // DASHBOARD LANGUAGE
-            // ==========================================
-
-            if (typeof applyDashboardLanguage === "function") {
-                applyDashboardLanguage(lang);
-            }
-            if (typeof applyCropHealthLanguage === "function") {
-                applyCropHealthLanguage(lang);
-            }
-
-
-
-        }
         // ==========================================
         // USER GREETING & PARTNER TEXT
         // ==========================================
 
-        const greetingText =
-            document.querySelector("#sidenav .text-stone-500.font-medium");
-
-        if (greetingText) {
-            greetingText.textContent =
-                translations[lang].greeting;
+        const greetingText = document.querySelector("#sidenav .text-stone-500.font-medium");
+        if (greetingText && translations[lang].greeting) {
+            greetingText.textContent = translations[lang].greeting;
         }
 
-
-        const partnerText =
-            document.querySelector("#sidenav .text-\\[10px\\]");
-
-        if (partnerText) {
-            partnerText.textContent =
-                translations[lang].farmerPartner;
+        const partnerText = document.querySelector("#sidenav .text-\\[10px\\]");
+        if (partnerText && translations[lang].farmerPartner) {
+            partnerText.textContent = translations[lang].farmerPartner;
         }
 
 
@@ -319,41 +243,39 @@ document.addEventListener("DOMContentLoaded", function () {
         // LOGOUT BUTTON
         // ==========================================
 
-        const logoutButton =
-            document.querySelector("#user-area button");
+        document.querySelectorAll("button[onclick*='logout']").forEach((btn) => {
+            if (translations[lang].logout) {
+                btn.textContent = translations[lang].logout;
+            }
+        });
 
-        if (logoutButton) {
-            logoutButton.textContent =
-                translations[lang].logout;
+
+        // ==========================================
+        // REFRESH ACTIVE VIEWS
+        // ==========================================
+
+        if (typeof applyDashboardLanguage === "function") {
+            applyDashboardLanguage(lang);
         }
-
-        // ==========================================
-        // REFRESH DASHBOARD AFTER LANGUAGE CHANGE
-        // ==========================================
 
         if (typeof renderDashboard === "function") {
             renderDashboard();
         }
 
-        // REFRESH MARKET AFTER LANGUAGE CHANGE
-
         if (typeof renderMarket === "function") {
             renderMarket();
         }
 
-        if (typeof applyMarketLanguage === "function") {
-            applyMarketLanguage(lang);
-        }
+    }
 
-            }
+    // Expose applyLanguage globally
+    window.applyLanguage = applyLanguage;
 
-        // ==========================================
-        // INITIAL LANGUAGE ON PAGE LOAD
-        // ==========================================
+    // ==========================================
+    // INITIAL LANGUAGE ON PAGE LOAD
+    // ==========================================
 
-        const savedLanguage =
-            localStorage.getItem("selectedLanguage") || "en";
+    const savedLanguage = localStorage.getItem("selectedLanguage") || "en";
+    applyLanguage(savedLanguage);
 
-        applyLanguage(savedLanguage);
-    
-    });
+});

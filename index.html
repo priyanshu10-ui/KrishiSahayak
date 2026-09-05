@@ -46,7 +46,7 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 
-<body class="font-body-md text-on-background bg-background">
+<body class="font-body-md text-on-background bg-background antialiased selection:bg-green-200">
 
   <!-- Splash Screen -->
   <div id="page-splash"
@@ -64,126 +64,194 @@
     </div>
   </div>
 
-  <!-- ===== TOP NAV BAR ===== -->
-  <header id="topnav"
-    class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-16 bg-white/80 backdrop-blur-md border-b border-stone-100 shadow-sm shadow-green-900/5 font-[Lexend] antialiased">
-    <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('dashboard')">
-      <span class="material-symbols-outlined text-green-800" style="font-variation-settings:'FILL' 1;">agriculture</span>
-      <h1 class="text-xl font-extrabold tracking-tight text-green-800">Krishi Sahayak</h1>
+  <!-- Updated Topnav with dark mode classes -->
+<header id="topnav"
+  class="fixed top-0 left-0 w-full z-40 flex justify-between items-center px-3 sm:px-6 h-16 bg-white/95 dark:bg-[#191c1c]/95 backdrop-blur-md border-b border-stone-200 dark:border-stone-800 shadow-xs font-[Lexend] transition-colors duration-200">
+  <!-- Left: Hamburger + Logo -->
+  <div class="flex items-center gap-1.5 sm:gap-3 min-w-0">
+    <!-- Hamburger Button for Mobile -->
+    <button onclick="toggleMobileSidebar()" 
+      class="lg:hidden p-2 -ml-1 text-stone-700 hover:bg-stone-100 rounded-lg active:scale-95 transition flex-shrink-0"
+      title="Open Menu">
+      <span class="material-symbols-outlined text-2xl">menu</span>
+    </button>
+
+    <!-- App Brand -->
+    <div class="flex items-center gap-2 cursor-pointer select-none min-w-0" onclick="navigateTo('dashboard')">
+      <span class="material-symbols-outlined text-green-800 text-2xl sm:text-3xl flex-shrink-0" style="font-variation-settings:'FILL' 1;">agriculture</span>
+      <h1 class="text-base sm:text-xl font-extrabold tracking-tight text-green-800 truncate">Krishi Sahayak</h1>
     </div>
+  </div>
 
-    <div class="hidden md:flex items-center gap-6 mr-6">
-      <a class="nav-top-link active cursor-pointer" data-page="dashboard" onclick="navigateTo('dashboard')">Dashboard</a>
-      <a class="nav-top-link cursor-pointer" data-page="crop-health" onclick="navigateTo('crop-health')">Crop Health</a>
-      <a class="nav-top-link cursor-pointer" data-page="market" onclick="navigateTo('market')">Market Trends</a>
-      <a class="nav-top-link cursor-pointer" data-page="subsidies" onclick="navigateTo('subsidies')">Government Schemes</a>
-      <a class="nav-top-link cursor-pointer" data-page="ai-assistant" onclick="navigateTo('ai-assistant')">AI Assistant</a>
-    </div>
+  <!-- Center: Desktop Links (Hidden on Mobile) -->
+  <div class="hidden md:flex items-center gap-5 lg:gap-6">
+    <a class="nav-top-link active cursor-pointer" data-page="dashboard" onclick="navigateTo('dashboard')">Dashboard</a>
+    <a class="nav-top-link cursor-pointer" data-page="crop-health" onclick="navigateTo('crop-health')">Crop Health</a>
+    <a class="nav-top-link cursor-pointer" data-page="market" onclick="navigateTo('market')">Market Trends</a>
+    <a class="nav-top-link cursor-pointer" data-page="subsidies" onclick="navigateTo('subsidies')">Government Schemes</a>
+    <a class="nav-top-link cursor-pointer" data-page="ai-assistant" onclick="navigateTo('ai-assistant')">AI Assistant</a>
+  </div>
 
-    <div class="flex items-center gap-4">
-      <div class="hidden lg:flex flex-1 max-w-xs">
-        <div class="relative w-full">
-          <input id="global-search"
-            class="w-full pl-10 pr-4 py-2 bg-stone-100 border-none rounded-full text-sm focus:ring-2 focus:ring-green-800/20"
-            placeholder="Search crops, markets..." type="text" />
-          <span class="material-symbols-outlined absolute left-3 top-2.5 text-stone-500 text-sm">search</span>
-        </div>
-      </div>
-
-      <button class="p-2 text-stone-500 hover:bg-stone-50 rounded-full transition-colors">
-        <span class="material-symbols-outlined">notifications</span>
+  <!-- Right: Controls -->
+  <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+    <!-- Language Selector -->
+    <div id="languageSelector" class="relative">
+      <button id="languageBtn"
+        class="px-2.5 py-1.5 bg-stone-100 rounded-lg text-xs font-semibold text-stone-700 hover:bg-stone-200 transition-colors whitespace-nowrap">
+        EN ▼
       </button>
-
-      <!-- Language Selector -->
-      <div id="languageSelector" class="relative">
-        <button id="languageBtn"
-          class="px-3 py-2 bg-stone-100 rounded-lg text-sm font-semibold text-stone-700 hover:bg-stone-200 transition-colors">
-          English ▼
-        </button>
-      </div>
-
-      <!-- User Area (Clickable Avatar + Name to open Account Page) -->
-      <div id="user-area" class="flex items-center gap-3">
-        <div onclick="navigateTo('account')" class="flex items-center gap-2.5 cursor-pointer hover:opacity-85 transition group" title="Open Farmer Account">
-          <img 
-            id="nav-user-avatar" 
-            src="https://ui-avatars.com/api/?name=Farmer&background=2d5a27&color=fff&bold=true" 
-            alt="Farmer Avatar" 
-            class="w-9 h-9 rounded-full object-cover border border-stone-200 shadow-sm group-hover:ring-2 group-hover:ring-green-700 transition" />
-          <span 
-            id="nav-user-name" 
-            class="font-semibold text-stone-800 text-sm hidden sm:inline-block group-hover:text-green-800 transition">
-            Farmer
-          </span>
-        </div>
-
-        <button 
-          onclick="logout()" 
-          class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold px-3.5 py-1.5 rounded-lg transition active:scale-95 shadow-sm">
-          Logout
-        </button>
-      </div>
+      
     </div>
-  </header>
+    <!-- Dark Mode Toggle Button -->
+<button 
+  id="theme-toggle" 
+  onclick="toggleDarkMode()" 
+  class="p-2 rounded-xl text-stone-600 dark:text-stone-300 hover:bg-stone-100 dark:hover:bg-stone-800 transition-colors flex items-center justify-center"
+  title="Toggle Dark/Light Mode"
+  aria-label="Toggle Theme">
+  <span id="theme-toggle-icon" class="material-symbols-outlined text-xl">
+    dark_mode
+  </span>
+</button>
+    
+
+    <!-- User Avatar (Clickable to open Account) -->
+    <div onclick="navigateTo('account')" 
+      class="flex items-center gap-2 cursor-pointer hover:opacity-85 transition group flex-shrink-0" 
+      title="Farmer Account">
+      <img 
+        id="nav-user-avatar" 
+        src="https://ui-avatars.com/api/?name=Farmer&background=2d5a27&color=fff&bold=true" 
+        alt="Farmer Avatar" 
+        class="w-9 h-9 min-w-[36px] min-h-[36px] rounded-full object-cover border border-stone-200 shadow-xs group-hover:ring-2 group-hover:ring-green-700 transition flex-shrink-0" />
+      <span 
+        id="nav-user-name" 
+        class="font-semibold text-stone-800 text-xs hidden md:inline-block group-hover:text-green-800 transition truncate max-w-[100px]">
+        Farmer
+      </span>
+    </div>
+
+    <!-- Logout Button (Desktop only: hidden on mobile to avoid overcrowding) -->
+    <!-- Replace this inside <div id="user-area"> in index.html -->
+<button 
+  onclick="logout()" 
+  class="bg-red-600 hover:bg-red-700 text-white text-[11px] sm:text-xs font-bold px-2 sm:px-3.5 py-1.5 rounded-lg transition active:scale-95 shadow-xs whitespace-nowrap">
+  Logout
+</button>
+  </div>
+</header>
+
+  <!-- ===== MOBILE BACKDROP OVERLAY ===== -->
+  <div id="sidebar-backdrop" 
+    onclick="toggleMobileSidebar()" 
+    class="fixed inset-0 bg-black/40 backdrop-blur-xs z-40 hidden transition-opacity lg:hidden">
+  </div>
 
   <!-- ===== APP LAYOUT CONTAINER ===== -->
   <div id="app-layout" class="flex pt-16 min-h-screen">
 
-    <!-- ===== SIDE NAV BAR (Desktop) ===== -->
+    <!-- ===== SIDE NAV BAR (Drawer on mobile, Fixed Sidebar on desktop) ===== -->
     <aside id="sidenav"
-      class="hidden lg:flex flex-col h-[calc(100vh-64px)] w-64 border-r border-stone-200 bg-stone-50 py-6 px-4 space-y-2 sticky top-16 font-[Lexend] text-sm flex-shrink-0">
+      class="fixed inset-y-0 left-0 z-50 w-72 bg-stone-50 border-r border-stone-200 p-5 flex flex-col space-y-2 font-[Lexend] text-sm -translate-x-full lg:translate-x-0 lg:static lg:w-64 lg:h-[calc(100vh-64px)] lg:sticky lg:top-16 lg:z-10 transition-transform duration-300 ease-in-out shadow-2xl lg:shadow-none flex-shrink-0">
       
-      <!-- Clickable Sidebar Greeting -->
-      <div class="mb-6 px-3 cursor-pointer hover:opacity-85 transition" onclick="navigateTo('account')" title="Open Farmer Account">
-        <p class="text-stone-500 font-medium">Hello,</p>
-        <h2 id="sidebar-user-name" class="text-lg font-bold text-green-800 hover:underline">Farmer</h2>
-        <p class="text-[10px] text-stone-400 uppercase tracking-widest mt-1">Modern Farming Partner</p>
+      <!-- Close button on Mobile Drawer -->
+      <div class="flex items-center justify-between lg:hidden pb-3 border-b border-stone-200 mb-2">
+        <div class="flex items-center gap-2 text-green-900 font-bold">
+          <span class="material-symbols-outlined text-green-800">agriculture</span>
+          <span>Krishi Menu</span>
+        </div>
+        <button onclick="toggleMobileSidebar()" class="p-1 rounded-lg text-stone-500 hover:bg-stone-200 transition">
+          <span class="material-symbols-outlined">close</span>
+        </button>
       </div>
 
-      <!-- Navigation Links -->
-      <nav class="flex-1 space-y-1">
-        <a class="side-nav-link active cursor-pointer" data-page="dashboard" onclick="navigateTo('dashboard')">
-          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">dashboard</span> Dashboard
+      <!-- Clickable Sidebar User Greeting -->
+      <div class="mb-4 px-2 py-1 cursor-pointer hover:opacity-85 transition rounded-xl" onclick="navigateTo('account'); toggleMobileSidebar(false);">
+        <p class="text-stone-500 text-xs font-medium">Hello,</p>
+        <h2 id="sidebar-user-name" class="text-base font-bold text-green-800 hover:underline truncate">Farmer</h2>
+        <p class="text-[10px] text-stone-400 uppercase tracking-wider mt-0.5">Modern Farming Partner</p>
+      </div>
+
+      <!-- Main Navigation Links -->
+      <nav class="flex-1 space-y-1 overflow-y-auto">
+        <a class="side-nav-link active cursor-pointer flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-green-100/60 transition text-stone-700"
+          data-page="dashboard" 
+          onclick="navigateTo('dashboard'); toggleMobileSidebar(false);">
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">dashboard</span> 
+          <span>Dashboard</span>
         </a>
-        <a class="side-nav-link cursor-pointer" data-page="crop-health" onclick="navigateTo('crop-health')">
-          <span class="material-symbols-outlined">potted_plant</span> Crop Health
+
+        <a class="side-nav-link cursor-pointer flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-green-100/60 transition text-stone-700"
+          data-page="crop-health" 
+          onclick="navigateTo('crop-health'); toggleMobileSidebar(false);">
+          <span class="material-symbols-outlined">potted_plant</span> 
+          <span>Crop Health</span>
         </a>
-        <a class="side-nav-link cursor-pointer" data-page="market" onclick="navigateTo('market')">
-          <span class="material-symbols-outlined">trending_up</span> Market Trends
+
+        <a class="side-nav-link cursor-pointer flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-green-100/60 transition text-stone-700"
+          data-page="market" 
+          onclick="navigateTo('market'); toggleMobileSidebar(false);">
+          <span class="material-symbols-outlined">trending_up</span> 
+          <span>Market Trends</span>
         </a>
-        <a class="side-nav-link cursor-pointer" data-page="subsidies" onclick="navigateTo('subsidies')">
-          <span class="material-symbols-outlined">account_balance</span> Government Schemes
+
+        <a class="side-nav-link cursor-pointer flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-green-100/60 transition text-stone-700"
+          data-page="subsidies" 
+          onclick="navigateTo('subsidies'); toggleMobileSidebar(false);">
+          <span class="material-symbols-outlined">account_balance</span> 
+          <span>Government Schemes</span>
         </a>
-        <a class="side-nav-link cursor-pointer" data-page="ai-assistant" onclick="navigateTo('ai-assistant')">
-          <span class="material-symbols-outlined">smart_toy</span> AI Assistant
+
+        <a class="side-nav-link cursor-pointer flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-green-100/60 transition text-stone-700"
+          data-page="ai-assistant" 
+          onclick="navigateTo('ai-assistant'); toggleMobileSidebar(false);">
+          <span class="material-symbols-outlined">smart_toy</span> 
+          <span>AI Assistant</span>
         </a>
-        <a class="side-nav-link cursor-pointer" data-page="calculator" onclick="navigateTo('calculator')">
-          <span class="material-symbols-outlined">calculate</span> Pesticide Calc
+
+        <a class="side-nav-link cursor-pointer flex items-center gap-3 px-3 py-2.5 rounded-xl hover:bg-green-100/60 transition text-stone-700"
+          data-page="calculator" 
+          onclick="navigateTo('calculator'); toggleMobileSidebar(false);">
+          <span class="material-symbols-outlined">calculate</span> 
+          <span>Pesticide Calc</span>
         </a>
       </nav>
 
-      <!-- Bottom Settings Section (Account added right above Settings) -->
-      <div class="pt-4 border-t border-stone-200 space-y-1">
-        <a class="side-nav-link cursor-pointer" data-page="account" onclick="navigateTo('account')">
-          <span class="material-symbols-outlined">manage_accounts</span> Account</a>
-        <a class="side-nav-link cursor-pointer" href="#"><span class="material-symbols-outlined">contact_support</span> Support</a>
-        <div class="mt-4 p-4 bg-[#2d5a27] text-white rounded-xl">
-          <p class="text-xs opacity-80 mb-2">Need help?</p>
-          <button onclick="navigateTo('ai-assistant')" class="w-full bg-white text-[#2d5a27] font-bold py-2 rounded-lg text-xs">Help Center</button>
+      <!-- Bottom Profile & Support Links -->
+      <div class="pt-3 border-t border-stone-200 space-y-1">
+        <a class="side-nav-link cursor-pointer flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-green-100/60 transition text-stone-700"
+          data-page="account" 
+          onclick="navigateTo('account'); toggleMobileSidebar(false);">
+          <span class="material-symbols-outlined">account_circle</span> 
+          <span id="nav-account-title">Profile</span>
+        </a>
+
+        <a class="side-nav-link cursor-pointer flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-green-100/60 transition text-stone-700" 
+          href="#" onclick="toggleMobileSidebar(false);">
+          <span class="material-symbols-outlined">contact_support</span> 
+          <span id="nav-support-title">Support</span>
+        </a>
+
+        <div class="mt-3 p-3 bg-[#2d5a27] text-white rounded-xl shadow-xs">
+          <p class="text-xs opacity-80 mb-1.5">Need help?</p>
+          <button onclick="navigateTo('ai-assistant'); toggleMobileSidebar(false);" 
+            class="w-full bg-white text-[#2d5a27] font-bold py-1.5 rounded-lg text-xs hover:bg-stone-100 transition">
+            Help Center
+          </button>
         </div>
       </div>
     </aside>
 
-    <!-- ===== MAIN CONTENT ===== -->
-    <main class="flex-1 w-full">
+    <!-- ===== MAIN CONTENT (Takes full 100% width on mobile) ===== -->
+    <main class="flex-1 w-full overflow-x-hidden min-w-0">
       <div id="page-language" class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full"></div>
-      <div id="page-dashboard" class="page-content"></div>
-      <div id="page-crop-health" class="page-content"></div>
-      <div id="page-market" class="page-content"></div>
-      <div id="page-subsidies" class="page-content"></div>
-      <div id="page-ai-assistant" class="page-content"></div>
-      <div id="page-calculator" class="page-content"></div>
-      <div id="page-profile" class="page-content"></div>
+      <div id="page-dashboard" class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full"></div>
+      <div id="page-crop-health" class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full"></div>
+      <div id="page-market" class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full"></div>
+      <div id="page-subsidies" class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full"></div>
+      <div id="page-ai-assistant" class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full"></div>
+      <div id="page-calculator" class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full"></div>
+      <div id="page-profile" class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full"></div>
       <div id="page-account" class="page-content p-4 md:p-8 max-w-7xl mx-auto w-full"></div>
       
       <div id="page-loading" class="page-content min-h-[80vh]">
@@ -199,13 +267,36 @@
 
   <!-- ===== FLOATING AI BUTTON ===== -->
   <button id="fab-ai" onclick="navigateTo('ai-assistant')"
-    class="fixed bottom-10 right-10 w-16 h-16 bg-[#2d5a27] text-white rounded-full flex items-center justify-center shadow-2xl shadow-green-900/40 z-40 hover:scale-110 active:scale-90 transition-all group">
-    <span class="material-symbols-outlined text-3xl" style="font-variation-settings:'FILL' 1;">smart_toy</span>
+    class="fixed bottom-6 right-6 lg:bottom-10 lg:right-10 w-14 h-14 sm:w-16 sm:h-16 bg-[#2d5a27] text-white rounded-full flex items-center justify-center shadow-2xl shadow-green-900/40 z-30 hover:scale-110 active:scale-90 transition-all group">
+    <span class="material-symbols-outlined text-2xl sm:text-3xl" style="font-variation-settings:'FILL' 1;">smart_toy</span>
     <span
-      class="absolute right-full mr-4 bg-stone-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+      class="absolute right-full mr-3 bg-stone-900 text-white text-xs px-2.5 py-1 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
       Ask Krishak AI
     </span>
   </button>
+
+  <!-- Inline Script for the Mobile Drawer Toggle -->
+  <script>
+    function toggleMobileSidebar(forceState) {
+      const sidebar = document.getElementById("sidenav");
+      const backdrop = document.getElementById("sidebar-backdrop");
+      if (!sidebar || !backdrop) return;
+
+      const shouldOpen = forceState !== undefined 
+        ? forceState 
+        : sidebar.classList.contains("-translate-x-full");
+
+      if (shouldOpen) {
+        sidebar.classList.remove("-translate-x-full");
+        backdrop.classList.remove("hidden");
+        document.body.style.overflow = "hidden"; // prevent background scroll when drawer is open
+      } else {
+        sidebar.classList.add("-translate-x-full");
+        backdrop.classList.add("hidden");
+        document.body.style.overflow = "";
+      }
+    }
+  </script>
 
   <!-- External & Firebase SDKs -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

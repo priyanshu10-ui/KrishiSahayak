@@ -30,26 +30,32 @@ app.get('/', (req, res) => {
 
 // Chat completion endpoint
 app.post('/api/chat', async (req, res) => {
-  console.log("📩 Received chat request from frontend.");
+  console.log("📩 Received chat request from frontend:", req.body);
   try {
-    const { messages } = req.body;
+    let incomingMessages = [];
 
-    if (!messages || !Array.isArray(messages)) {
-      return res.status(400).json({ error: "Invalid messages format." });
+    // Support both an array of messages or a single string prompt
+    if (Array.isArray(req.body.messages)) {
+      incomingMessages = req.body.messages;
+    } else if (req.body.message || req.body.prompt) {
+      incomingMessages = [{ role: 'user', content: req.body.message || req.body.prompt }];
+    } else {
+      return res.status(400).json({ error: "Missing message or messages array in request body." });
     }
 
     const formattedMessages = [
       { role: 'system', content: FARMER_SYSTEM_PROMPT },
-      ...messages
+      ...incomingMessages
         .map(m => ({
-          role: (m.role === 'ai' || m.role === 'model') ? 'assistant' : m.role,
+          role: (m.role === 'ai' || m.role === 'model' || m.role === 'assistant') ? 'assistant' : 'user',
           content: (m.content || m.text || '').trim()
         }))
         .filter(m => m.content.length > 0)
     ];
 
+    // Supported Groq Model
     const chatCompletion = await groq.chat.completions.create({
-      model: 'openai/gpt-oss-20b',
+      model: 'llama-3.3-70b-versatile',
       messages: formattedMessages,
       temperature: 0.6,
       max_tokens: 1024,
@@ -57,18 +63,15 @@ app.post('/api/chat', async (req, res) => {
 
     const reply = chatCompletion.choices[0]?.message?.content || "No reply generated.";
     console.log("✅ Groq response sent to client.");
-    return res.json({ reply });
+    return res.json({ reply, response: reply });
   } catch (error) {
     console.error("❌ Groq Error:", error.message);
     return res.status(500).json({ error: error.message });
   }
 });
 
-const PORT = process.env.PORT || 3000;
-const server = app.listen(PORT, () => {
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
   console.log(`🚀 Server running on port ${PORT}`);
   console.log(`📡 Ready at: http://localhost:${PORT}/api/chat`);
 });
-
-// Keep process active
-process.stdin.resume();
