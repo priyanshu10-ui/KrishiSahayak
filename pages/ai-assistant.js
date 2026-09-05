@@ -4,6 +4,16 @@ let chatMessages = [
 ];
 let chatHistory = []; // Standard OpenAI/Groq history format: [{ role: 'user'|'assistant', content: '...' }]
 
+// Global function to trigger search when a farmer clicks any suggested question button
+window.handleQuestionClick = function(encodedText) {
+  const query = decodeURIComponent(encodedText);
+  const input = document.getElementById('chat-input');
+  if (input) {
+    input.value = query;
+    sendMessage();
+  }
+};
+
 function renderAIAssistant() {
   const activeLanguage =
     localStorage.getItem("selectedLanguage") || "en";
@@ -198,14 +208,94 @@ function removeTyping() {
   if (indicator) indicator.remove();
 }
 
+// Helper to extract current live data from your website state or DOM
+function getAppContext() {
+  const locationElem = document.getElementById('user-location') || document.querySelector('.location-badge');
+  const userLocation = locationElem ? locationElem.innerText.trim() : (localStorage.getItem('farmerLocation') || 'Delhi, India');
+
+  const marketCards = document.querySelectorAll('.mandi-price-card, [data-mandi-item]');
+  let marketPrices = [];
+
+  if (marketCards.length > 0) {
+    marketCards.forEach(card => {
+      marketPrices.push(card.innerText.replace(/\s+/g, ' ').trim());
+    });
+  } else {
+    marketPrices = [
+      "Wheat (Gehu): ₹2,315/quintal",
+      "Mustard (Sarson): ₹5,450/quintal",
+      "Soybean: ₹4,600/quintal",
+      "Cotton (Kapas): ₹7,125/quintal",
+      "Tomato: ₹1,800/quintal",
+      "Onion: ₹2,200/quintal"
+    ];
+  }
+
+  return {
+    location: userLocation,
+    availableMarketPrices: marketPrices.slice(0, 8).join(' | ')
+  };
+}
+
+// Parses LLM output and converts raw text suggestions into clickable interactive buttons
+function formatAssistantReply(rawReply) {
+  const splitPattern = /(?:💡\s*(?:Suggested Questions|सुझाव):?)/i;
+  const parts = rawReply.split(splitPattern);
+  
+  let mainText = parts[0].trim();
+  let suggestionsHtml = '';
+
+  if (parts.length > 1) {
+    const rawSuggestions = parts[1]
+      .split('\n')
+      .map(line => line.replace(/^[\s*\-–•\d.]+/g, '').trim()) // Strip numbers, asterisks, and bullets
+      .filter(line => line.length > 0);
+
+    if (rawSuggestions.length > 0) {
+      suggestionsHtml = `
+        <div class="mt-4 pt-3 border-t border-stone-100">
+          <p class="text-[11px] font-bold text-stone-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <span>💡</span> Suggested Questions:
+          </p>
+          <div class="flex flex-wrap gap-2">
+            ${rawSuggestions.map(q => {
+              const safeQ = encodeURIComponent(q);
+              return `
+                <button 
+                  type="button"
+                  onclick="handleQuestionClick('${safeQ}')" 
+                  class="text-left text-xs bg-green-50 hover:bg-[#2d5a27] text-green-900 hover:text-white border border-green-200/60 rounded-xl px-3 py-2 transition-all duration-200 shadow-sm active:scale-95 flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span>${q}</span>
+                  <span class="material-symbols-outlined text-xs" style="font-size:13px;">arrow_forward</span>
+                </button>
+              `;
+            }).join('')}
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  const formattedMain = mainText
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+
+  return formattedMain + suggestionsHtml;
+}
+
 async function sendFarmerMessage(userText) {
+  const context = getAppContext();
   const messagePayload = [...chatHistory, { role: "user", content: userText }];
 
   try {
-    const response = await fetch("http://localhost:5000/api/chat", {
+    const response = await fetch("http://127.0.0.1:5000/api/chat", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages: messagePayload })
+      body: JSON.stringify({
+        messages: messagePayload,
+        context: context
+      })
     });
 
     const data = await response.json();
@@ -216,12 +306,12 @@ async function sendFarmerMessage(userText) {
 
     const rawReply = data.reply;
     if (rawReply) {
-      // Keep successful conversation in memory
       chatHistory.push({ role: "user", content: userText });
       chatHistory.push({ role: "assistant", content: rawReply });
       if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
-      
-      return rawReply.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+
+      // Return processed HTML with interactive buttons
+      return formatAssistantReply(rawReply);
     }
     return "I couldn't generate a response. Please try rephrasing your question.";
   } catch (error) {
