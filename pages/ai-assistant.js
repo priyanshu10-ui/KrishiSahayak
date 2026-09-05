@@ -4,7 +4,7 @@ let chatMessages = [
 ];
 let chatHistory = []; // Standard OpenAI/Groq history format: [{ role: 'user'|'assistant', content: '...' }]
 
-// Global function to trigger search when a farmer clicks any suggested question button
+// Global function triggered when a farmer clicks any suggested question button
 window.handleQuestionClick = function(encodedText) {
   const query = decodeURIComponent(encodedText);
   const input = document.getElementById('chat-input');
@@ -237,44 +237,48 @@ function getAppContext() {
   };
 }
 
-// Parses LLM output and converts raw text suggestions into clickable interactive buttons
+// Converts raw model output into clean text and interactive suggestion pills
 function formatAssistantReply(rawReply) {
-  const splitPattern = /(?:💡\s*(?:Suggested Questions|सुझाव):?)/i;
-  const parts = rawReply.split(splitPattern);
-  
-  let mainText = parts[0].trim();
-  let suggestionsHtml = '';
+  let mainText = rawReply;
+  let rawSuggestions = [];
 
-  if (parts.length > 1) {
-    const rawSuggestions = parts[1]
+  const splitRegex = /(?:---SUGGESTIONS---|(?:\*{0,3}|#{1,4}\s*)💡?\s*(?:Suggested Questions|Recommended Questions|सुझाव):?\*{0,3})/i;
+
+  if (splitRegex.test(rawReply)) {
+    const parts = rawReply.split(splitRegex);
+    mainText = parts[0].trim();
+    
+    const suggestionsBlock = parts.slice(1).join(' ');
+    rawSuggestions = suggestionsBlock
       .split('\n')
-      .map(line => line.replace(/^[\s*\-–•\d.]+/g, '').trim()) // Strip numbers, asterisks, and bullets
-      .filter(line => line.length > 0);
+      .map(line => line.replace(/^[\s*\-–•\d.)\]"']+/g, '').replace(/["']+$/g, '').trim())
+      .filter(line => line.length > 5 && !line.toLowerCase().includes('suggested questions'));
+  }
 
-    if (rawSuggestions.length > 0) {
-      suggestionsHtml = `
-        <div class="mt-4 pt-3 border-t border-stone-100">
-          <p class="text-[11px] font-bold text-stone-500 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-            <span>💡</span> Suggested Questions:
-          </p>
-          <div class="flex flex-wrap gap-2">
-            ${rawSuggestions.map(q => {
-              const safeQ = encodeURIComponent(q);
-              return `
-                <button 
-                  type="button"
-                  onclick="handleQuestionClick('${safeQ}')" 
-                  class="text-left text-xs bg-green-50 hover:bg-[#2d5a27] text-green-900 hover:text-white border border-green-200/60 rounded-xl px-3 py-2 transition-all duration-200 shadow-sm active:scale-95 flex items-center gap-1.5 cursor-pointer"
-                >
-                  <span>${q}</span>
-                  <span class="material-symbols-outlined text-xs" style="font-size:13px;">arrow_forward</span>
-                </button>
-              `;
-            }).join('')}
-          </div>
+  let suggestionsHtml = '';
+  if (rawSuggestions.length > 0) {
+    suggestionsHtml = `
+      <div class="mt-4 pt-3 border-t border-stone-200/80">
+        <p class="text-[11px] font-bold text-stone-500 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+          <span>💡</span> Suggested Questions:
+        </p>
+        <div class="flex flex-col sm:flex-row flex-wrap gap-2">
+          ${rawSuggestions.map(q => {
+            const safeQ = encodeURIComponent(q);
+            return `
+              <button 
+                type="button" 
+                onclick="handleQuestionClick('${safeQ}')" 
+                class="text-left text-xs font-medium bg-emerald-50 hover:bg-[#2d5a27] text-emerald-900 hover:text-white border border-emerald-300/80 rounded-xl px-3.5 py-2.5 transition-all duration-150 shadow-sm active:scale-95 flex items-center justify-between gap-2 cursor-pointer"
+              >
+                <span>${q}</span>
+                <span class="material-symbols-outlined text-xs" style="font-size:14px;">arrow_forward</span>
+              </button>
+            `;
+          }).join('')}
         </div>
-      `;
-    }
+      </div>
+    `;
   }
 
   const formattedMain = mainText
@@ -310,7 +314,6 @@ async function sendFarmerMessage(userText) {
       chatHistory.push({ role: "assistant", content: rawReply });
       if (chatHistory.length > 20) chatHistory = chatHistory.slice(-20);
 
-      // Return processed HTML with interactive buttons
       return formatAssistantReply(rawReply);
     }
     return "I couldn't generate a response. Please try rephrasing your question.";

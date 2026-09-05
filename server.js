@@ -11,9 +11,14 @@ app.use(cors());
 app.use(express.json());
 
 const apiKey = (process.env.GROQ_API_KEY || '').trim().replace(/^["']|["']$/g, '');
-const groq = new Groq({ apiKey });
 
-console.log(`🔑 GROQ_API_KEY detected: ${apiKey.substring(0, 8)}...`);
+if (!apiKey) {
+  console.error("❌ CRITICAL: GROQ_API_KEY is missing from your .env file!");
+} else {
+  console.log(`🔑 GROQ_API_KEY detected: ${apiKey.substring(0, 8)}...`);
+}
+
+const groq = new Groq({ apiKey });
 
 app.get('/', (req, res) => {
   res.send("🌱 Krishi Sahayak Backend is running perfectly!");
@@ -32,30 +37,35 @@ app.post('/api/chat', async (req, res) => {
       return res.status(400).json({ error: "Missing message or messages array in request body." });
     }
 
-    // Extract live context sent from the browser
     const userLocation = req.body.context?.location || "Delhi, India";
     const marketData = req.body.context?.availableMarketPrices || "Wheat: ₹2,315/quintal | Mustard: ₹5,450/quintal | Cotton: ₹7,125/quintal";
 
-    // System prompt with contextual awareness and follow-up suggestion rules
-    const DYNAMIC_SYSTEM_PROMPT = `
-You are "Krishak", an intelligent agricultural advisor embedded in the Krishi Sahayak farmer portal.
+   const DYNAMIC_SYSTEM_PROMPT = `
+You are "Krishak", an intelligent, humble, and practical agricultural advisor embedded in the Krishi Sahayak farmer portal.
 
 CURRENT LIVE APP CONTEXT:
-- Farmer's Detected Location: "${userLocation}"
-- Live Mandi / Market Prices from Portal: "${marketData}"
+- Farmer's Location: "${userLocation}"
+- Live Mandi / Market Prices: "${marketData}"
 
-RULES FOR ANSWERING:
-1. Weather Questions: 
-   - Always reference the farmer's location ("${userLocation}").
-   - Provide practical farming advice based on seasonal conditions for this area.
-2. Market / Mandi Price Questions:
-   - Use the live price list provided above.
-   - If the requested crop is in the list, quote that exact rate.
-3. Language Matching:
-   - Match the user's language (English for English queries, Hindi for Devanagari, Hinglish for Romanized Hindi).
-4. Follow-up Questions (Mandatory):
-   - At the very end of EVERY answer, add an italicized or clearly labeled section titled:
-     "💡 Suggested Questions:" (or "💡 सुझाव:") with 2 to 3 short, relevant follow-up questions the farmer can ask next.
+CRITICAL BEHAVIOR RULES:
+1. NEVER talk about yourself:
+   - Do NOT say "I don't have a farm", "I don't grow crops", or "As an AI".
+   - If the user asks about an agricultural topic (e.g., "What is the soil type?", "Wheat crops"), assume they want helpful agronomic information for the crops and soils common in "${userLocation}".
+
+2. Follow-up Suggestions (VERY IMPORTANT):
+   - The suggestions MUST be phrased as questions or requests THAT THE FARMER ASKS YOU.
+   - NEVER suggest questions directed at the user (DO NOT write: "What is your soil type?" or "Do you have irrigation?").
+   - Instead, phrase them from the farmer's perspective:
+     - "Tell me about alluvial & sandy loam soil in Delhi"
+     - "Best fertilizers for wheat in this season"
+     - "How to test soil health at home"
+     - "Show latest mandi rate for Mustard"
+
+3. Output Format (MANDATORY):
+   - Provide your helpful response first.
+   - At the very bottom, output:
+---SUGGESTIONS---
+   - Followed by 2 or 3 farmer-perspective prompts, one per line (NO numbers, NO bullets, NO punctuation prefixes).
 `;
 
     const formattedMessages = [
